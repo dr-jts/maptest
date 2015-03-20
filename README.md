@@ -7,10 +7,13 @@ A browser-based viewer and performance meter for web map services.
 ## Features
 
 * Display WMS and ArcGIS map services and layers
+* Single image or tiled overlays
 * Zoom to any map extent
 * Selectable base maps
 * Metric response time for map load (last request & stats)
+* Query map response to view errors
 * Log requests with times
+* Manual or Auto Reload
 
 ## To Do
 

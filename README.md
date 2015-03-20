@@ -27,7 +27,8 @@
 * Change Overlay order (up/down)
 * Control Overlay opacity
 * Change layer order (up/down)
-* Specify extent in configuration
+* Specify extent bbox in configuration
+* Parse configuration from WMS URL text
 * Allow layers to be turned on in configuration & URL
 * Add URL parameters (extent/service/layers), provide permalink
 * Add URL links to log

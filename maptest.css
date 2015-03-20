@@ -146,6 +146,14 @@ body {
 	background-color: #DDDDDD;
 	z-index: 4000;
 }
+.help-content {
+  position: absolute;
+  margin-left: 0px;
+  margin-top: 10px;
+  overflow-y: scroll;
+  bottom: 10px;
+  top: 20px;
+}
 .config-panel {
 	position: absolute;
 	left: 0px;

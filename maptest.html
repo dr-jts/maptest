@@ -26,14 +26,18 @@
 			<!-- Help panel -->	
 			<div class='help-panel' style='display: none;'>
 				<div class='btn-close' id='btn-help-close'>x</div>
-				<div style='margin-left:0px;margin-top:10px;'>
+				<div class='help-content' style='margin-left:0px;margin-top:10px;'>
+<h3>Map Services</h3>
+
+Supports WMS and ArcGIS REST map services.
+
 <h3>Configuration</h3>
 
-Map services are configured as overlays on the map.
-A metadata link can be supplied as <code>metaurl: link</code>.
-Multiple layers can be specified for each map service.
-Layers are comma-separated or on separate lines. 
-Styles can be specified for layers by appending <code>*style</code>.
+Configure map services as overlays on the map.
+Specify the URL for each service.
+Provide a metadata link with <code>metaurl: link</code>.
+List one or more service layers, comma-separated or on separate lines. 
+Use a style for a layer by appending <code>*style-name</code>.
 <p>
 Example configuration:
 <pre>
@@ -46,7 +50,12 @@ LAYER4*style
 
 <h3>Overlays & Layers</h3>
 
-Enter one or more layer names (comma-separated) to add them to an overlay.
+Add layers to an overlay by entering one or more layer names (comma-separated).
+
+<h4>Map Request Status</h4>
+
+Click <b>?</b> to display a map request and the response to it.
+Some kinds of errors can be displayed.
 
 <h3>Extent</h3>
 Enter an extent in the zoom box and click <b>Zoom</b>.

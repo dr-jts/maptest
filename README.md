@@ -21,7 +21,9 @@ A browser-based viewer and performance meter for web map services.
 * Control Overlay opacity
 * Change layer order (up/down)
 * Specify extent in configuration
+* Allow layers to be turned on in configuration & URL
 * Add URL parameters (extent/service/layers), provide permalink
-* Add links to log
+* Add URL links to log
+* Add Clear Log
 * Add more open base maps (OSM, Google, ESRI, Bing, etc)
 * Graph response times

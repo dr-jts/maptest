@@ -17,6 +17,7 @@ A viewer for web map services.
 * Change Overlay order (up/down)
 * Control Overlay opacity
 * Change layer order (up/down)
+* Specify extent in configuration
 * Add URL parameters (extent/service/layers), provide permalink
 * Add links to log
 * Add more open base maps (OSM, Google, ESRI, Bing, etc)

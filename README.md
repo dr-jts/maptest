@@ -4,7 +4,7 @@ A viewer for web map services.
 
 [Try it!](http://dr-jts.github.io/maptest/maptest.html)
 
-#Featuree
+#Features
 
 * Display WMS and ArcGIS map services and layers
 * Zoom to any map extent

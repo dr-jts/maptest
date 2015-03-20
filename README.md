@@ -14,6 +14,7 @@
 #### Sample Configurations
 ```
 http://webservices.nationalatlas.gov/wms
+meta-url: http://nationalmap.gov/small_scale/infodocs/wms_intro.html
 timezones
 lakesrivers
 airports

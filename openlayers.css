@@ -1,0 +1,14 @@
+.olHandlerBoxZoomBox {
+  border: 2px solid red;
+  position: absolute;
+  background-color: white;
+  opacity: 0.50;
+  font-size: 1px;
+  filter: alpha(opacity=50);
+}
+.olTileImage {
+    -webkit-transition: opacity 0.1s linear;
+    -moz-transition: opacity 0.1s linear;
+    -o-transition: opacity 0.1s linear;
+    transition: opacity 0.1s linear;
+}

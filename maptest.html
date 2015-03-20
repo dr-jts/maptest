@@ -1,0 +1,165 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>MapTest</title>
+    
+<link rel="stylesheet" href="lib/theme/default/style.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="openlayers.css">
+<link rel="stylesheet" type="text/css" href="maptest.css">
+
+</head>
+
+<body onload="initPage()">
+	<div class='page-header'>
+		<div class='page-title'>MapTest</div>
+
+</div>
+
+
+<div class='menu-container'>	
+<div  > 
+	<div style='text-align:left; margin:10px;width:100%'>
+		<button id='btn-redraw-all' class='btn-redraw' title='Redraw all overlays'></button>
+		<span style='width:100%; text-align:right;'><input type='button' id='btn-configure' value='Configure' style='text-align:right'></span>
+		<button id='btn-log' class='btn-log' title='Show log'>Log</button>
+	</div>
+	<div id='overlays' class='menu-panel'>
+			<div style='margin-bottom: 10px; '>
+			<div style='font-style: italic; margin-bottom: 10px;'>
+					<span style='display:table-cell; width: 30px; text-align: center'><img id='map-spinner' src='img/spinner-30.gif' style='display: none; height: 20px;'/></span>
+			</div>
+			
+		</div>
+	</div>
+</div>
+</div>
+
+<div class='info-container'>
+	<div id='info-panel-map'  class='info-panel'>
+		<div id='map_div' >
+			
+		<!-- Map Status panel -->	
+			<div class='map-status-panel' >
+				<div class='btn-close' id='btn-status-close'>x</div>
+				<div style='margin-bottom: 10px;'>Map Request Status</div>	
+				<div class='map-url'> Request URL: </div> 
+				<div  style='margin-bottom:10px;'>
+					<a target='_blank' id='map-status-url-href' href=''><span id='map-status-url'></span></a>
+				</div>
+					
+				<div> Response: </div>
+				<div id='map-status' class='http-response'></div>
+			</div>
+			
+		<!-- Log panel -->	
+			<div class='map-log-panel'>
+				<div class='btn-close' id='btn-log-close'>x</div>
+				<div style='margin-bottom: 10px;'>Log
+				- Enable <input type='checkbox' id='log-enabled'>
+					</div>	
+				<div class='log-text'></div>
+			</div>
+			
+			<!-- Config dialog -->	
+			<div class='config-dialog' style='xdisplay: none;'>
+				<div class='btn-close' id='btn-config-close'>x</div>
+				<div>
+					<input type='button' value='Current' id='btn-config-show'/>
+					<input type='button' value='Current Visible' id='btn-config-show-visible'/>
+				</div>
+				<textarea id='config-text' placeholder='Enter configuration text'></textarea>
+				<div>
+					<input type='button' value='Add Map Services' id='btn-config-add'/>
+					<input type='button' value='Clear All' id='btn-overlay-clear' style='color:red;right:40px;position:absolute;'/>
+				</div>
+				<div style='margin-left:0px;margin-top:10px;'>
+					Example configuration:
+<pre>
+http://some.host/mapservice
+LAYER1,LAYER2
+LAYER3
+LAYER4*style
+</pre>	
+				</div>
+			</div>
+
+		</div>
+		
+	</div>
+</div>
+
+
+
+<script type="text/javascript" src="lib/proj4js-compressed.js"></script>
+<script type="text/javascript" src="lib/OpenLayers.js"></script>
+<script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="maptest.js"></script>
+<script type="text/javascript" src="Overlay.js"></script>
+<script type="text/javascript">
+
+function initPage() {
+	
+	maptest = new MapTest('map_div');
+	initUI();
+	
+	
+	//TESTING();
+}
+
+function initUI()
+{
+	window.onresize = function() {
+		maptest.map.updateSize();
+	}
+	$('.map-status-panel').hide();
+	$('.map-log-panel').hide();
+	
+	$('#btn-status-close').click( MapTest.closeAll );
+	$('#btn-log').click(function() { MapTest.show('.map-log-panel'); });
+	$('#btn-log-close').click( MapTest.closeAll );
+	
+	$('#btn-configure').click(function() { MapTest.show('.config-dialog');	});
+	$('#btn-config-close').click( MapTest.closeAll );
+	$('#btn-config-add').click(function() { 
+		maptest.load($('#config-text').val());
+		$('#config-text').val('');
+		$('.config-dialog').hide();	
+	});
+	$('#btn-config-show').click(function() { $('#config-text').val(maptest.configuration(false));	});
+	$('#btn-config-show-visible').click(function() { $('#config-text').val(maptest.configuration(true));	});
+	$('#btn-overlay-clear').click(function() { maptest.clear();	});
+			
+	$('#btn-redraw-all').click(function() { maptest.redrawMap();	})
+	
+	
+}
+MapTest.log = function(msg) {
+	if (! $('#log-enabled').is(':checked')) return;
+	$('.log-text').append('<br>' + msg);
+}
+
+MapTest.closeAll = function() {
+	$('.config-dialog').hide();
+	$('.map-log-panel').hide();
+	$('.map-status-panel').hide();
+}
+MapTest.show = function(selector) {
+	MapTest.closeAll();
+	$(selector).show();
+}
+
+function TESTING()
+{
+	var ov = maptest.load('https://i1geo.nrs.bcgov/geoserver/wms\n'
+	+'OPENING_GEOMETRY\n'
+	+'CUT_BLOCK_GEOM\n'
+	+'MTA_MINERAL_PLACER_GRID_POLY'
+	);
+}
+
+</script>
+	</body>
+</html>

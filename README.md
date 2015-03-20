@@ -11,7 +11,7 @@
 
 [Try it!](http://dr-jts.github.io/maptest/maptest.html)
 
-# Example Configurations
+#### Sample Configurations
 ```
 http://webservices.nationalatlas.gov/wms
 timezones

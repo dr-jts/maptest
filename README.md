@@ -4,7 +4,7 @@ A viewer for web map services.
 
 [Try it!](http://dr-jts.github.io/maptest/maptest.html)
 
-#Features
+## Features
 
 * Display WMS and ArcGIS map services and layers
 * Zoom to any map extent
@@ -12,7 +12,7 @@ A viewer for web map services.
 * Metric response time for map load (last request & stats)
 * Log requests with times
 
-# To Do
+## To Do
 
 * Change Overlay order (up/down)
 * Control Overlay opacity

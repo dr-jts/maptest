@@ -123,7 +123,7 @@ Overlay.prototype.createOverlayUI = function() {
 		.text('0').appendTo($time);
 	var $date = $('<div>').appendTo($stat);
 	$('<span class="xx">')
-	   	.attr('id', 'overlay-date')
+	   	.attr('id', 'overlay-timestamp')
 		.text('  ').appendTo($date);
 
 }
@@ -140,7 +140,7 @@ Overlay.prototype.displayTimeStats = function()
 	this.$root.find('#overlay-time-min').text(this.minTime.toFixed(2));
 	var avg = this.numRequests == 0 ? 0 : this.totalTime / this.numRequests;
 	this.$root.find('#overlay-time-avg').text( avg.toFixed(2) );
-	this.$root.find('#overlay-date').text( (new Date()).toLocaleString() );
+	this.$root.find('#overlay-timestamp').text( (new Date()).toLocaleString() );
 }
 Overlay.prototype.showGetMapResponse = function() {
 	showURL(this.getMapURL());

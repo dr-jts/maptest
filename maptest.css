@@ -225,6 +225,10 @@ body {
 	font-size: 10pt;
 	padding-right: 10px;
 }
+#overlay-timestamp {
+	font-size: 11px;
+	color: #888888;
+}
 .overlay-tiled-title {
 	margin-left: 20px;
 }

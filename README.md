@@ -1,6 +1,6 @@
 # MapTest
 
-A viewer and performance meter for web map services.
+A browser-based viewer and performance meter for web map services.
 
 [Try it!](http://dr-jts.github.io/maptest/maptest.html)
 

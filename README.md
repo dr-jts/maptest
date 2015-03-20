@@ -48,15 +48,25 @@ RAS_RIDGE_NEXRAD
 
 ## To Do
 
-* Change Overlay order (up/down)
-* Control Overlay opacity
-* Change layer order (up/down)
-* Specify extent bbox in configuration
-* Parse configuration from WMS URL text
-* Allow layers to be turned on in configuration & URL
-* Add URL parameters (extent/service/layers), provide permalink
-* Add URL links to log
-* Add Clear Log
-* Add more open base maps (OSM, Google, ESRI, Bing, etc)
-* Display and add layers from WMS capabiities documents
-* Graph response times
+* UI
+  * Zoom to World, Zoom to Initial Extent buttons
+  * Change Overlay order (up/down)
+  * Change layer order (up/down)
+  * Overlay opacity
+  * Clear Log
+
+* Configuration 
+  * Specify extent bbox in configuration
+  * Parse configuration from WMS URL text
+  * Allow layers to be turned on in configuration & URL
+  
+* URL 
+ * Add URL parameters (extent/service/layers), provide permalink
+ * Add URL links to log
+ 
+* Map
+ * More open base maps (OSM, Google, ESRI, Bing, etc)
+ * Display and add layers from WMS capabiities documents
+ 
+* Analytics 
+  * Graph response times

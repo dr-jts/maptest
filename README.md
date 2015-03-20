@@ -21,6 +21,7 @@ airports
 statecap
 
 http://demo.boundlessgeo.com/geoserver/wms
+meta-url: http://demo.boundlessgeo.com/geoserver/web/
 topp:tasmania
 
 http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r-t.cgi

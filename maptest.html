@@ -14,17 +14,64 @@
 
 <body onload="initPage()">
 	<div class='page-header'>
-		<div class='page-title'>MapTest</div>
+		<table style='width:100%'>
+			<tr>
+				<td><div class='page-title'>MapTest</div></td>
+				<td align='right'><button id='btn-help' class='btn-help' title='Show Help'>?</button></td>
+			</tr>
+		</table>
+
 
 </div>
+			<!-- Help panel -->	
+			<div class='help-panel' >
+				<div class='btn-close' id='btn-help-close'>x</div>
+				<div style='margin-left:0px;margin-top:10px;'>
+<h3>Configuration</h3>
+
+Map services are configured as overlays on the map.
+A metadata link can be supplied as <code>metaurl: link</code>.
+Multiple layers can be specified for each map service.
+Layers are comma-separated or on separate lines. 
+Styles can be specified for layers by appending <code>*style</code>.
+<p>
+Example configuration:
+<pre>
+http://some.host/mapservice
+metaurl: http://some.host/mapservice/meta
+LAYER1,LAYER2
+LAYER3
+LAYER4*style
+</pre>
+
+<h3>Overlays & Layers</h3>
+
+Enter one or more layer names (comma-separated) to add them to an overlay.
+
+<h3>Extent</h3>
+Enter an extent in the zoom box and click <b>Zoom</b>.
+
+<h3>Auto-Reload</h3>
+Check <b>Auto</b> to auto-reload visible overlays with a set frequency.
+This allows gathering load time statistics and assessing performance under load.
+
+<h3>Logging</h3>
+Enable logging to log all map requests.
+				</div>
+			</div>
 
 
 <div class='menu-container'>	
 <div  > 
 	<div style='text-align:left; margin:10px;width:100%'>
-		<button id='btn-redraw-all' class='btn-redraw' title='Redraw all overlays'></button>
 		<span style='width:100%; text-align:right;'><input type='button' id='btn-configure' value='Configure' style='text-align:right'></span>
 		<button id='btn-log' class='btn-log' title='Show log'>Log</button>
+	</div>
+	<div style='text-align:left; margin:10px;width:100%'>
+		<button id='btn-redraw-all' class='btn-redraw' title='Reload all overlays'></button>
+		Auto
+		<input type='checkbox' id='auto-redraw' title='Automatically reload overlays'>
+		<input type='text' id='auto-redraw-interval' value='2' disabled style='width:30px; text-align:right;'> sec
 	</div>
 	<div id='overlays' class='menu-panel'>
 			<div style='margin-bottom: 10px; '>
@@ -40,6 +87,9 @@
 <div class='info-container'>
 	<div id='info-panel-map'  class='info-panel'>
 		<div id='map_div' >
+			<div class='zoom-panel'>
+				<input type='button' value='Zoom' id='btn-zoom' /><input type='text' id='map-extent' class='map-extent' title='min Lon, min Lat, max Lon, max Lat'>				
+			</div>
 			
 		<!-- Map Status panel -->	
 			<div class='map-status-panel' >
@@ -63,8 +113,8 @@
 				<div class='log-text'></div>
 			</div>
 			
-			<!-- Config dialog -->	
-			<div class='config-dialog' style='xdisplay: none;'>
+			<!-- Config panel -->	
+			<div class='config-panel' >
 				<div class='btn-close' id='btn-config-close'>x</div>
 				<div>
 					<input type='button' value='Current' id='btn-config-show'/>
@@ -75,16 +125,8 @@
 					<input type='button' value='Add Map Services' id='btn-config-add'/>
 					<input type='button' value='Clear All' id='btn-overlay-clear' style='color:red;right:40px;position:absolute;'/>
 				</div>
-				<div style='margin-left:0px;margin-top:10px;'>
-					Example configuration:
-<pre>
-http://some.host/mapservice
-LAYER1,LAYER2
-LAYER3
-LAYER4*style
-</pre>	
-				</div>
 			</div>
+
 
 		</div>
 		
@@ -114,27 +156,30 @@ function initUI()
 	window.onresize = function() {
 		maptest.map.updateSize();
 	}
-	$('.map-status-panel').hide();
-	$('.map-log-panel').hide();
-	
+	MapTest.show('.config-panel');
 	$('#btn-status-close').click( MapTest.closeAll );
 	$('#btn-log').click(function() { MapTest.show('.map-log-panel'); });
 	$('#btn-log-close').click( MapTest.closeAll );
+	$('#btn-help').click(function() { MapTest.show('.help-panel'); });
+	$('#btn-help-close').click( MapTest.closeAll );
 	
-	$('#btn-configure').click(function() { MapTest.show('.config-dialog');	});
+	$('#btn-configure').click(function() { MapTest.show('.config-panel');	});
+	$('#btn-zoom').click(function() { maptest.zoom(  );	});
 	$('#btn-config-close').click( MapTest.closeAll );
 	$('#btn-config-add').click(function() { 
 		maptest.load($('#config-text').val());
 		$('#config-text').val('');
-		$('.config-dialog').hide();	
+		$('.config-panel').hide();	
 	});
 	$('#btn-config-show').click(function() { $('#config-text').val(maptest.configuration(false));	});
 	$('#btn-config-show-visible').click(function() { $('#config-text').val(maptest.configuration(true));	});
 	$('#btn-overlay-clear').click(function() { maptest.clear();	});
 			
 	$('#btn-redraw-all').click(function() { maptest.redrawMap();	})
-	
-	
+	$('#auto-redraw').click(function() { 
+    	var doAuto = $(this).is(':checked');
+		maptest.autoRedraw(doAuto);	
+	})
 }
 MapTest.log = function(msg) {
 	if (! $('#log-enabled').is(':checked')) return;
@@ -142,9 +187,10 @@ MapTest.log = function(msg) {
 }
 
 MapTest.closeAll = function() {
-	$('.config-dialog').hide();
+	$('.config-panel').hide();
 	$('.map-log-panel').hide();
 	$('.map-status-panel').hide();
+	$('.help-panel').hide();
 }
 MapTest.show = function(selector) {
 	MapTest.closeAll();

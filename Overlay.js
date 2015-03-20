@@ -103,19 +103,28 @@ Overlay.prototype.createOverlayUI = function() {
 	            	self.showGetMapResponse();
             	} )
             	.appendTo($ctl);
-	var $time = $('<div class="overlay-stats">').appendTo(this.$root);
+	var $stat = $('<div class="overlay-stats">').appendTo(this.$root);
+	var $time = $('<div>').appendTo($stat);
+	$('<span class="xx">').text(' N  ').appendTo($time);
+	$('<div class="overlay-time overlay-count">')
+   		.attr('id', 'overlay-time-count')
+		.text('0').appendTo($time);
 	$('<span class="xx">').text(' Avg  ').appendTo($time);
-	$('<div class="overlay-time-small">')
+	$('<div class="overlay-time overlay-time-small">')
    		.attr('id', 'overlay-time-avg')
 		.text('0').appendTo($time);
 	$('<span class="xx">').text(' Min  ').appendTo($time);
-	$('<div class="overlay-time-small">')
+	$('<div class="overlay-time overlay-time-small">')
    		.attr('id', 'overlay-time-min')
 		.text('0').appendTo($time);
 	$('<span class="xx">').text(' Max  ').appendTo($time);
-	$('<div class="overlay-time-small">')
+	$('<div class="overlay-time overlay-time-small">')
    		.attr('id', 'overlay-time-max')
 		.text('0').appendTo($time);
+	var $date = $('<div>').appendTo($stat);
+	$('<span class="xx">')
+	   	.attr('id', 'overlay-date')
+		.text('  ').appendTo($date);
 
 }
 Overlay.prototype.displayTime = function(time)
@@ -126,10 +135,12 @@ Overlay.prototype.displayTime = function(time)
 Overlay.prototype.displayTimeStats = function()
 {
 	this.displayTime(this.lastTime);
+	this.$root.find('#overlay-time-count').text(this.numRequests);
 	this.$root.find('#overlay-time-max').text(this.maxTime.toFixed(2));
 	this.$root.find('#overlay-time-min').text(this.minTime.toFixed(2));
 	var avg = this.numRequests == 0 ? 0 : this.totalTime / this.numRequests;
 	this.$root.find('#overlay-time-avg').text( avg.toFixed(2) );
+	this.$root.find('#overlay-date').text( (new Date()).toLocaleString() );
 }
 Overlay.prototype.showGetMapResponse = function() {
 	showURL(this.getMapURL());
@@ -287,14 +298,14 @@ Overlay.prototype.isLoading = function() {
 	var overlay = this.findOverlay();
 	return overlay.loading === true;
 }
+//----------------------------------------
 Overlay.prototype.initMapTimer = function() {
-	if (this.mapInterval != null) return;
-	var $mapSec = this.$root.find('.overlay-time');
-	$mapSec.text('0');
-
+	if (this.mapRequestTimer != null) return;
+	this.displayTimeStats();
+	
 	var self = this;
 	var mapStartTime = (new Date()).getTime();
-	this.mapInterval = setInterval(function() {
+	this.mapRequestTimer = setInterval(function() {
 		var mapLoadDuration = (new Date()).getTime() - mapStartTime;
 		var mapLoadSec = mapLoadDuration / 1000;
 		if (self.isLoading()) {
@@ -303,14 +314,15 @@ Overlay.prototype.initMapTimer = function() {
 		}
 		else {
 			//$('#map-spinner').hide();
-			clearInterval(self.mapInterval);
-			self.mapInterval = null;
+			clearInterval(self.mapRequestTimer);
+			self.mapRequestTimer = null;
 			self.updateMapTime(mapLoadSec);
 			self.displayTimeStats();
 			MapTest.log(mapLoadSec + ' s :  ' + self.getMapURL())
 		}
 	}, 200);	
 }
+//----------------------------------------
 Overlay.prototype.visibleMapLayers = function(mapLyrs)
 {
 	var names = [];

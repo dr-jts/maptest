@@ -82,20 +82,21 @@ body {
 .map-log-panel {
 	position: absolute;
 	left: 0;
-	top: 80;
+	top: 200px;
 	bottom: 10px;
-	width: 80%;
-	background-color: #ffffdd;
+	width: 95%;
+	background-color: #A9C1E5;
 	z-index: 2000;
 	padding: 10px;
 	xfont-weight: bold;
 }
 .log-text {
+	position: absolute;
 	white-space: nowrap;
 	font-family: monospace;
 	overflow: auto;
 	background-color: #eeeeee;
-	height: 95%
+	top: 40px; bottom: 10px; left:10px; right: 10px;
 }
 .map-status-panel {
 	position: absolute;
@@ -117,10 +118,38 @@ body {
 .http-response {
 	font-family: monospace;
 }
-.config-dialog {
+.zoom-panel {
+	position: absolute;
+	top: 10px; left: 40px;
+	z-index: 1004;
+}
+#btn-zoom {
+	background-color: #809EC4;
+	color: white;
+	border: 2px solid #809EC4;
+	border-radius: 4px 0 0 4px;
+	cursor: pointer;
+}
+#map-extent {
+	font-size: 12px;
+	width: 300px;
+	text-align:right;
+	padding-right: 5px;
+}
+.help-panel {
+	position: absolute;
+	left: 40px;
+	top: 200px;
+	bottom: 40px;
+	width: 60%;
+	padding: 25px;
+	background-color: #DDDDDD;
+	z-index: 4000;
+}
+.config-panel {
 	position: absolute;
 	left: 0px;
-	top: 10px;
+	top: 40px;
 	bottom: 10px;
 	width: 60%;
 	padding: 25px;
@@ -132,6 +161,7 @@ body {
 	width: 100%;
 	height: 80%;
 }
+
 .btn-redraw {
 	width: 30px;
 	height: 30px;
@@ -172,7 +202,7 @@ body {
 	background-color: #CBDCF5; /*#A9C1E5;*/
 	margin-top: 5px;
 	margin-bottom: 5px;
-	text-align: left;
+	text-align: right;
 	font-style: italic;
 }
 .overlay-time {
@@ -184,12 +214,16 @@ body {
 	color: blue;
 }
 .overlay-time-small {
-	display: inline-block;
-	width: 40px;
-	text-align: right;
-	xfont-weight: bold;
-	xfont-size: 12pt;
-	color: blue;
+	width: 30px; 
+	font-weight: normal;
+	font-size: 10pt;
+	padding-right: 10px;
+}
+.overlay-count {
+	width: 20px;
+	font-weight: normal;
+	font-size: 10pt;
+	padding-right: 10px;
 }
 .overlay-tiled-title {
 	margin-left: 20px;

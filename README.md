@@ -1,6 +1,13 @@
 # MapTest
 
-A browser-based viewer and performance meter for web map services.
+[MapTest](http://dr-jts.github.io/maptest/maptest.html) is a tool for web map developers and operators.  It is browser-based so can be used from any environment.  It can be used to:
+
+* view web map services and layers, overlaid on a base map
+* assess cartography of layer sets
+* capture web map request response metrics
+* display web map request URLs
+* investigate request errors
+* share web map configurations
 
 [Try it!](http://dr-jts.github.io/maptest/maptest.html)
 
@@ -10,7 +17,7 @@ A browser-based viewer and performance meter for web map services.
 * Single image or tiled overlays
 * Zoom to any map extent
 * Selectable base maps
-* Metric response time for map load (last request & stats)
+* Records response duration metrics (last request & statistics)
 * Query map response to view errors
 * Log requests with times
 * Manual or Auto Reload
@@ -26,4 +33,5 @@ A browser-based viewer and performance meter for web map services.
 * Add URL links to log
 * Add Clear Log
 * Add more open base maps (OSM, Google, ESRI, Bing, etc)
+* Display and add layers from WMS capabiities documents
 * Graph response times

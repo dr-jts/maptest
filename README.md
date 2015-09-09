@@ -67,6 +67,7 @@ RAS_RIDGE_NEXRAD
 * Map
  * More open base maps (OSM, Google, ESRI, Bing, etc)
  * Display and add layers from WMS capabiities documents
+ * WMS GetFeatureInof on mouse click
  
 * Analytics 
   * Graph response times

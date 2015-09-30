@@ -31,6 +31,16 @@
 
 Supports WMS and ArcGIS REST map services.
 
+<h3>URL</h3>
+
+<pre>
+http://apphost/maptest.html?host=http://some.host/mapservice&layers=A,B,C
+</pre>
+
+<ul>
+	<li>host and layers parameters are optional</li>
+</ul>
+
 <h3>Configuration</h3>
 
 Configure map services as overlays on the map.
@@ -147,6 +157,7 @@ Enable logging to log all map requests.
 <script type="text/javascript" src="lib/proj4js-compressed.js"></script>
 <script type="text/javascript" src="lib/OpenLayers.js"></script>
 <script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="urlParams.js"></script>
 <script type="text/javascript" src="maptest.js"></script>
 <script type="text/javascript" src="Overlay.js"></script>
 <script type="text/javascript">
@@ -154,10 +165,18 @@ Enable logging to log all map requests.
 function initPage() {
 	
 	maptest = new MapTest('map_div');
+	initConfig();
 	initUI();
-	
-	
 	//TESTING();
+}
+
+function initConfig() {
+	var config = UrlParams.extract(window.location.search);
+	if (! config.host) return;
+	var configTxt = config.host + '\n';
+	var lyrs = UrlParams.asArray(config.layers);
+	configTxt += lyrs.join('\n');
+	$('#config-text').val(configTxt);
 }
 
 function initUI()

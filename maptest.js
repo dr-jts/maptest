@@ -28,7 +28,8 @@ MapTest.prototype.initMap = function(mapDiv) {
             theme: null,   // disable OL auto-loading of CSS
     		div: mapDiv, 
     		projection: 'EPSG:3857',
-    		displayProjection: 'EPSG:3857'
+    		displayProjection: 'EPSG:3857',
+    		controls: []
 	});
     //map.addControl(new OpenLayers.Control.LayerSwitcher());
     

@@ -121,7 +121,8 @@ MapTest.prototype.load = function(configStr) {
 		
 		loadLayers(ov, line);
 	}
-	
+	$('#map-link').attr('href', this.urlParam());
+
 	function loadLayers(ov, line) {
 		var layers = line.split(',');
 		ov.addLayers(layers);

@@ -25,6 +25,15 @@ Overlay.prototype.create = function() {
 		self.initMapTimer();
 	});
 }
+Overlay.prototype.urlParam = function()
+{
+	var param = '?host=' + this.url;
+	var lyrName = $.map(this.mapLayers, function(lyr) {
+		return lyr.name;
+	});
+	param += '&layers=' + lyrName.join(",");
+	return param;
+}
 Overlay.prototype.clearTime = function()
 {
 	this.lastTime = 0;

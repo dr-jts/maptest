@@ -128,6 +128,11 @@ MapTest.prototype.load = function(configStr) {
 	}
 	
 }
+MapTest.prototype.urlParam = function() {
+	if (this.overlays.length <= 0) return "";
+	var param = this.overlays[0].urlParam();
+	return param; 
+}
 MapTest.prototype.clear = function() {
 	for (var i = 0; i < this.overlays.length; i++) {
 		this.overlays[i].remove();

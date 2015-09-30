@@ -16,7 +16,8 @@
 	<div class='page-header'>
 		<table style='width:100%'>
 			<tr>
-				<td><div class='page-title'>MapTest</div></td>
+				<td><div class='page-title'>MapTest</div>
+				<td><a id='map-link' href=''>Link</a></td>
 				<td align='right'><button id='btn-help' class='btn-help' title='Show Help'>?</button></td>
 			</tr>
 		</table>
@@ -33,12 +34,14 @@ Supports WMS and ArcGIS REST map services.
 
 <h3>URL</h3>
 
+Preload configuration via URL parameters.  
+
 <pre>
 http://apphost/maptest.html?host=http://some.host/mapservice&layers=A,B,C
 </pre>
 
 <ul>
-	<li>host and layers parameters are optional</li>
+	<li><code>host</code> and <code>layers</code> parameters are optional</li>
 </ul>
 
 <h3>Configuration</h3>
@@ -111,7 +114,7 @@ Enable logging to log all map requests.
 			</div>
 			
 		<!-- Map Status panel -->	
-			<div class='map-status-panel' >
+			<div class='map-status-panel'  style='display:none;'>
 				<div class='btn-close' id='btn-status-close'>x</div>
 				<div style='margin-bottom: 10px;'>Map Request Status</div>	
 				<div class='map-url'> Request URL: </div> 
@@ -124,7 +127,7 @@ Enable logging to log all map requests.
 			</div>
 			
 		<!-- Log panel -->	
-			<div class='map-log-panel'>
+			<div class='map-log-panel' style='display:none;'>
 				<div class='btn-close' id='btn-log-close'>x</div>
 				<div style='margin-bottom: 10px;'>Log
 				- Enable <input type='checkbox' id='log-enabled'>
@@ -133,7 +136,7 @@ Enable logging to log all map requests.
 			</div>
 			
 			<!-- Config panel -->	
-			<div class='config-panel' >
+			<div class='config-panel' style='display:none;'>
 				<div class='btn-close' id='btn-config-close'>x</div>
 				<div>
 					<input type='button' value='Current' id='btn-config-show'/>
@@ -165,26 +168,32 @@ Enable logging to log all map requests.
 function initPage() {
 	
 	maptest = new MapTest('map_div');
-	initConfig();
-	initUI();
+	var config = loadUrlConfig();
+	var showConfig = ! config;
+	initUI(showConfig);
 	//TESTING();
 }
 
-function initConfig() {
+function loadUrlConfig() {
 	var config = UrlParams.extract(window.location.search);
-	if (! config.host) return;
+	if (! config.host) return null;
 	var configTxt = config.host + '\n';
 	var lyrs = UrlParams.asArray(config.layers);
 	configTxt += lyrs.join('\n');
-	$('#config-text').val(configTxt);
+	//$('#config-text').val(configTxt);
+	maptest.load(configTxt);
+	return configTxt;
 }
 
-function initUI()
+function initUI(showConfig)
 {
 	window.onresize = function() {
 		maptest.map.updateSize();
 	}
-	MapTest.show('.config-panel');
+	MapTest.closeAll();
+	if (showConfig) {
+		MapTest.show('.config-panel');
+	}
 	$('#btn-status-close').click( MapTest.closeAll );
 	$('#btn-log').click(function() { MapTest.show('.map-log-panel'); });
 	$('#btn-log-close').click( MapTest.closeAll );
@@ -196,6 +205,7 @@ function initUI()
 	$('#btn-config-close').click( MapTest.closeAll );
 	$('#btn-config-add').click(function() { 
 		maptest.load($('#config-text').val());
+		$('#map-link').attr('href', maptest.urlParam());
 		$('#config-text').val('');
 		$('.config-panel').hide();	
 	});

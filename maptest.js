@@ -95,7 +95,7 @@ MapTest.prototype.initMap = function(mapDiv) {
     	});
     this.showExtent();
 }
-MapTest.prototype.load = function(configStr) {
+MapTest.prototype.loadConfig = function(configStr) {
 	var lines = configStr.split(/[\n]/);
 	var ov;
 	var ovParam = {};
@@ -158,8 +158,8 @@ MapTest.prototype.showExtent = function() {
 		+ extent.top.toFixed(6));
 
 }
-MapTest.prototype.zoom = function() {
-	var extent = shimTrim($('#map-extent').val());
+MapTest.prototype.zoom = function(extentStr) {
+	var extent = shimTrim( extentStr );
 	//var extcomma = extent.replace(/\s+/g, ',');
 	var bds = OpenLayers.Bounds.fromString(extent);
 	bds.transform( CRS.PROJ_GEO, CRS.PROJ_WEBMERC );

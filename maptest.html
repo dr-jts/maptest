@@ -168,9 +168,9 @@ Enable logging to log all map requests.
 function initPage() {
 	
 	maptest = new MapTest('map_div');
-	var config = loadUrlConfig();
-	var showConfig = ! config;
-	initUI(showConfig);
+	var configUrl = loadUrlConfig();
+	var showConfigPanel = ! configUrl;
+	initUI(showConfigPanel);
 	//TESTING();
 }
 
@@ -180,8 +180,13 @@ function loadUrlConfig() {
 	var configTxt = config.host + '\n';
 	var lyrs = UrlParams.asArray(config.layers);
 	configTxt += lyrs.join('\n');
-	//$('#config-text').val(configTxt);
-	maptest.load(configTxt);
+	
+	maptest.loadConfig(configTxt);
+	
+	if (config && config.extent) {
+		maptest.zoom( config.extent );
+	}
+	
 	return configTxt;
 }
 
@@ -201,10 +206,10 @@ function initUI(showConfig)
 	$('#btn-help-close').click( MapTest.closeAll );
 	
 	$('#btn-configure').click(function() { MapTest.show('.config-panel');	});
-	$('#btn-zoom').click(function() { maptest.zoom(  );	});
+	$('#btn-zoom').click(function() { maptest.zoom( $('#map-extent').val() );	});
 	$('#btn-config-close').click( MapTest.closeAll );
 	$('#btn-config-add').click(function() { 
-		maptest.load($('#config-text').val());
+		maptest.loadConfig($('#config-text').val());
 		$('#map-link').attr('href', maptest.urlParam());
 		$('#config-text').val('');
 		$('.config-panel').hide();	
@@ -237,11 +242,7 @@ MapTest.show = function(selector) {
 
 function TESTING()
 {
-	var ov = maptest.load('https://i1geo.nrs.bcgov/geoserver/wms\n'
-	+'OPENING_GEOMETRY\n'
-	+'CUT_BLOCK_GEOM\n'
-	+'MTA_MINERAL_PLACER_GRID_POLY'
-	);
+
 }
 
 </script>

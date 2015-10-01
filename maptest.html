@@ -38,11 +38,11 @@ Configuration can be loaded via URL parameters.
 A permalink allows opening a new page with top map overlay as parameters.
 
 <pre>
-http://apphost/maptest.html [ ?host=http://some.host/mapservice ] [ &layers=A,B,C ] [ &extent=minlon,minlat,maxlon,maxlat ]
+http://apphost/maptest.html [ ?host=http://some.host/mapservice ] [ &lyr=A,B,C ] [ &extent=minlon,minlat,maxlon,maxlat ]
 </pre>
 
 <ul>
-	<li><code>host</code>, <code>layers</code>, <code>extent</code> parameters are optional</li>
+	<li><code>host</code>, <code>lyr</code>, <code>extent</code> parameters are optional</li>
 </ul>
 
 <h3>Configuration</h3>
@@ -179,7 +179,7 @@ function loadUrlConfig() {
 	var config = UrlParams.extract(window.location.search);
 	if (! config.host) return null;
 	var configTxt = config.host + '\n';
-	var lyrs = UrlParams.asArray(config.layers);
+	var lyrs = UrlParams.asArray(config.lyr);
 	configTxt += lyrs.join('\n');
 	
 	maptest.loadConfig(configTxt);

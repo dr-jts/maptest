@@ -31,7 +31,7 @@ Overlay.prototype.urlParam = function()
 	var lyrName = $.map(this.mapLayers, function(lyr) {
 		return lyr.name;
 	});
-	param += '&layers=' + lyrName.join(",");
+	param += '&lyr=' + lyrName.join(",");
 	return param;
 }
 Overlay.prototype.clearTime = function()

@@ -6,7 +6,7 @@ UrlParams.extract = function(str) {
 	var params = {};
     var paramStr = str.split(/\?|\&/);
     var self = this;
-    paramStr.forEach( function(it) {
+    $.each(paramStr, function(i, it) {
         if (it) {
             var param = it.split("=");
             params[param[0].toLowerCase()] = param[1];

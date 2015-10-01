@@ -1,13 +1,13 @@
 # MapTest
 
-[MapTest](http://dr-jts.github.io/maptest/maptest.html) is a tool for web map developers and operators.  It is browser-based so can be used from any environment.  It can be used to:
+[MapTest](http://dr-jts.github.io/maptest/maptest.html) is a tool for web map developers and operators.  It is browser-based and can be used from any environment.  MapTest can be used to:
 
 * view web map services and layers, overlaid on a base map
 * assess cartography of layer sets
-* capture web map request response metrics
-* display web map request URLs
-* investigate request errors
 * share web map configurations
+* display web map request URLs
+* capture web map response metrics
+* investigate reponse errors
 
 [Try it!](http://dr-jts.github.io/maptest/maptest.html)
 

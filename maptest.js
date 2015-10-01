@@ -32,9 +32,9 @@ MapTest.prototype.initMap = function(mapDiv) {
     		//controls: []
 	});
     //map.addControl(new OpenLayers.Control.LayerSwitcher());
-    
+    this.map.removeControl(this.map.getControlsByClass(OpenLayers.Control.ArgParser)[0]);
     this.map.addControl(new OpenLayers.Control.Navigation({
-            id: 'NavigationControl',
+            //id: 'NavigationControl',
             title: 'Zoom / Pan',
             zoomWheelEnabled: true,
             dragPanOptions: {

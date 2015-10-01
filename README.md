@@ -15,6 +15,7 @@
 
 [GeoGratis National Map](http://dr-jts.github.io/maptest/maptest.html?host=http://geogratis.gc.ca/maps/CBMT?service=wms&lyr=National,Sub_national,Sub_regional&extent=-145.288387,41.321972,-96.772762,62.801720)
 
+[Boundless Geoserver](http://dr-jts.github.io/maptest/maptest.html?host=http://demo.boundlessgeo.com/geoserver/wms&lyr=topp:states,topp:tasmania&extent=-141.962659,7.725697,-44.931409,61.945930)
 
 ```
 http://webservices.nationalatlas.gov/wms

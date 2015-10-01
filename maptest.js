@@ -92,6 +92,7 @@ MapTest.prototype.initMap = function(mapDiv) {
     this.map.events.register('move', this.map, 
     	function() { 
     			self.showExtent();
+    			self.showLink();
     	});
     this.showExtent();
 }
@@ -121,7 +122,7 @@ MapTest.prototype.loadConfig = function(configStr) {
 		
 		loadLayers(ov, line);
 	}
-	$('#map-link').attr('href', this.urlParam());
+	this.showLink();
 
 	function loadLayers(ov, line) {
 		var layers = line.split(',');
@@ -132,6 +133,7 @@ MapTest.prototype.loadConfig = function(configStr) {
 MapTest.prototype.urlParam = function() {
 	if (this.overlays.length <= 0) return "";
 	var param = this.overlays[0].urlParam();
+	param += '&extent=' + this.extentStr();
 	return param; 
 }
 MapTest.prototype.clear = function() {
@@ -147,16 +149,20 @@ MapTest.prototype.clearTime = function() {
 		this.overlays[i].displayTimeStats();
 	}
 }
-MapTest.prototype.showExtent = function() {
+MapTest.prototype.extentStr = function() {
 	var extent = this.map.getExtent();
 	extent.transform( CRS.PROJ_WEBMERC, CRS.PROJ_GEO );
-
-	$('#map-extent').val(
-		extent.left.toFixed(6)	 + ', '
-		+ extent.bottom.toFixed(6) + ',   '
-		+ extent.right.toFixed(6) + ', '
-		+ extent.top.toFixed(6));
-
+	return extent.left.toFixed(6)	 + ','
+		+ extent.bottom.toFixed(6) + ','
+		+ extent.right.toFixed(6) + ','
+		+ extent.top.toFixed(6);
+}
+MapTest.prototype.showExtent = function() {
+	var ext = this.extentStr();
+	$('#map-extent').val(ext);
+}
+MapTest.prototype.showLink = function() {
+	$('#map-link').attr('href', maptest.urlParam());
 }
 MapTest.prototype.zoom = function(extentStr) {
 	var extent = shimTrim( extentStr );

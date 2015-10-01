@@ -12,6 +12,10 @@
 [Try it!](http://dr-jts.github.io/maptest/maptest.html)
 
 #### Sample Configurations
+
+[GeoGratis National Map](http://dr-jts.github.io/maptest/maptest.html?host=http://geogratis.gc.ca/maps/CBMT?service=wms&lyr=National,Sub_national,Sub_regional&extent=-145.288387,41.321972,-96.772762,62.801720)
+
+
 ```
 http://webservices.nationalatlas.gov/wms
 meta-url: http://nationalmap.gov/small_scale/infodocs/wms_intro.html
@@ -34,6 +38,7 @@ http://gis.srh.noaa.gov/arcgis/services/NDFDTemps/MapServer/WMSServer
 http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/obs
 RAS_RIDGE_NEXRAD
 ```
+
 
 ## Features
 

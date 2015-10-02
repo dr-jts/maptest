@@ -12,3 +12,14 @@
     -o-transition: opacity 0.1s linear;
     transition: opacity 0.1s linear;
 }
+.olControlMousePosition {
+	bottom: 2px;
+    right: 3px;
+    margin: 2px;
+    padding: 2px;
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: 12px !important; 
+    background-color: white;
+}

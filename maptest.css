@@ -240,4 +240,8 @@ body {
 .overlay-tiled-title {
 	margin-left: 20px;
 }
-
+.text-button {
+	margin-left: 3px;
+	margin-right: 3px;
+	cursor: pointer;
+}

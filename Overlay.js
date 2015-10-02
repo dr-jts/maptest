@@ -57,7 +57,7 @@ Overlay.prototype.tooltip = function() {
 Overlay.prototype.createOverlayUI = function() {
 	var self = this;
 	var $overlayBlock = $('<div>').appendTo($('#overlays'));
-	this.$root = $('<div>').appendTo($overlayBlock);
+	this.$root = $('<div class="overlay">').appendTo($overlayBlock);
 	
 	var $title = $('<div class="overlay-name">').appendTo(this.$root);
 	$('<input type="checkbox" >')
@@ -112,6 +112,22 @@ Overlay.prototype.createOverlayUI = function() {
 	            	self.showGetMapResponse();
             	} )
             	.appendTo($ctl);
+    $('<span class="text-button">').text('All')
+		        	.click(function ( event ) { 
+		        	self.setAllMapLayerVisibility(true);
+		        	var $par = $(this).parents('.overlay');
+		        	$par.find('.cb-layer-vis').prop('checked', true);
+		    	} )
+				.appendTo($ctl);
+    
+    $('<span class="text-button">').text('None')
+		        	.click(function () { 
+		        	self.setAllMapLayerVisibility(false);
+		        	var $par = $(this).parents('.overlay');
+		        	$par.find('.cb-layer-vis').prop('checked', false);
+		    	} )
+				.appendTo($ctl);
+
 	var $stat = $('<div class="overlay-stats">').appendTo(this.$root);
 	var $time = $('<div>').appendTo($stat);
 	$('<span class="xx">').text(' N  ').appendTo($time);
@@ -134,7 +150,6 @@ Overlay.prototype.createOverlayUI = function() {
 	$('<span class="xx">')
 	   	.attr('id', 'overlay-timestamp')
 		.text('  ').appendTo($date);
-
 }
 Overlay.prototype.displayTime = function(time)
 {
@@ -245,6 +260,7 @@ Overlay.prototype.updateMap = function (map)
 	//console.log(this.getMapURL());
 	//this.initMapTimer();
 }
+
 Overlay.prototype.addLayers = function (names)
 {
 	for (var i = 0; i < names.length; i++) {
@@ -283,7 +299,7 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 			$div.remove();
 		})
 		.appendTo($div);
-	$('<input type="checkbox"/>')
+	$('<input type="checkbox" class="cb-layer-vis"/>')
             	.attr('title', 'Change layer visibility')
             	.prop('checked', lyr.visibility)
             	.click(function () { 
@@ -330,6 +346,14 @@ Overlay.prototype.initMapTimer = function() {
 			MapTest.log(mapLoadSec + ' s :  ' + self.getMapURL())
 		}
 	}, 200);	
+}
+Overlay.prototype.setAllMapLayerVisibility = function(isVisible)
+{
+	for (var i = 0; i < this.mapLayers.length; i++) {
+		var lyr = this.mapLayers[i]
+		lyr.visibility = isVisible;
+	}
+	this.updateMap();
 }
 //----------------------------------------
 Overlay.prototype.visibleMapLayers = function(mapLyrs)

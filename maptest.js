@@ -9,6 +9,7 @@ Proj4js.defs["EPSG:3857"] = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0
 
 MapTest = function(mapDiv) {
 	this.overlays = [];
+	this.controls = {};
 	this.initMap(mapDiv);
 };
 
@@ -62,8 +63,7 @@ MapTest.prototype.initMap = function(mapDiv) {
 	        } )    
  	    ]);
 	this.map.addControl(new OpenLayers.Control.LayerSwitcher());
-	this.map.addControl(new OpenLayers.Control.MousePosition({ displayProjection: 'EPSG:4326' }));
- 	    
+	this.map.addControl(new OpenLayers.Control.MousePosition({ displayProjection: 'EPSG:4326' })); 	    
 /*
     var road = new OpenLayers.Layer.Bing({
         name: "Road",
@@ -96,6 +96,36 @@ MapTest.prototype.initMap = function(mapDiv) {
     			self.showLink();
     	});
     this.showExtent();
+}
+MapTest.prototype.initInfoCtl = function(ov) {
+	this.controls.infoCtl = new OpenLayers.Control.WMSGetFeatureInfo({
+                url: ov.url,
+                title: 'Identify features by clicking',
+                //layers: [water],
+                queryVisible: true,
+            eventListeners: {
+                getfeatureinfo: function(event) {
+                    var pop = new OpenLayers.Popup.FramedCloud(
+                        "identify", 
+                        this.map.getLonLatFromPixel(event.xy),
+                        new OpenLayers.Size(400, 200),
+                        event.text,
+                        null,
+                        true
+                    );
+                    pop.autoSize = false;
+                    this.map.addPopup(pop);
+                }
+            }
+           });
+    //this.controls.infoCtl.events.register("getfeatureinfo", this, function(e) { this.showInfo(e); } );
+	this.map.addControl( this.controls.infoCtl );
+	this.controls.infoCtl.activate();
+}
+MapTest.prototype.showInfo = function(evt) {
+	console.log(evt);
+	MapTest.show('.map-data-panel');
+	$('.data-text').html(evt.text);
 }
 MapTest.prototype.loadConfig = function(configStr) {
 	var lines = configStr.split(/[\n]/);
@@ -219,6 +249,9 @@ MapTest.prototype.addOverlay = function(param) {
 	var ov = new Overlay(this.map, name, param);
 	ov.createOverlayUI();
 	this.overlays.push(ov);
+	if (this.overlays.length == 1) {
+		this.initInfoCtl(this.overlays[0]);
+	}
 	return ov;
 }
 function extractHost(url) {

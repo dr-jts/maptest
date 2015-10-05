@@ -137,6 +137,12 @@ Enable logging to log all map requests.
 				<div class='log-text'></div>
 			</div>
 			
+		<!-- Data panel -->	
+			<div class='map-data-panel' style='display:none;'>
+				<div class='btn-close' id='btn-data-close'>x</div>	
+				<div class='data-text'></div>
+			</div>
+			
 			<!-- Config panel -->	
 			<div class='config-panel' style='display:none;'>
 				<div class='btn-close' id='btn-config-close'>x</div>
@@ -150,10 +156,8 @@ Enable logging to log all map requests.
 					<input type='button' value='Clear All' id='btn-overlay-clear' style='color:red;right:40px;position:absolute;'/>
 				</div>
 			</div>
-
-
 		</div>
-		
+	
 	</div>
 </div>
 
@@ -204,6 +208,7 @@ function initUI(showConfig)
 	$('#btn-status-close').click( MapTest.closeAll );
 	$('#btn-log').click(function() { MapTest.show('.map-log-panel'); });
 	$('#btn-log-close').click( MapTest.closeAll );
+	$('#btn-data-close').click( MapTest.closeAll );
 	$('#btn-help').click(function() { MapTest.show('.help-panel'); });
 	$('#btn-help-close').click( MapTest.closeAll );
 	
@@ -234,6 +239,7 @@ MapTest.log = function(msg) {
 MapTest.closeAll = function() {
 	$('.config-panel').hide();
 	$('.map-log-panel').hide();
+	$('.map-data-panel').hide();
 	$('.map-status-panel').hide();
 	$('.help-panel').hide();
 }

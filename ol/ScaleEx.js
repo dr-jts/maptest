@@ -38,10 +38,33 @@ OpenLayers.Control.ScaleEx = OpenLayers.Class( OpenLayers.Control, {
      * APIProperty: template
      * {String} Template string for the scale label.
      * Scale denominator value is substituted for token ${scaleDenom}.
-     * Full-precision Scale denominator value is substituted for token ${scaleDenomFull}.
+     * Precise Scale denominator value is substituted for token ${scaleDenomPrecise}.
+     * Geodesic Scale denominator value is substituted for token ${scaleDenomGeo}.
+     * Precise Geodesic Scale denominator value is substituted for token ${scaleDenomPreciseGeo}.
+     * Nominal Scale denominator value is substituted for token ${scaleDenomNom}.
+     * Precise Nominal Scale denominator value is substituted for token ${scaleDenomPreciseNom}.
      * Zoom level value is substituted for token ${zoom}.
      */
     template: "Scale = 1 : ${scaleDenom}",
+
+    /**
+     * APIProperty: title
+     * {String} Template string for the scale title.
+     * Scale denominator value is substituted for token ${scaleDenom}.
+     * Precise Scale denominator value is substituted for token ${scaleDenomPrecise}.
+     * Geodesic Scale denominator value is substituted for token ${scaleDenomGeo}.
+     * Precise Geodesic Scale denominator value is substituted for token ${scaleDenomPreciseGeo}.
+     * Nominal Scale denominator value is substituted for token ${scaleDenomNom}.
+     * Precise Nominal Scale denominator value is substituted for token ${scaleDenomPreciseNom}.
+     * Zoom level value is substituted for token ${zoom}.
+     */
+    title: "Zoom: ${zoom}  Scale(Geo) = 1 : ${scaleDenomPreciseGeo}  Scale(Nom) = 1 : ${scaleDenomPreciseNom}",
+
+    /**
+     * APIProperty: dpi
+     * {Number} Specify DPI to used.
+     */
+    dpi: OpenLayers.DOTS_PER_INCH,
 
     /**
      * Constructor: OpenLayers.Control.Scale
@@ -76,37 +99,50 @@ OpenLayers.Control.ScaleEx = OpenLayers.Class( OpenLayers.Control, {
      * Method: updateScale
      */
     updateScale: function () {
-        var scale;
-        if ( this.geodesic === true ) {
-            var units = this.map.getUnits();
-            if ( !units ) {
-                return;
-            }
-            var inches = OpenLayers.INCHES_PER_UNIT;
-            scale = ( this.map.getGeodesicPixelSize().w || 0.000001 ) *
-                inches[ "km" ] * OpenLayers.DOTS_PER_INCH;
-        } else {
-            scale = this.map.getScale();
+	   	// Geodesic scale
+        var units = this.map.getUnits();
+        if ( !units ) {
+            return;
         }
+        var inches = OpenLayers.INCHES_PER_UNIT;
+        var scaleGeo = ( this.map.getGeodesicPixelSize().w || 0.000001 ) *
+            inches[ "km" ] * this.dpi;
+		// Nominal scale
+        var scaleNom = this.map.getScale() * this.dpi / OpenLayers.DOTS_PER_INCH;
 
+		var scale = this.geodesic ? scaleGeo : scaleNom;
+		
         if ( !scale ) {
             return;
         }
-        var scaleDisp = Math.round( scale );
-        if ( scale >= 9500 && scale <= 950000 ) {
-            scaleDisp = Math.round( scale / 1000 ) + "K";
-        } else if ( scale >= 950000 ) {
-            scaleDisp = Math.round( scale / 1000000 ) + "M";
-        }
-        var scaleFullDisp = Math.round( scale ).toLocaleString()
         var zoom = this.map.getZoom();
-        var scaleStr = OpenLayers.i18n( this.template, {
-            'scaleDenom': scaleDisp,
-            'scaleDenomFull': scaleFullDisp,
+        var scaleVals = {
+            'scaleDenom': 			scaleDisp(scale),
+            'scaleDenomPrecise': 	scaleDispPrecise(scale),
+            'scaleDenomNom': 		scaleDisp(scaleNom),
+            'scaleDenomPreciseNom': scaleDispPrecise(scaleNom),
+            'scaleDenomGeo': 		scaleDisp(scaleGeo),
+            'scaleDenomPreciseGeo': scaleDispPrecise(scaleGeo),
             'zoom': zoom            
-        } );
+        }
+        var scaleStr = OpenLayers.i18n( this.template,  scaleVals);
+        var titleStr = OpenLayers.i18n( this.title,     scaleVals );
+        
         this.element.innerHTML = scaleStr;
-        this.element.title = " 1 : " + scaleFullDisp + "  Zoom " + zoom;
+        this.element.title = titleStr;
+        
+        function scaleDisp(scale) {
+	        var scaleDisp = Math.round( scale );
+	        if ( scale >= 9500 && scale <= 950000 ) {
+	            scaleDisp = Math.round( scale / 1000 ) + "K";
+	        } else if ( scale >= 950000 ) {
+	            scaleDisp = Math.round( scale / 1000000 ) + "M";
+	        }
+	        return scaleDisp;
+        }
+        function scaleDispPrecise(scale) {
+	        return Math.round( scale ).toLocaleString();
+        }
     },
 
     CLASS_NAME: "OpenLayers.Control.ScaleEx"

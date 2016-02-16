@@ -67,7 +67,8 @@ MapTest.prototype.initMap = function(mapDiv) {
 	        } )    
  	    ]);
 	this.map.addControl(new OpenLayers.Control.LayerSwitcher());
-	this.map.addControl(new OpenLayers.Control.ScaleEx(null, { geodesic: true, template: " Zoom: ${zoom}  Scale: ${scaleDenomFull} " } ));
+	this.map.addControl(new OpenLayers.Control.ScaleEx(null, { geodesic: true, dpi: 90,
+			template: " Zoom: ${zoom}  Scale-Geo: ${scaleDenomPreciseGeo}   Scale-Nom: ${scaleDenomPreciseNom} " } ));
 	this.map.addControl(new OpenLayers.Control.MousePosition({ displayProjection: 'EPSG:4326' })); 	    
 /*
     var road = new OpenLayers.Layer.Bing({

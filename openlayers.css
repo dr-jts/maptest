@@ -21,5 +21,16 @@
     position: absolute;
     font-family: Arial;
     font-size: 12px !important; 
-    background-color: white;
+    background-color: #E0ECFA;
+}
+.olControlScale {
+    right: 3px;
+    bottom: 2em;
+    margin: 2px;
+    padding: 2px 5px 2px 5px;
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: 12px !important; 
+    background-color: #E0ECFA;
 }

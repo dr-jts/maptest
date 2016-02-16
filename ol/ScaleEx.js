@@ -58,13 +58,7 @@ OpenLayers.Control.ScaleEx = OpenLayers.Class( OpenLayers.Control, {
      * Precise Nominal Scale denominator value is substituted for token ${scaleDenomPreciseNom}.
      * Zoom level value is substituted for token ${zoom}.
      */
-    title: "Zoom: ${zoom}  Scale(Geo) = 1 : ${scaleDenomPreciseGeo}  Scale(Nom) = 1 : ${scaleDenomPreciseNom}",
-
-    /**
-     * APIProperty: dpi
-     * {Number} Specify DPI to used.
-     */
-    dpi: OpenLayers.DOTS_PER_INCH,
+    title: "Zoom: ${zoom}  Scale-Geo = 1 : ${scaleDenomPreciseGeo}  Scale-Nom = 1 : ${scaleDenomPreciseNom}",
 
     /**
      * Constructor: OpenLayers.Control.Scale
@@ -106,9 +100,9 @@ OpenLayers.Control.ScaleEx = OpenLayers.Class( OpenLayers.Control, {
         }
         var inches = OpenLayers.INCHES_PER_UNIT;
         var scaleGeo = ( this.map.getGeodesicPixelSize().w || 0.000001 ) *
-            inches[ "km" ] * this.dpi;
+            inches[ "km" ] * OpenLayers.DOTS_PER_INCH;
 		// Nominal scale
-        var scaleNom = this.map.getScale() * this.dpi / OpenLayers.DOTS_PER_INCH;
+        var scaleNom = this.map.getScale();
 
 		var scale = this.geodesic ? scaleGeo : scaleNom;
 		

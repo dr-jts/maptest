@@ -29,6 +29,7 @@ MapTest.constants.PARAM = 'param';
 
 MapTest.prototype.initMap = function(mapDiv) {
 	var self = this;
+	OpenLayers.DOTS_PER_INCH = 90;
     this.map = new OpenLayers.Map(mapDiv, {        
             theme: null,   // disable OL auto-loading of CSS
     		div: mapDiv, 
@@ -67,7 +68,7 @@ MapTest.prototype.initMap = function(mapDiv) {
 	        } )    
  	    ]);
 	this.map.addControl(new OpenLayers.Control.LayerSwitcher());
-	this.map.addControl(new OpenLayers.Control.ScaleEx(null, { geodesic: true, dpi: 90,
+	this.map.addControl(new OpenLayers.Control.ScaleEx(null, { geodesic: true, 
 			template: " Zoom: ${zoom}  Scale-Geo: ${scaleDenomPreciseGeo}   Scale-Nom: ${scaleDenomPreciseNom} " } ));
 	this.map.addControl(new OpenLayers.Control.MousePosition({ displayProjection: 'EPSG:4326' })); 	    
 /*

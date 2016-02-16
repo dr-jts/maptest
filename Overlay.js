@@ -5,6 +5,7 @@ Overlay = function(map, name, param) {
 	this.name = name;
 	this.url = param.url;
 	this.metadataURL = param.metadataURL;
+	this.param = param.param;
 	this.mapLayers = [];
 	this.isTiled = false;
 	this.type = 'wms';
@@ -397,6 +398,7 @@ var OVERLAY_CREATOR = {
 			layers: "",
 			transparent: true
 		};
+		$.extend(params, overlay.param);
 		return new OpenLayers.Layer.WMS(overlay.name, overlay.url, params, options(overlay));
 	},
 	arcgis: function(overlay) {

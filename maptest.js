@@ -23,6 +23,10 @@ MapTest.getLog = function(sep) {
 	return log.join(sep + '\n');
 }
 
+MapTest.constants = {};
+MapTest.constants.META_URL = 'meta-url';
+MapTest.constants.PARAM = 'param';
+
 MapTest.prototype.initMap = function(mapDiv) {
 	var self = this;
     this.map = new OpenLayers.Map(mapDiv, {        
@@ -142,8 +146,15 @@ MapTest.prototype.loadConfig = function(configStr) {
 			ov = null;
 			continue;
 		}
-		if (parser.isTag('meta-url', line)) {
+		if (parser.isTag(MapTest.constants.META_URL, line)) {
 			ovParam.metadataURL = parser.taggedValue(line);
+			continue;
+		}
+		if (parser.isTag(MapTest.constants.PARAM, line)) {
+			 var nv = parser.taggedParam(line);
+			 //if (! ovParam.param) ovParam.param = {};
+			 //ovParam.param[nv.name] = nv.value;
+			 ovParam.param = $.extend({}, ovParam.param, nv);
 			continue;
 		}
 		if (line.length < 1) continue;
@@ -234,8 +245,16 @@ var parser = {
 		return false;
 	},
 	taggedValue: function (s) {
-		var raw = s.slice( s.indexOf(':')+1);
-		return shimTrim(raw);
+		var value = s.slice( s.indexOf(':')+1);
+		return shimTrim( value );
+	},
+	taggedParam: function (s) {
+		var value = s.slice( s.indexOf(':')+1);
+		var neqv = shimTrim( value );
+		var nvArr = neqv.split('=');
+		var nv = {};
+		nv[nvArr[0]] = nvArr[1];
+		return nv;
 	},
 	isComment: function (s) {
 		if (s.indexOf('//') == 0) return true;

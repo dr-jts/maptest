@@ -31,11 +31,11 @@
 				<div class='help-content' style='margin-left:0px;margin-top:10px;'>
 <h3>Map Services</h3>
 
-Supports WMS and ArcGIS REST map services.
+Supports displaying WMS and ArcGIS REST map services as map overlays.
 
 <h3>URL</h3>
 
-Configuration can be loaded via URL parameters.  
+Basic configuration can be loaded via URL parameters.  
 A permalink allows opening a new page with top map overlay as parameters.
 
 <pre>
@@ -48,16 +48,26 @@ http://apphost/maptest.html [ ?host=http://some.host/mapservice ] [ &amp;lyr=A,B
 
 <h3>Configuration</h3>
 
-Configure map services as overlays on the map.
-Specify the URL for each service.
-Provide a metadata link with <code>metaurl: link</code>.
-List one or more service layers, comma-separated or on separate lines. 
-Use a style for a layer by appending <code>*style-name</code>.
+Map services are configured by a simple text configuration format.
+The configuration schema contains the following:
+<ul>
+	<li>the URL for the service</li>
+	<li>Optional metadata link specified as <code>meta-url: link</code> </li>
+	<li>Optional URL parameters specified as <code>param: name=value</code> </li>
+	<li>A list of one or more service layers
+		<ul>
+			<li>Layer names can be comma-separated or on separate lines</li>
+			<li>A layer style can be specified by appending <code>*style-name</code> </li>
+		</ul>
+		</li>
+</ul>
+
 <p>
 Example configuration:
 <pre>
 http://some.host/mapservice
-metaurl: http://some.host/mapservice/meta
+meta-url: http://some.host/mapservice/meta
+param: name=value
 LAYER1,LAYER2
 LAYER3
 LAYER4*style

@@ -13,7 +13,7 @@
     transition: opacity 0.1s linear;
 }
 .olControlMousePosition {
-	bottom: 2px;
+	bottom: 0px;
     right: 3px;
     margin: 2px;
     padding: 2px 5px 2px 5px;
@@ -23,9 +23,9 @@
     font-size: 12px !important; 
     background-color: #E0ECFA;
 }
-.olControlScale {
-    right: 3px;
-    bottom: 2em;
+.olControlScaleEx {
+    right: 150px;
+    bottom: 0px;
     margin: 2px;
     padding: 2px 5px 2px 5px;
     display: block;

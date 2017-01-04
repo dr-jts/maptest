@@ -79,15 +79,15 @@ Overlay.prototype.createOverlayUI = function() {
    		.attr('id', 'text_layer_name')
    		.attr('title', 'Enter layer names, comma-separated')
    		.appendTo($add);
-   	$('<input type="button">')
-   		.attr('value', 'Add')
-   		.click(function() {
+   	$('<button>').addClass('btn-layer-add').appendTo($add)
+   		.text('+')
+    	.attr('title', 'Add layer')
+  		.click(function() {
    			var txt = $name.val();
    			var lyrs = txt.split(',');
    			self.addLayers( lyrs );
    			$name.val('');
-   		})
-   		.appendTo($add);
+   		});
    		
 	var $ctl = $('<div class="overlay-controls">').appendTo(this.$root);
 	$('<button class="btn-redraw">').appendTo($ctl)
@@ -137,18 +137,21 @@ Overlay.prototype.createOverlayUI = function() {
 		
 	var $lyrctl = $('<div class="layer-controls">').appendTo(this.$root);
 	$('<button>').text('All').appendTo($lyrctl)
+		.attr('title', 'Make all layers visible')
 		.click(function ( event ) { 
 			self.setAllMapLayerVisibility(true);
 			var $par = $(this).parents('.overlay');
 			$par.find('.cb-layer-vis').prop('checked', true);
 		} );
     $('<button>').text('None').appendTo($lyrctl)
+		.attr('title', 'Make all layers non-visibile')
 		.click(function () { 
 			self.setAllMapLayerVisibility(false);
 			var $par = $(this).parents('.overlay');
 			$par.find('.cb-layer-vis').prop('checked', false);
 		} );
     $('<button>').text('Legend').appendTo($lyrctl)
+		.attr('title', 'Show / Hide Legends')
 		.click(function () { 
 				var $par = $(this).parents('.overlay');
 				$par.find('.layer-legend').toggle();
@@ -181,12 +184,14 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 	var $tools = $('<div class="layer-tools">').appendTo($div);
 	$('<span>').addClass('layer-remove layer-tool').appendTo($tools)
 		.text('x')
+		.attr('title', 'Remove Layer')
 		.click(function() {
 			self.removeLayer(lyr);
 			$div.remove();
 		});
 	$('<span>').addClass('layer-up layer-tool').appendTo( $tools )
 		.text('^')
+		.attr('title', 'Move Layer up')
 		.click(function() {
 			self.moveLayer(lyr, -1);
 			var $prev = $div.prev();
@@ -197,6 +202,7 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 		});
 	$('<span>').addClass('layer-down layer-tool').appendTo( $tools )
 		.text('V')
+		.attr('title', 'Move Layer down')
 		.click(function() {
 			self.moveLayer(lyr, 1);
 			var $nxt = $div.next();

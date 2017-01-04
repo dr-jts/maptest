@@ -256,6 +256,11 @@ body {
     padding: 3px;
     border-radius: 3px;
 }
+.btn-layer-add {
+	font-size: 16px !important;
+	font-weight: bold;
+	color: #60bb60;
+}
 .layer-div {
 	position: relative;]
 }

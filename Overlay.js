@@ -153,7 +153,7 @@ Overlay.prototype.createOverlayUI = function() {
 				var $par = $(this).parents('.overlay');
 				$par.find('.layer-legend').toggle();
 		} );
-
+	this.$layers = $('<div>').appendTo(this.$root);
 }
 Overlay.prototype.displayTime = function(time)
 {
@@ -169,6 +169,69 @@ Overlay.prototype.displayTimeStats = function()
 	var avg = this.numRequests == 0 ? 0 : this.totalTime / this.numRequests;
 	this.$root.find('#overlay-time-avg').text( avg.toFixed(2) );
 	this.$root.find('#overlay-timestamp').text( (new Date()).toLocaleString() );
+}
+Overlay.prototype.addMapLayerUI = function (lyr)
+{
+	var self = this;
+	var $div = $('<div>').addClass('layer-div').appendTo(this.$layers);
+	
+	$div.on('mouseenter', function() {	$tools.show();	});
+	$div.on('mouseleave', function() {	$tools.hide();	});
+	
+	var $tools = $('<div class="layer-tools">').appendTo($div);
+	$('<span>').addClass('layer-remove layer-tool').appendTo($tools)
+		.text('x')
+		.click(function() {
+			self.removeLayer(lyr);
+			$div.remove();
+		});
+	$('<span>').addClass('layer-up layer-tool').appendTo( $tools )
+		.text('^')
+		.click(function() {
+			self.moveLayer(lyr, -1);
+			var $prev = $div.prev();
+			if (! $prev.length) return;
+			$div.detach();
+			$prev.before($div);
+			$tools.hide();
+		});
+	$('<span>').addClass('layer-down layer-tool').appendTo( $tools )
+		.text('V')
+		.click(function() {
+			self.moveLayer(lyr, 1);
+			var $nxt = $div.next();
+			if (! $nxt.length) return;
+			$div.detach();
+			$nxt.after($div);
+			$tools.hide();
+		});
+	$('<input type="checkbox" class="cb-layer-vis"/>')
+            	.attr('title', 'Change layer visibility')
+            	.prop('checked', lyr.visibility)
+            	.click(function () { 
+	            	var isVisible = $(this).is(':checked');
+	            	lyr.visibility = isVisible;
+	            	self.updateMapLayer(lyr);
+	            	self.clearTime();
+            	} )
+            	.appendTo($div);
+	var $name = $('<span/>').text( layerSpec(lyr) )
+		.addClass('gsa-maplayer-title') //.addClass('gsa-link')
+		.click(function() {
+			$('#maplayers').find('.title-selected').removeClass('title-selected'); 
+			$(this).toggleClass('title-selected'); })
+		//.dblclick(function() { self.loadLayer(lyr.name); })
+		.appendTo($div);
+		
+	var urlLegend = this.url + "?SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer=" + lyr.name;
+	$divLegend = $('<div>').addClass('layer-legend').appendTo( $div );
+	$divLegend.append( $(
+		'<img>').attr('src', urlLegend)
+			// if legend request fails probably means layer is missing or has bad configuration
+			.on('error', function() {
+				$name.css('color', 'red')
+			})
+		);
 }
 Overlay.prototype.showGetMapResponse = function() {
 	showURL(this.getMapURL());
@@ -222,7 +285,7 @@ Overlay.prototype.remove = function() {
 	var overlay = this.findOverlay();
 	if (overlay) this.map.removeLayer(overlay);
 }
-Overlay.prototype.removeMapLayer = function (lyr)
+Overlay.prototype.removeLayer = function (lyr)
 {		
 	for (var i = 0; i < this.mapLayers.length; i++) {
 		if (this.mapLayers[i] == lyr) {
@@ -231,7 +294,24 @@ Overlay.prototype.removeMapLayer = function (lyr)
 	}
 	this.updateMap();
 }
-
+Overlay.prototype.moveLayer = function (lyr, direction)
+{	
+	var i = this.layerIndex(lyr);
+	if ( (direction < 0 && i == 0) || (direction > 0 && i + 1 >= this.mapLayers.length) ) return;
+	var ii = i + direction;
+	var lyrSib = this.mapLayers[ii];
+	this.mapLayers[ii] = lyr;
+	this.mapLayers[i] = lyrSib;
+	this.updateMap();
+}
+Overlay.prototype.layerIndex = function(lyr) {
+	for (var i = 0; i < this.mapLayers.length; i++) {
+		if (this.mapLayers[i] == lyr) {
+			return i;
+		}
+	}
+	return null;
+}
 Overlay.prototype.updateMapLayer = function (lyr)
 {		
 	this.updateMap();
@@ -293,44 +373,7 @@ function layerSpec(lyr) {
 	}
 	return spec;
 }
-Overlay.prototype.addMapLayerUI = function (lyr)
-{
-	var self = this;
-	var $div = $('<div>').addClass('layer-div').appendTo(this.$root);
-	$('<span>').addClass('layer-remove').text('x')
-		.click(function() {
-			self.removeMapLayer(lyr);
-			$div.remove();
-		})
-		.appendTo($div);
-	$('<input type="checkbox" class="cb-layer-vis"/>')
-            	.attr('title', 'Change layer visibility')
-            	.prop('checked', lyr.visibility)
-            	.click(function () { 
-	            	var isVisible = $(this).is(':checked');
-	            	lyr.visibility = isVisible;
-	            	self.updateMapLayer(lyr);
-	            	self.clearTime();
-            	} )
-            	.appendTo($div);
-	var $name = $('<span/>').text( layerSpec(lyr) )
-		.addClass('gsa-maplayer-title') //.addClass('gsa-link')
-		.click(function() {
-			$('#maplayers').find('.title-selected').removeClass('title-selected'); 
-			$(this).toggleClass('title-selected'); })
-		//.dblclick(function() { self.loadLayer(lyr.name); })
-		.appendTo($div);
-		
-	var urlLegend = this.url + "?SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer=" + lyr.name;
-	$divLegend = $('<div>').addClass('layer-legend').appendTo( $div );
-	$divLegend.append( $(
-		'<img>').attr('src', urlLegend)
-			// if legend request fails probably means layer is missing or has bad configuration
-			.on('error', function() {
-				$name.css('color', 'red')
-			})
-		);
-}
+
 
 Overlay.prototype.isLoading = function() {
 	var overlay = this.findOverlay();
@@ -425,10 +468,10 @@ var OVERLAY_CREATOR = {
 };
 function options(overlay) {
 	return 	{
-			visibility: false,  // Is layer displayed when loaded? 
-			singleTile: ! overlay.isTiled,
-			opacity: 0.7,
-			visibleInLayerSwitcher: false
+		visibility: false,  // Is layer displayed when loaded? 
+		singleTile: ! overlay.isTiled,
+		opacity: 0.7,
+		visibleInLayerSwitcher: false
 	};
 }
 

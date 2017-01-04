@@ -313,7 +313,7 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 	            	self.clearTime();
             	} )
             	.appendTo($div);
-	$('<span/>').text( layerSpec(lyr) )
+	var $name = $('<span/>').text( layerSpec(lyr) )
 		.addClass('gsa-maplayer-title') //.addClass('gsa-link')
 		.click(function() {
 			$('#maplayers').find('.title-selected').removeClass('title-selected'); 
@@ -323,8 +323,13 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 		
 	var urlLegend = this.url + "?SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer=" + lyr.name;
 	$divLegend = $('<div>').addClass('layer-legend').appendTo( $div );
-	$divLegend.append( $('<img>').attr('src', urlLegend));
-	//this.$root.append($div);
+	$divLegend.append( $(
+		'<img>').attr('src', urlLegend)
+			// if legend request fails probably means layer is missing or has bad configuration
+			.on('error', function() {
+				$name.css('color', 'red')
+			})
+		);
 }
 
 Overlay.prototype.isLoading = function() {

@@ -254,11 +254,22 @@ body {
 	margin-left: 20px;
 }
 .layer-controls {
-	text-align: right;
+	margin-left: 20px;
 }
-
 .text-button {
 	margin-left: 3px;
 	margin-right: 3px;
 	cursor: pointer;
+	background-color: #dddddd;
+    padding: 3px;
+    border-radius: 3px;
+}
+.layer-legend {
+	display: none;
+	margin-left: 40px;
+    margin-top: 2px;
+    margin-bottom: 6px;
+}
+.layer-legend  img {
+	border: 1px solid black;
 }

@@ -138,19 +138,25 @@ Overlay.prototype.createOverlayUI = function() {
 		.text('  ').appendTo($date);
 		
 	var $lyrctl = $('<div class="layer-controls">').appendTo(this.$root);
-	 $('<span class="text-button">').text('All')
+	$('<span class="text-button">').text('All')
 		        	.click(function ( event ) { 
 		        	self.setAllMapLayerVisibility(true);
 		        	var $par = $(this).parents('.overlay');
 		        	$par.find('.cb-layer-vis').prop('checked', true);
 		    	} )
 				.appendTo($lyrctl);
-    
     $('<span class="text-button">').text('None')
 		        	.click(function () { 
 		        	self.setAllMapLayerVisibility(false);
 		        	var $par = $(this).parents('.overlay');
 		        	$par.find('.cb-layer-vis').prop('checked', false);
+		    	} )
+				.appendTo($lyrctl);
+    $('<span class="text-button">').text('Legend')
+		        	.click(function () { 
+		        	self.setAllMapLayerVisibility(false);
+		        	var $par = $(this).parents('.overlay');
+		        	$par.find('.layer-legend').toggle();
 		    	} )
 				.appendTo($lyrctl);
 
@@ -296,7 +302,7 @@ function layerSpec(lyr) {
 Overlay.prototype.addMapLayerUI = function (lyr)
 {
 	var self = this;
-	var $div = $('<div>').addClass('gsa-maplayer');
+	var $div = $('<div>').addClass('gsa-maplayer').appendTo(this.$root);
 	$('<span>').addClass('gsa-maplayer-remove').text('x')
 		.click(function() {
 			self.removeMapLayer(lyr);
@@ -313,14 +319,18 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 	            	self.clearTime();
             	} )
             	.appendTo($div);
-	$('<span/>').text(layerSpec(lyr))
+	$('<span/>').text( layerSpec(lyr) )
 		.addClass('gsa-maplayer-title') //.addClass('gsa-link')
 		.click(function() {
 			$('#maplayers').find('.title-selected').removeClass('title-selected'); 
 			$(this).toggleClass('title-selected'); })
 		//.dblclick(function() { self.loadLayer(lyr.name); })
 		.appendTo($div);
-	this.$root.append($div);
+		
+	var urlLegend = this.url + "?SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer=" + lyr.name;
+	$divLegend = $('<div>').addClass('layer-legend').appendTo( $div );
+	$divLegend.append( $('<img>').attr('src', urlLegend));
+	//this.$root.append($div);
 }
 
 Overlay.prototype.isLoading = function() {

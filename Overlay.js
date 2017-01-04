@@ -136,19 +136,19 @@ Overlay.prototype.createOverlayUI = function() {
 		.text('  ').appendTo($date);
 		
 	var $lyrctl = $('<div class="layer-controls">').appendTo(this.$root);
-	$('<span class="text-button">').text('All').appendTo($lyrctl)
+	$('<button>').text('All').appendTo($lyrctl)
 		.click(function ( event ) { 
 			self.setAllMapLayerVisibility(true);
 			var $par = $(this).parents('.overlay');
 			$par.find('.cb-layer-vis').prop('checked', true);
 		} );
-    $('<span class="text-button">').text('None').appendTo($lyrctl)
+    $('<button>').text('None').appendTo($lyrctl)
 		.click(function () { 
 			self.setAllMapLayerVisibility(false);
 			var $par = $(this).parents('.overlay');
 			$par.find('.cb-layer-vis').prop('checked', false);
 		} );
-    $('<span class="text-button">').text('Legend').appendTo($lyrctl)
+    $('<button>').text('Legend').appendTo($lyrctl)
 		.click(function () { 
 				var $par = $(this).parents('.overlay');
 				$par.find('.layer-legend').toggle();

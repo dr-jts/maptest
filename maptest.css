@@ -258,6 +258,9 @@ body {
 	margin-left: 20px;
 	padding: 4px;
 }
+.layer-controls button {
+	font-size: 10px;
+}
 .text-button {
 	margin-left: 3px;
 	margin-right: 3px;

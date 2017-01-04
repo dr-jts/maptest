@@ -70,13 +70,17 @@ body {
 	background-color: #C6E09B;
 }
 .gsa-maplayer-remove {
-	color:#ff0000;
+	color:#aaaaaa;
 	font-weight: bold;
 	display: inline-block;
 	width: 10px;
 	height: 10px;
+	margin-left: 5px;
 	margin-right: 5px;
 	cursor: pointer;
+}
+.gsa-maplayer-remove:hover {
+	color: red;
 }
 .map-data-panel {
 	position: absolute;

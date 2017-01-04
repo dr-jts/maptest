@@ -252,6 +252,10 @@ body {
 .overlay-tiled-title {
 	margin-left: 20px;
 }
+.layer-controls {
+	text-align: right;
+}
+
 .text-button {
 	margin-left: 3px;
 	margin-right: 3px;

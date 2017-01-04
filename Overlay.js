@@ -113,37 +113,22 @@ Overlay.prototype.createOverlayUI = function() {
 	            	self.showGetMapResponse();
             	} )
             	.appendTo($ctl);
-    $('<span class="text-button">').text('All')
-		        	.click(function ( event ) { 
-		        	self.setAllMapLayerVisibility(true);
-		        	var $par = $(this).parents('.overlay');
-		        	$par.find('.cb-layer-vis').prop('checked', true);
-		    	} )
-				.appendTo($ctl);
-    
-    $('<span class="text-button">').text('None')
-		        	.click(function () { 
-		        	self.setAllMapLayerVisibility(false);
-		        	var $par = $(this).parents('.overlay');
-		        	$par.find('.cb-layer-vis').prop('checked', false);
-		    	} )
-				.appendTo($ctl);
 
 	var $stat = $('<div class="overlay-stats">').appendTo(this.$root);
 	var $time = $('<div>').appendTo($stat);
-	$('<span class="xx">').text(' N  ').appendTo($time);
+	$('<span class="xx">').text(' N ').appendTo($time);
 	$('<div class="overlay-time overlay-count">')
    		.attr('id', 'overlay-time-count')
 		.text('0').appendTo($time);
-	$('<span class="xx">').text(' Avg  ').appendTo($time);
+	$('<span class="xx">').text(' Avg ').appendTo($time);
 	$('<div class="overlay-time overlay-time-small">')
    		.attr('id', 'overlay-time-avg')
 		.text('0').appendTo($time);
-	$('<span class="xx">').text(' Min  ').appendTo($time);
+	$('<span class="xx">').text(' Min ').appendTo($time);
 	$('<div class="overlay-time overlay-time-small">')
    		.attr('id', 'overlay-time-min')
 		.text('0').appendTo($time);
-	$('<span class="xx">').text(' Max  ').appendTo($time);
+	$('<span class="xx">').text(' Max ').appendTo($time);
 	$('<div class="overlay-time overlay-time-small">')
    		.attr('id', 'overlay-time-max')
 		.text('0').appendTo($time);
@@ -151,6 +136,24 @@ Overlay.prototype.createOverlayUI = function() {
 	$('<span class="xx">')
 	   	.attr('id', 'overlay-timestamp')
 		.text('  ').appendTo($date);
+		
+	var $lyrctl = $('<div class="layer-controls">').appendTo(this.$root);
+	 $('<span class="text-button">').text('All')
+		        	.click(function ( event ) { 
+		        	self.setAllMapLayerVisibility(true);
+		        	var $par = $(this).parents('.overlay');
+		        	$par.find('.cb-layer-vis').prop('checked', true);
+		    	} )
+				.appendTo($lyrctl);
+    
+    $('<span class="text-button">').text('None')
+		        	.click(function () { 
+		        	self.setAllMapLayerVisibility(false);
+		        	var $par = $(this).parents('.overlay');
+		        	$par.find('.cb-layer-vis').prop('checked', false);
+		    	} )
+				.appendTo($lyrctl);
+
 }
 Overlay.prototype.displayTime = function(time)
 {

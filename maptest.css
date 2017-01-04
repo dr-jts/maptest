@@ -209,7 +209,7 @@ body {
 	padding: 20px;
 }
 .overlay-name {
-	background-color: #CBDCF5; /*#A9C1E5;*/
+	background-color: #A9C1E5; /*#A9C1E5;*/
 	margin-top: 10px;
 	padding: 5px;
 	xfont-weight: bold;
@@ -222,9 +222,10 @@ body {
 }
 .overlay-stats {
 	background-color: #CBDCF5; /*#A9C1E5;*/
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin: 6px;
 	text-align: right;
+	border-radius: 5px;
+	padding: 2px;
 }
 .overlay-time {
 	display: inline-block;

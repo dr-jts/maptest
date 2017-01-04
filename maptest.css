@@ -66,10 +66,7 @@ body {
 #info-panel-map {
 	margin: 0;
 }
-.gsa-map-layer:hover {
-	background-color: #C6E09B;
-}
-.gsa-maplayer-remove {
+.layer-remove {
 	color:#aaaaaa;
 	font-weight: bold;
 	display: inline-block;
@@ -79,7 +76,7 @@ body {
 	margin-right: 5px;
 	cursor: pointer;
 }
-.gsa-maplayer-remove:hover {
+.layer-remove:hover {
 	color: red;
 }
 .map-data-panel {
@@ -191,6 +188,9 @@ body {
 	background-image: url('img/redraw.png');
 	background-position: center center;
 }
+.btn-query {
+	color: red;
+}
 .btn-close {
 	position: absolute;
 	top: 2px;
@@ -256,6 +256,7 @@ body {
 }
 .layer-controls {
 	margin-left: 20px;
+	padding: 4px;
 }
 .text-button {
 	margin-left: 3px;

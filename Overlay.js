@@ -74,7 +74,7 @@ Overlay.prototype.createOverlayUI = function() {
 		.attr('target', '_blank')
 		.appendTo($title);
 	
-   	var $add = $('<div class="overlay-controls">').appendTo($overlayBlock); 
+   	var $add = $('<div class="layer-controls">').appendTo($overlayBlock); 
    	var $name = $('<input type="text" size=25>')
    		.attr('id', 'text_layer_name')
    		.attr('title', 'Enter layer names, comma-separated')
@@ -90,29 +90,27 @@ Overlay.prototype.createOverlayUI = function() {
    		.appendTo($add);
    		
 	var $ctl = $('<div class="overlay-controls">').appendTo(this.$root);
-	$('<input type="button">')
-		.addClass( 'btn-redraw' )
-		.click(function() { self.reload(); })
-		.appendTo($ctl);
-	$('<div class="overlay-time">')
+	$('<button class="btn-redraw">').appendTo($ctl)
+		.click(function() { self.reload(); });
+	$('<div class="overlay-time">').appendTo($ctl)
    		.attr('id', 'overlay-time-last')
-		.text('0').appendTo($ctl);
+		.text('0');
 	$('<span class="xx">').text(' s  ').appendTo($ctl);
-   	$('<span class="overlay-tiled-title">').text(' Tiled: ').appendTo($ctl);
-	$('<input type="checkbox" class="checkbox-single"/>')
-            	.prop('checked', self.isTiled)
-            	.click(function () { 
-	            	self.isTiled = $(this).is(':checked');
-	            	self.clearTime();
-	            	self.reload();
-            	} )
-            	.appendTo($ctl);
-	$('<input type="button" />')
-            	.prop('value', '?')
-            	.click(function () { 
-	            	self.showGetMapResponse();
-            	} )
-            	.appendTo($ctl);
+   	$('<label class="overlay-tiled-title">').text(' Tiled ').appendTo($ctl);
+	$('<input type="checkbox" class="checkbox-single"/>').appendTo($ctl)
+		.attr('name','foo')
+		.prop('checked', self.isTiled)
+		.click(function () { 
+			self.isTiled = $(this).is(':checked');
+			self.clearTime();
+			self.reload();
+		} );
+	$('<button class="btn-query">').appendTo($ctl)
+		.text('?')
+		.attr('title','Query Overlay status')
+       	.click(function () { 
+			self.showGetMapResponse();
+		} );
 
 	var $stat = $('<div class="overlay-stats">').appendTo(this.$root);
 	var $time = $('<div>').appendTo($stat);
@@ -298,8 +296,8 @@ function layerSpec(lyr) {
 Overlay.prototype.addMapLayerUI = function (lyr)
 {
 	var self = this;
-	var $div = $('<div>').addClass('gsa-maplayer').appendTo(this.$root);
-	$('<span>').addClass('gsa-maplayer-remove').text('x')
+	var $div = $('<div>').addClass('layer-div').appendTo(this.$root);
+	$('<span>').addClass('layer-remove').text('x')
 		.click(function() {
 			self.removeMapLayer(lyr);
 			$div.remove();

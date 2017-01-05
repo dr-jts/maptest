@@ -73,7 +73,7 @@ Overlay.prototype.createOverlayUI = function() {
 		.attr('href', this.metadataURL)
 		.attr('target', '_blank')
 		.appendTo($title);
-	
+
    	var $add = $('<div class="layer-controls">').appendTo($overlayBlock); 
    	var $name = $('<input type="text" size=25>')
    		.attr('id', 'text_layer_name')
@@ -110,6 +110,12 @@ Overlay.prototype.createOverlayUI = function() {
 		.attr('title','Query Overlay status')
        	.click(function () { 
 			self.showGetMapResponse();
+		} );
+	$('<button class="">').appendTo($ctl)
+		.text('Proof')
+		.attr('title','Create Proof Sheet page')
+       	.click(function () { 
+			self.createProofPage();
 		} );
 
 	var $stat = $('<div class="overlay-stats">').appendTo(this.$root);
@@ -238,6 +244,44 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 				$name.css('color', 'red')
 			})
 		);
+}
+Overlay.prototype.createProofPage = function() {
+	var self = this;
+	var win = window.open(
+				"",
+				"_blank" );
+	$.get('wms-proof.html', writeProof);
+	
+	function writeProof( template ) {
+		var config = self.createProofConfig();
+		var doc = template.replace("$$CONFIG$$", config);
+		// add template configuration
+		win.document.write( doc );
+		win.initPage();
+		win.focus();
+	}
+}
+Overlay.prototype.createProofConfig = function() {
+	var lyrs = [];
+	for (var i = 0; i < this.mapLayers.length; i++) {
+		var lyrParam = [
+			'{'
+			,'name: "' + this.mapLayers[i].name + '",'
+			,'location: [ -126, 54 ],'
+			,'scale: 17000000'
+			,'}'
+		].join(' ');
+		lyrs.push(lyrParam)
+	}
+	var lyrsStr = lyrs.join(',\n');
+	
+	var conf = [
+		'service: "' + this.url + '"'
+		,',layers: [ '
+		,lyrsStr
+		,']'
+	].join('\n');
+	return conf;
 }
 Overlay.prototype.showGetMapResponse = function() {
 	showURL(this.getMapURL());

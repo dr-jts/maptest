@@ -1,0 +1,173 @@
+<html>
+<head>
+<title>WMS Proof Sheet</title>
+<style>
+body {
+	background-color: #eeeeee;
+	font-family: sans-serif;
+}
+img {
+	border: 1px solid black;
+}
+.toc {
+	margin: 30px;
+}
+.layer-row {
+	page-break-inside: avoid;
+}
+.layer-heading {
+	margin-top: 20px;
+	background-color: #cccccc;
+	padding: 5px;
+}
+.legend {
+	border: 1px solid black;
+	margin: 20px;
+	vertical-align: top;
+}
+.map {
+}
+</style>
+</head>
+<body onLoad='initPage()'>
+<h1> WMS Proof Sheet</h1>
+<h3>Map Service: <span id='service-name'>wf1geot.nrs.gov.bc.ca/geoserver</span></h3>
+<div><a id='link-live-view'>Live view</a></div>
+<div class='toc'>
+</div>
+<div id='layers'>
+</div>
+
+<script src="lib/jquery-1.9.1.min.js"></script>
+<script>
+
+CONFIG = {
+
+$$CONFIG$$
+/*
+service: "https://wf1geot.nrs.gov.bc.ca/geoserver/wms",
+
+extents: {
+	 bc: 			{ location: [ -126, 54 ], 		scale: 17000000 }
+//	 bc: 			{ centre: [ -14100000, 7300000 ], size: 2900000, scale: 17000000 }
+	,vic: 			{ location: [ -123.5, 48.55 ], 	scale:   135000 }
+	,svanisle: 		{ location: [ -123.9, 48.7 ], 	scale:   500000 }
+	,campbelllk:	{ location: [ -125.47, 50.04 ], scale:    40000 }
+	,kam: 			{ location: [ -13400000, 6560000 ], size:  100000 }
+},
+
+layers: [
+	 { name: "BNDY_FIRE_DEPARTMENTS", title: "", extentId: "vic" }
+	,{ name: "CLT_CLIENT_ASSETS_POINTS", title: "", extentId: "vic" }
+	,{ name: "CLT_CLIENT_ASSETS_LINES", title: "", location: [-123.55, 48.51], scale: 60000 }
+	,{ name: "CLT_CLIENT_ASSETS_POLYGONS", title: "", extentId: "vic" }
+	,{ name: "FW_ACTIVEREPORTING_WSTN_SVW", title: "", extentId: "svanisle" }
+	,{ name: "IN_CURRENT_FIRE_POLYGONS_SVW", title: "", extentId: "campbelllk" }
+	,{ name: "SFMS_PRECIPITATION", title: "SFMS Precipitation" }
+	,{ name: "SFMS_RELATIVE_HUMIDITY", title: "SFMS Precipitation" }
+	,{ name: "SFMS_TEMPERATURE", title: "SFMS Precipitation" }
+	,{ name: "SFMS_WIND_DIRECTION", title: "SFMS Precipitation" }
+	,{ name: "SFMS_WIND_SPEED", title: "SFMS Precipitation" }
+]
+*/
+};
+
+
+</script>
+
+<script>
+
+function initPage() {
+	var wmsproof = new WMSProof( CONFIG );
+	wmsproof.render();
+}
+WMSProof = function( config ) {
+	this.config = config;
+	this.params = {};
+	this.params.imageSize = this.config.imageSize ?  this.config.imageSize : 500;
+}
+WMSProof.prototype.render = function() {
+	$('#service-name').text(this.config.service);
+	var lyrList = $.map(this.config.layers, function(lyr) { return lyr.name; }).join(',');
+	var map_url = 'http://dr-jts.github.io/maptest/maptest.html?host=' + this.config.service + '&lyr=' + lyrList;
+	$('#link-live-view').attr('href', map_url );
+	
+	for (var i = 0; i < this.config.layers.length; i++) {
+		this.renderLayer( this.config.layers[i], i );
+	}
+}
+WMSProof.prototype.renderLayer = function( lyr, index ) {
+	$('.toc').append( $('<div>').append( $('<a>')
+		.attr('id', 'toc-layer-'+index)
+		.attr('href', '#layer-'+index)
+		.text( lyr.name ) ) );
+	
+	var $layers = $("#layers");
+	var $td = $('<div class="layer-row">').appendTo( $layers );
+	$('<a>').attr('id', 'layer-'+index ).appendTo( $td );
+	$('<h2 class="layer-heading">').text( lyr.name ).appendTo( $td );
+	$('<div>').text( 'Location: ' + this.location( lyr ) + '     Scale: ' + this.scale( lyr ) ).appendTo( $td );
+	var imgURL = this.genGetMap( lyr );
+	var $mapimg = $('<img class="map">')
+		.attr('src', imgURL )
+		.on('error', function() {
+			$('#toc-layer-'+index).css('color', 'red');
+		});
+	$('<a>').attr('href',imgURL).attr('target','_blank').append($mapimg)
+		.appendTo( $td );
+	$('<img class="legend">')
+		.attr('src', this.genGetLegendGraphic( this.config.service, lyr ) ).appendTo( $td );
+}
+WMSProof.prototype.location = function(lyr) {
+	if (lyr.location) return lyr.location;
+	var extId = lyr.extentId || 'bc';
+	var loc = lyr.location || this.config.extents[ extId ].location;
+	return loc;
+}
+WMSProof.prototype.scale = function(lyr) {
+	if (lyr.location) return lyr.scale;
+	var extId = lyr.extentId || 'bc';
+	var scale = lyr.scale || this.config.extents[ extId ].scale;
+	return scale;
+}
+WMSProof.prototype.genGetMap = function( lyr ) {
+	var extId = lyr.extentId || 'bc';
+	var url = "{{SERVICE}}?LAYERS={{LYR}}&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&FORMAT=image%2Fpng&SRS=EPSG%3A3857&BBOX={{BBOX}}&WIDTH={{SIZE}}&HEIGHT={{SIZE}}";
+	url = url.replace("{{SERVICE}}", this.config.service );
+	url = url.replace("{{LYR}}", lyr.name);
+	url = url.replace("{{BBOX}}", this.bbox( this.location(lyr), this.scale(lyr) ) );
+	url = url.replace(/{{SIZE}}/g, this.params.imageSize );
+	return url;
+}
+WMSProof.prototype.bbox = function( location, scale ) {
+	var centre = toWM( location );
+	var size = extentSize(500, scale);
+	var size2 = size / 2;
+	var bbox = [ centre[0] - size2, centre[1] - size2, centre[0] + size2, centre[1] + size2 ];
+	var bboxStr = bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3];
+	return bboxStr;
+}
+WMSProof.prototype.genGetLegendGraphic = function( service, lyr ) {
+	var url = "{{SERVICE}}?SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer={{LYR}}";
+	url = url.replace("{{SERVICE}}", service );
+	url = url.replace("{{LYR}}", lyr.name);
+	return url;
+}
+var DPI = 72;
+var IN_PER_M = 39.3700787;
+function extentSize(imageSize, scaleDenom) {
+	var size = scaleDenom * imageSize / DPI / IN_PER_M;
+	return size;
+}
+function toWM(pt) {
+	if (Math.abs(pt[0]) > 300) return pt;
+	return degreesToWM(pt);
+}
+function degreesToWM(lonlat) {
+        var x = lonlat[0] * 20037508.34 / 180;
+        var y = 20037508.34 / 180 * Math.log(Math.tan((90 + lonlat[1]) * Math.PI / 360)) / (Math.PI / 180);
+        return [x, y]
+}
+</script>
+</body>
+</html>

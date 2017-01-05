@@ -6,22 +6,36 @@ WMSProof = function(overlay) {
 }
 WMSProof.prototype.createPage = function() {
 	var self = this;
+	
 	var config = this.createConfig();
+	var toc = this.createTOC();
 	var layers = this.createLayers();
+	
 	var win = window.open(
 				"",
 				"_blank" );
 	$.get('wms-proof.html', writeProof);
 	
 	function writeProof( template ) {
-		var doc = template.replace("$$LAYERS$$", layers);
-		//doc = doc.replace("$$CONFIG$$", config);
+		var doc = template.replace("{{TOC}}", toc);
+		var doc = doc.replace("{{LAYERS}}", layers);
 		doc = doc.replace( /{{SERVICE}}/g, self.overlay.url );
-		// add template configuration
 		win.document.write( doc );
-		//win.initPage();
 		win.focus();
 	}
+}
+WMSProof.prototype.createTOC = function() {
+	var lyrs = [];
+	for (var i = 0; i < this.overlay.mapLayers.length; i++) {
+		var lyr = this.overlay.mapLayers[i];
+		if (! lyr.visibility) continue;
+		
+		var text = '<div> <a href="#layer-{{INDEX}}">{{LAYER}}</a> </div>';
+		text = text.replace(/{{INDEX}}/g, i );
+		text = text.replace(/{{LAYER}}/g, lyr.name );
+		lyrs.push( text );
+	}
+	return lines(lyrs);
 }
 WMSProof.prototype.createLayers = function() {
 	var centerOL = this.overlay.map.getCenter();
@@ -38,7 +52,7 @@ WMSProof.prototype.createLayers = function() {
 	for (var i = 0; i < this.overlay.mapLayers.length; i++) {
 		var lyr = this.overlay.mapLayers[i];
 		if (! lyr.visibility) continue;
-		lyrs.push( this.createLayer( this.overlay.mapLayers[i], mapParam  ));
+		lyrs.push( this.createLayer( i, this.overlay.mapLayers[i], mapParam  ));
 	}
 	var text = lines(lyrs);
 	
@@ -46,19 +60,22 @@ WMSProof.prototype.createLayers = function() {
 
 	return text;
 }
-WMSProof.prototype.createLayer = function( lyr, mapParam ) {
+WMSProof.prototype.createLayer = function( index, lyr, mapParam ) {
 	var mapURL = this.genGetMap( this.overlay.url, lyr, mapParam );
 	var legendURL = this.genGetLegendGraphic( this.overlay.url, lyr );
 	
 	var text = lines([
 	'<div class="layer-row">'
+	,'  <a id="layer-{{INDEX}}">'
 	,'  <h2 class="layer-heading">{{LYR}}</h2>'
+	,'  </a>'
 	,'  <div>Center: {{CENTER_X}}, {{CENTER_Y}}</div>'
 	,'  <div>Scale: {{SCALE}}</div>'
 	,'  <img class="map" src="{{MAPURL}}">'
 	,'  <img class="legend" src="{{LEGENDURL}}">'
 	,'</div>'
 	]);
+	text = text.replace(/{{INDEX}}/g, index );
 	text = text.replace(/{{LYR}}/g, lyr.name );
 	text = text.replace(/{{CENTER_X}}/g, mapParam.center[0].toFixed(5) );
 	text = text.replace(/{{CENTER_Y}}/g, mapParam.center[1].toFixed(5) );

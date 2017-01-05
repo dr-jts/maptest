@@ -160,7 +160,9 @@ Overlay.prototype.createOverlayUI = function() {
 		.attr('title', 'Show / Hide Legends')
 		.click(function () { 
 				var $par = $(this).parents('.overlay');
-				$par.find('.layer-legend').toggle();
+				var $legendDivs = $par.find('.layer-legend');
+				var showState = ! $legendDivs.first().is(':visible');
+				$legendDivs.toggle(showState);
 		} );
 	this.$layers = $('<div>').appendTo(this.$root);
 }
@@ -262,12 +264,15 @@ Overlay.prototype.createProofPage = function() {
 	}
 }
 Overlay.prototype.createProofConfig = function() {
+	var center = this.map.getCenter();
+	center.transform( CRS.PROJ_WEBMERC, CRS.PROJ_GEO );
+	
 	var lyrs = [];
 	for (var i = 0; i < this.mapLayers.length; i++) {
 		var lyrParam = [
 			'{'
 			,'name: "' + this.mapLayers[i].name + '",'
-			,'location: [ -126, 54 ],'
+			,'location: [ ' + center.lon + ',' + center.lat + ' ],'
 			,'scale: 17000000'
 			,'}'
 		].join(' ');

@@ -1,11 +1,12 @@
+CRS = {};
+CRS.PROJ_GEO = new OpenLayers.Projection( "EPSG:4326" );
+CRS.PROJ_WEBMERC = new OpenLayers.Projection( "EPSG:3857" );
+	
 (function() {
 	
 	// Web Mercator
 Proj4js.defs["EPSG:3857"] = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
 
-	var CRS = {};
-    CRS.PROJ_GEO = new OpenLayers.Projection( "EPSG:4326" );
-    CRS.PROJ_WEBMERC = new OpenLayers.Projection( "EPSG:3857" );
 
 MapTest = function(mapDiv) {
 	this.overlays = [];

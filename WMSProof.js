@@ -11,6 +11,8 @@ WMSProof.prototype.createPage = function() {
 	var toc = this.createTOC();
 	var layers = this.createLayers();
 	
+	var link = window.document.location + this.overlay.urlParam();
+
 	var win = window.open(
 				"",
 				"_blank" );
@@ -19,6 +21,7 @@ WMSProof.prototype.createPage = function() {
 	function writeProof( template ) {
 		var doc = template.replace("{{TOC}}", toc);
 		var doc = doc.replace("{{LAYERS}}", layers);
+		var doc = doc.replace("{{MAPTEST_PERMALINK}}", link);
 		doc = doc.replace( /{{SERVICE}}/g, self.overlay.url );
 		win.document.write( doc );
 		win.focus();
@@ -30,7 +33,7 @@ WMSProof.prototype.createTOC = function() {
 		var lyr = this.overlay.mapLayers[i];
 		if (! lyr.visibility) continue;
 		
-		var text = '<div> <a href="#layer-{{INDEX}}">{{LAYER}}</a> </div>';
+		var text = '<div> <a id="toc-layer-{{INDEX}}" href="#layer-{{INDEX}}">{{LAYER}}</a> </div>';
 		text = text.replace(/{{INDEX}}/g, i );
 		text = text.replace(/{{LAYER}}/g, lyr.name );
 		lyrs.push( text );
@@ -71,7 +74,8 @@ WMSProof.prototype.createLayer = function( index, lyr, mapParam ) {
 	,'  </a>'
 	,'  <div>Center: {{CENTER_X}}, {{CENTER_Y}}</div>'
 	,'  <div>Scale: {{SCALE}}</div>'
-	,'  <img class="map" src="{{MAPURL}}">'
+	,'  <a target="_blank" href="{{MAPURL}}"><img class="map" src="{{MAPURL}}"'
+	,'    onerror=" document.getElementById(\'toc-layer-{{INDEX}}\').style.color=\'red\' "></a>'
 	,'  <img class="legend" src="{{LEGENDURL}}">'
 	,'</div>'
 	]);

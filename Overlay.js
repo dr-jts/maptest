@@ -108,16 +108,11 @@ Overlay.prototype.createOverlayUI = function() {
 	$('<button class="btn-query">').appendTo($ctl)
 		.text('?')
 		.attr('title','Query Overlay status')
-       	.click(function () { 
-			self.showGetMapResponse();
-		} );
+       	.click(function () { self.showGetMapResponse();	} );
 	$('<button class="">').appendTo($ctl)
 		.text('Proof')
 		.attr('title','Create Proof Sheet page')
-       	.click(function () { 
-			new WMSProof( self );
-			//self.createProofPage();
-		} );
+       	.click(function () { self.createProof(); } );
 
 	var $stat = $('<div class="overlay-stats">').appendTo(this.$root);
 	var $time = $('<div>').appendTo($stat);
@@ -166,6 +161,9 @@ Overlay.prototype.createOverlayUI = function() {
 				$legendDivs.toggle(showState);
 		} );
 	this.$layers = $('<div>').appendTo(this.$root);
+}
+Overlay.prototype.createProof = function() {
+	new WMSProof( this );
 }
 Overlay.prototype.displayTime = function(time)
 {

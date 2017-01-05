@@ -3,7 +3,7 @@
 <title>WMS Proof Sheet</title>
 <style>
 body {
-	background-color: #eeeeee;
+	background-color: #E0ECFA;
 	font-family: sans-serif;
 }
 img {
@@ -17,7 +17,7 @@ img {
 }
 .layer-heading {
 	margin-top: 20px;
-	background-color: #cccccc;
+	background-color: #A9C1E5;
 	padding: 5px;
 }
 .legend {
@@ -30,9 +30,12 @@ img {
 </style>
 </head>
 <body onLoad='initPage()'>
-<h1> WMS Proof Sheet</h1>
+<h1> MapTest Proof Sheet</h1>
 <h3>Map Service: <span id='service-name'>{{SERVICE}}</span></h3>
-<!-- <div><a id='link-live-view'>Map view</a></div>  -->
+<div><a target='_blank' href='{{MAPTEST_PERMALINK}}'>MapTest View</a>
+|
+<button onclick="javascript:document.location='data:text/html,'+document.all[0].innerHTML;">Convert to Savable Page</button>
+</div>
 <div class='toc'>
 {{TOC}}
 </div>

@@ -53,14 +53,15 @@ WMSProof.prototype.createLayer = function( lyr, mapParam ) {
 	var text = lines([
 	'<div class="layer-row">'
 	,'  <h2 class="layer-heading">{{LYR}}</h2>'
-	,'  <div>Center: {{CENTER}}</div>'
+	,'  <div>Center: {{CENTER_X}}, {{CENTER_Y}}</div>'
 	,'  <div>Scale: {{SCALE}}</div>'
 	,'  <img class="map" src="{{MAPURL}}">'
 	,'  <img class="legend" src="{{LEGENDURL}}">'
 	,'</div>'
 	]);
 	text = text.replace(/{{LYR}}/g, lyr.name );
-	text = text.replace(/{{CENTER}}/g, mapParam.center );
+	text = text.replace(/{{CENTER_X}}/g, mapParam.center[0].toFixed(5) );
+	text = text.replace(/{{CENTER_Y}}/g, mapParam.center[1].toFixed(5) );
 	text = text.replace(/{{SCALE}}/g, mapParam.scale );
 	text = text.replace(/{{MAPURL}}/g, mapURL );
 	text = text.replace(/{{LEGENDURL}}/g, legendURL );

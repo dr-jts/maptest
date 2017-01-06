@@ -262,7 +262,8 @@ body {
 	color: #60bb60;
 }
 .layer-div {
-	position: relative;]
+	position: relative;
+	overflow-wrap: break-word;
 }
 .layer-div:hover {
 	background-color: #f0f3ff;

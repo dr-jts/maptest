@@ -58,6 +58,18 @@ MapTest.prototype.initMap = function(mapDiv) {
 	        { 
 	            getURL: function() { return this.url; }
 	        } ),
+    	new OpenLayers.Layer.TMS('ESRI Topo', "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}.jpg",
+	        { 
+	            getURL: getTMSUrl
+	        } ),
+    	new OpenLayers.Layer.TMS('ESRI Streets', "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}.jpg",
+	        { 
+	            getURL: getTMSUrl
+	        } ),
+    	new OpenLayers.Layer.TMS('ESRI Imagery', "http://services.arcgisonline.com/ArcGIS/rest/services/World_imagery/MapServer/tile/{z}/{y}/{x}.jpg",
+	        { 
+	            getURL: getTMSUrl
+	        } ),
 		new OpenLayers.Layer.ArcGISCache('DataBC', 'http://maps.gov.bc.ca/arcserver/rest/services/Province/web_mercator_cache/MapServer', 
 			{
 	            resolutions: [9783.9400003175, 4891.969998835831, 2445.9849999470835, 1222.9925001058336, 611.4962500529168, 305.74812489416644, 152.8740625, 76.4370312632292, 38.2185156316146, 19.10925781316146, 9.554628905257811, 4.7773144526289055, 2.3886572265790367, 1.1943286131572264],
@@ -104,6 +116,27 @@ MapTest.prototype.initMap = function(mapDiv) {
     			self.showLink();
     	});
     this.showExtent();
+	
+	function getTMSUrl( bounds ) {
+            var res = this.map.getResolution();
+            var x = Math.round( ( bounds.left - this.maxExtent.left ) / ( res * this.tileSize.w ) );
+            // Here is the OGC Y standard
+            //var y = Math.round((bounds.bottom - this.tileOrigin.lat) / (res * this.tileSize.h));
+            var y = Math.round( ( this.maxExtent.top - bounds.top ) / ( res * this.tileSize.h ) );
+            var z = this.map.getZoom();
+            var url = this.url;
+            // If subdomains were specified choose one at random
+            if ( this.domains && this.domains.length > 0 ) {
+                var n = this.domains[ Math.random() * 4 | 0 ]; // random tile domain.
+                url = url.replace( "{n}", n );
+            }
+            // Substitute values into the url
+            url = url.replace( "{x}", x );
+            url = url.replace( "{y}", y );
+            url = url.replace( "{z}", z );
+            return url;
+        }
+
 }
 MapTest.prototype.initInfoCtl = function(ov) {
 	this.controls.infoCtl = new OpenLayers.Control.WMSGetFeatureInfo({
@@ -174,8 +207,39 @@ MapTest.prototype.loadConfig = function(configStr) {
 		var layers = line.split(',');
 		ov.addLayers(layers);
 	}
-	
 }
+var parser = {
+	isURL: function (s) {
+		if (s.indexOf('http:') == 0) return true;
+		if (s.indexOf('https:') == 0) return true;
+		return false;
+	},
+	isTag: function (tag, s) {
+		if (s.indexOf(tag + ':') == 0) return true;
+		return false;
+	},
+	taggedValue: function (s) {
+		var value = s.slice( s.indexOf(':')+1);
+		return shimTrim( value );
+	},
+	taggedParam: function (s) {
+		var value = s.slice( s.indexOf(':')+1);
+		var neqv = shimTrim( value );
+		var nvArr = neqv.split('=');
+		var nv = {};
+		nv[nvArr[0]] = nvArr[1];
+		return nv;
+	},
+	isComment: function (s) {
+		if (s.indexOf('//') == 0) return true;
+		return false;
+	}
+}
+function shimTrim(x) {
+    return x.replace(/^\s+|\s+$/gm,'');
+}
+
+
 MapTest.prototype.urlParam = function() {
 	if (this.overlays.length <= 0) return "";
 	var param = this.overlays[0].urlParam();
@@ -232,38 +296,6 @@ MapTest.prototype.autoRedraw = function(doAuto) {
 	}
 }
 
-
-function shimTrim(x) {
-    return x.replace(/^\s+|\s+$/gm,'');
-}
-
-var parser = {
-	isURL: function (s) {
-		if (s.indexOf('http:') == 0) return true;
-		if (s.indexOf('https:') == 0) return true;
-		return false;
-	},
-	isTag: function (tag, s) {
-		if (s.indexOf(tag + ':') == 0) return true;
-		return false;
-	},
-	taggedValue: function (s) {
-		var value = s.slice( s.indexOf(':')+1);
-		return shimTrim( value );
-	},
-	taggedParam: function (s) {
-		var value = s.slice( s.indexOf(':')+1);
-		var neqv = shimTrim( value );
-		var nvArr = neqv.split('=');
-		var nv = {};
-		nv[nvArr[0]] = nvArr[1];
-		return nv;
-	},
-	isComment: function (s) {
-		if (s.indexOf('//') == 0) return true;
-		return false;
-	}
-}
 
 	
 MapTest.prototype.addOverlay = function(param) { 

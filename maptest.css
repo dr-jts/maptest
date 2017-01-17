@@ -170,8 +170,8 @@ body {
 }
 
 .btn-redraw {
-	width: 30px;
-	height: 30px;
+	width: 26px;
+	height: 26px;
 	background-image: url('img/redraw.png');
 	background-position: center center;
 }
@@ -203,8 +203,7 @@ body {
 	font-size: 12pt;
 }
 .overlay-controls {
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin: 5px 0px 5px 10px;
 	text-align: left;
 }
 .overlay-stats {

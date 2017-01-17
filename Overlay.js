@@ -92,10 +92,6 @@ Overlay.prototype.createOverlayUI = function() {
 	var $ctl = $('<div class="overlay-controls">').appendTo(this.$root);
 	$('<button class="btn-redraw">').appendTo($ctl)
 		.click(function() { self.reload(); });
-	$('<div class="overlay-time">').appendTo($ctl)
-   		.attr('id', 'overlay-time-last')
-		.text('0');
-	$('<span class="xx">').text(' s  ').appendTo($ctl);
    	$('<label class="overlay-tiled-title">').text(' Tiled ').appendTo($ctl);
 	$('<input type="checkbox" class="checkbox-single"/>').appendTo($ctl)
 		.attr('name','foo')
@@ -115,11 +111,15 @@ Overlay.prototype.createOverlayUI = function() {
        	.click(function () { self.createProof(); } );
 
 	var $stat = $('<div class="overlay-stats">').appendTo(this.$root);
+	var $date = $('<div>').appendTo($stat);
+	$('<div class="overlay-time">').appendTo($date)
+   		.attr('id', 'overlay-time-last')
+		.text('0');
+	$('<span class="xx">').text(' s  ').appendTo($date);
+	$('<span class="overlay-timestamp">').appendTo($date)
+	   	.attr('id', 'overlay-timestamp')
+		.text('  ');
 	var $time = $('<div>').appendTo($stat);
-	$('<span class="xx">').text(' N ').appendTo($time);
-	$('<div class="overlay-time overlay-count">')
-   		.attr('id', 'overlay-time-count')
-		.text('0').appendTo($time);
 	$('<span class="xx">').text(' Avg ').appendTo($time);
 	$('<div class="overlay-time overlay-time-small">')
    		.attr('id', 'overlay-time-avg')
@@ -132,10 +132,10 @@ Overlay.prototype.createOverlayUI = function() {
 	$('<div class="overlay-time overlay-time-small">')
    		.attr('id', 'overlay-time-max')
 		.text('0').appendTo($time);
-	var $date = $('<div>').appendTo($stat);
-	$('<span class="xx">')
-	   	.attr('id', 'overlay-timestamp')
-		.text('  ').appendTo($date);
+	$('<span class="xx">').text(' N ').appendTo($time);
+	$('<div class="overlay-time overlay-count">')
+   		.attr('id', 'overlay-time-count')
+		.text('0').appendTo($time);
 		
 	var $lyrctl = $('<div class="layer-controls">').appendTo(this.$root);
 	$('<button>').text('All').appendTo($lyrctl)

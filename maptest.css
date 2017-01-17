@@ -222,6 +222,9 @@ body {
 	font-size: 12pt;
 	color: blue;
 }
+.overlay-timestamp {
+	margin-left: 40px;
+}
 .overlay-time-small {
 	width: 30px; 
 	font-weight: normal;

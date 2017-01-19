@@ -42,11 +42,12 @@ Basic configuration can be loaded via URL parameters.
 <pre>
 http://apphost/maptest.html 
          [ ?host=http://some.host/mapservice ] 
-         [ &amp;lyr=A,B,C ] 
+         [ &amp;lyr=LYR_A,LYR_B,LYR_C ] 
          [ &amp;extent=minlon,minlat,maxlon,maxlat ]
 </pre>
 
-The <b>Permalink</b> allows opening a new page with top map overlay as parameters.
+<p>
+The <b>Permalink</b> opens a new page with the top map overlay as parameters.
 
 <ul>
 	<li><code>host</code>, <code>lyr</code>, <code>extent</code> parameters are optional</li>
@@ -63,6 +64,7 @@ The configuration schema contains the following:
 	<li>A list of one or more map service <b>layers</b>
 		<ul>
 			<li>Layer names can be comma-separated or on separate lines</li>
+			<li>A layer can be specified as visible by appending <code>+</code> </li>
 			<li>A layer style can be specified by appending <code>*style-name</code> </li>
 		</ul>
 		</li>
@@ -78,8 +80,8 @@ meta-url: http://some.host/mapservice/meta
 param: name=value
 param: name2=value2
 LAYER1,LAYER2
-LAYER3
-LAYER4*style
+LAYER3+
+LAYER4*STYLE
 </pre>
 
 <h2>User Interface</h2> 

@@ -38,7 +38,9 @@ Overlay.prototype.urlParam = function()
 {
 	var param = '?host=' + this.url;
 	var lyrName = $.map(this.mapLayers, function(lyr) {
-		return lyr.name;
+		var name = lyr.name;
+		if (lyr.visibility) name += '+';
+		return name;
 	});
 	param += '&lyr=' + lyrName.join(",");
 	return param;
@@ -380,12 +382,22 @@ Overlay.prototype.addLayers = function (names)
 Overlay.prototype.addSingleLayer = function (name)
 {
 	var nameStyle = name.split('*');
+	// parse name
 	var name = nameStyle[0];
+	
+	var vis = false;
+	if ( name.indexOf('+') >= 0 ) {
+		vis = true;
+	}
+	// clean name
+	name = name.replace('+', '');
+	// parse style
 	var style = nameStyle.length > 1 ? nameStyle[1] : ''; 
+	
 	var lyr = {
 			name: name,
 			style: style,
-			visibility: false
+			visibility: vis
 	};
 	this.mapLayers.push(lyr);
 	this.addMapLayerUI(lyr);

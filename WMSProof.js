@@ -94,7 +94,7 @@ WMSProof.prototype.genGetMap = function( service, lyr, mapParam ) {
 	url = url.replace("{{SERVICE}}", service );
 	url = url.replace("{{LYR}}", lyr.name);
 	url = url.replace("{{BBOX}}", mapParam.bbox );  //"-15525561.395084849,5670850.735917007,-12526950.280915154,8669461.8500867");  //this.bbox( this.location(lyr), this.scale(lyr) ) );
-	url = url.replace(/{{SIZE}}/g, "500"); //this.params.imageSize );
+	url = url.replace(/{{SIZE}}/g, "400"); //this.params.imageSize );
 	return url;
 }
 WMSProof.prototype.genGetLegendGraphic = function( service, lyr ) {
@@ -137,7 +137,7 @@ var IN_PER_M = 39.3700787;
 
 function bbox( centreLL, scale ) {
 	var centre = toWM( centreLL );
-	var size = extentSize(500, scale);
+	var size = extentSize(400, scale);
 	var size2 = size / 2;
 	var bbox = [ centre[0] - size2, centre[1] - size2, centre[0] + size2, centre[1] + size2 ];
 	var bboxStr = bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3];
@@ -149,6 +149,7 @@ function extentSize(imageSize, scaleDenom) {
 	return size;
 }
 function toWM(pt) {
+	// check if pt is in WebMerc
 	if (Math.abs(pt[0]) > 300) return pt;
 	return degreesToWM(pt);
 }

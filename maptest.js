@@ -178,7 +178,7 @@ MapTest.prototype.loadConfig = function(configStr) {
 	var ovParam = {};
 	for (var i = 0; i < lines.length; i++) {
 		var line = shimTrim(lines[i]);
-		if (parser.isURL(line)) {
+		if (Lexer.isURL(line)) {
 			ovParam = {
 				url: line,
 				metadataURL: ''
@@ -186,19 +186,19 @@ MapTest.prototype.loadConfig = function(configStr) {
 			ov = null;
 			continue;
 		}
-		if (parser.isTag(MapTest.constants.META_URL, line)) {
-			ovParam.metadataURL = parser.taggedValue(line);
+		if (Lexer.isTag(MapTest.constants.META_URL, line)) {
+			ovParam.metadataURL = Lexer.taggedValue(line);
 			continue;
 		}
-		if (parser.isTag(MapTest.constants.PARAM, line)) {
-			 var nv = parser.taggedParam(line);
+		if (Lexer.isTag(MapTest.constants.PARAM, line)) {
+			 var nv = Lexer.taggedParam(line);
 			 //if (! ovParam.param) ovParam.param = {};
 			 //ovParam.param[nv.name] = nv.value;
 			 ovParam.param = $.extend({}, ovParam.param, nv);
 			continue;
 		}
 		if (line.length < 1) continue;
-		if (parser.isComment(line)) continue;
+		if (Lexer.isComment(line)) continue;
 		if (ov == null) {
 			ov = this.addOverlay(ovParam);
 		}
@@ -212,7 +212,7 @@ MapTest.prototype.loadConfig = function(configStr) {
 		ov.addLayers(layers);
 	}
 }
-var parser = {
+var Lexer = {
 	isURL: function (s) {
 		if (s.indexOf('http:') == 0) return true;
 		if (s.indexOf('https:') == 0) return true;

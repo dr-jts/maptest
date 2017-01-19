@@ -26,6 +26,14 @@ Overlay.prototype.create = function() {
 		self.initMapTimer();
 	});
 }
+
+Overlay.prototype.onChange = function( fOnChange ) {
+	this.onChange = fOnChange;
+}
+Overlay.prototype.changed = function( ) {
+	this.onChange(this);
+}
+
 Overlay.prototype.urlParam = function()
 {
 	var param = '?host=' + this.url;
@@ -307,6 +315,7 @@ Overlay.prototype.removeLayer = function (lyr)
 		}
 	}
 	this.updateMap();
+	this.changed();
 }
 Overlay.prototype.moveLayer = function (lyr, direction)
 {	
@@ -366,6 +375,7 @@ Overlay.prototype.addLayers = function (names)
 	}
 	this.create();
 	this.updateMap();
+	this.changed();
 }
 Overlay.prototype.addSingleLayer = function (name)
 {

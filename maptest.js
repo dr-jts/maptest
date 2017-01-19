@@ -108,12 +108,16 @@ MapTest.prototype.initMap = function(mapDiv) {
     
     this.map.events.register('movestart', this.map, 
     	function() { 
-    			self.clearTime();
+    		self.clearTime();
     	});
     this.map.events.register('move', this.map, 
     	function() { 
-    			self.showExtent();
-    			self.showLink();
+			self.showExtent();
+			self.showLink();
+    	});
+    this.map.events.register('changelayer', this.map, 
+    	function() { 
+    		self.showLink();
     	});
     this.showExtent();
 	
@@ -296,13 +300,15 @@ MapTest.prototype.autoRedraw = function(doAuto) {
 	}
 }
 
-
-	
 MapTest.prototype.addOverlay = function(param) { 
+	var self = this;
 	var name = extractHost(param.url);
 	if (! name) name = "UNKNOWN HOST";
+	
 	var ov = new Overlay(this.map, name, param);
 	ov.createOverlayUI();
+	ov.onChange( function() { self.showLink(); } );
+	
 	this.overlays.push(ov);
 	if (this.overlays.length == 1) {
 		this.initInfoCtl(this.overlays[0]);

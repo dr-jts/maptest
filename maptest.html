@@ -42,8 +42,8 @@ Basic configuration can be loaded via URL parameters.
 <pre>
 http://apphost/maptest.html 
          [ ?host=http://some.host/mapservice ] 
-         [ &amp;lyr=LYR_A,LYR_B,LYR_C ] 
-         [ &amp;extent=minlon,minlat,maxlon,maxlat ]
+         [ &amp;lyr=LYRA,LYRB,LYRC ] 
+         [ &amp;extent=MIN_LON,MIN_LAT,MAX_LON,MAX_LAT ]
 </pre>
 
 <p>
@@ -65,7 +65,7 @@ The configuration schema contains the following:
 		<ul>
 			<li>Layer names can be comma-separated or on separate lines</li>
 			<li>A layer can be specified as visible by appending <code>+</code> </li>
-			<li>A layer style can be specified by appending <code>*style-name</code> </li>
+			<li>A layer style can be specified by appending <code>*style</code> </li>
 		</ul>
 		</li>
 </ul>

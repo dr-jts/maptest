@@ -148,20 +148,23 @@ MapTest.prototype.initInfoCtl = function(ov) {
                 title: 'Identify features by clicking',
                 //layers: [water],
                 queryVisible: true,
-            eventListeners: {
-                getfeatureinfo: function(event) {
-                    var pop = new OpenLayers.Popup.FramedCloud(
-                        "identify", 
-                        this.map.getLonLatFromPixel(event.xy),
-                        new OpenLayers.Size(400, 200),
-                        event.text,
-                        null,
-                        true
-                    );
-                    pop.autoSize = false;
-                    this.map.addPopup(pop, true);
-                }
-            }
+				vendorParams: {
+					buffer: 10
+				},
+				eventListeners: {
+					getfeatureinfo: function(event) {
+						var pop = new OpenLayers.Popup.FramedCloud(
+							"identify", 
+							this.map.getLonLatFromPixel(event.xy),
+							new OpenLayers.Size(400, 200),
+							event.text,
+							null,
+							true
+						);
+						pop.autoSize = false;
+						this.map.addPopup(pop, true);
+					}
+				}
            });
     //this.controls.infoCtl.events.register("getfeatureinfo", this, function(e) { this.showInfo(e); } );
 	this.map.addControl( this.controls.infoCtl );

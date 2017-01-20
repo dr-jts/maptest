@@ -63,6 +63,11 @@ WMSProof.prototype.createLayers = function() {
 
 	return text;
 }
+WMSProof.prototype.layerName = function(lyr) {
+	var name = lyr.name;
+	name += lyr.style ? ' * ' + lyr.style : '';
+	return name;
+}
 WMSProof.prototype.createLayer = function( index, lyr, mapParam ) {
 	var mapURL = this.genGetMap( this.overlay.url, lyr, mapParam );
 	var legendURL = this.genGetLegendGraphic( this.overlay.url, lyr );
@@ -80,7 +85,7 @@ WMSProof.prototype.createLayer = function( index, lyr, mapParam ) {
 	,'</div>'
 	]);
 	text = text.replace(/{{INDEX}}/g, index );
-	text = text.replace(/{{LYR}}/g, lyr.name );
+	text = text.replace(/{{LYR}}/g, this.layerName(lyr) );
 	text = text.replace(/{{CENTER_X}}/g, mapParam.center[0].toFixed(5) );
 	text = text.replace(/{{CENTER_Y}}/g, mapParam.center[1].toFixed(5) );
 	text = text.replace(/{{SCALE}}/g, mapParam.scale );
@@ -90,17 +95,23 @@ WMSProof.prototype.createLayer = function( index, lyr, mapParam ) {
 }
 WMSProof.prototype.genGetMap = function( service, lyr, mapParam ) {
 	//var extId = lyr.extentId || 'bc';
-	var url = "{{SERVICE}}?LAYERS={{LYR}}&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&FORMAT=image%2Fpng&SRS=EPSG%3A3857&BBOX={{BBOX}}&WIDTH={{SIZE}}&HEIGHT={{SIZE}}";
+	var url = "{{SERVICE}}?LAYERS={{LYR}}&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image%2Fpng&SRS=EPSG%3A3857&BBOX={{BBOX}}&WIDTH={{SIZE}}&HEIGHT={{SIZE}}";
 	url = url.replace("{{SERVICE}}", service );
 	url = url.replace("{{LYR}}", lyr.name);
 	url = url.replace("{{BBOX}}", mapParam.bbox );  //"-15525561.395084849,5670850.735917007,-12526950.280915154,8669461.8500867");  //this.bbox( this.location(lyr), this.scale(lyr) ) );
 	url = url.replace(/{{SIZE}}/g, "400"); //this.params.imageSize );
+	if (lyr.style) {
+		url += '&STYLES=' + lyr.style;
+	}
 	return url;
 }
 WMSProof.prototype.genGetLegendGraphic = function( service, lyr ) {
 	var url = "{{SERVICE}}?SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer={{LYR}}";
 	url = url.replace("{{SERVICE}}", service );
 	url = url.replace("{{LYR}}", lyr.name);
+	if (lyr.style) {
+		url += '&STYLE=' + lyr.style;
+	}
 	return url;
 }
 

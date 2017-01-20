@@ -38,9 +38,12 @@ Overlay.prototype.urlParam = function()
 {
 	var param = '?host=' + this.url;
 	var lyrName = $.map(this.mapLayers, function(lyr) {
+		return layerSpec(lyr, true);
+		/*
 		var name = lyr.name;
 		if (lyr.visibility) name += '+';
 		return name;
+		*/
 	});
 	param += '&lyr=' + lyrName.join(",");
 	return param;
@@ -402,8 +405,11 @@ Overlay.prototype.addSingleLayer = function (name)
 	this.mapLayers.push(lyr);
 	this.addMapLayerUI(lyr);
 }
-function layerSpec(lyr) {
+function layerSpec(lyr, showVis) {
 	var spec = lyr.name;
+	if (showVis) {
+		spec += lyr.visibility ? '+' : '';
+	}
 	if (lyr.style.length > 0) {
 		spec += '*' + lyr.style;
 	}

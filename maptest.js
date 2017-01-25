@@ -54,6 +54,10 @@ MapTest.prototype.initMap = function(mapDiv) {
 	var osmLayer = new OpenLayers.Layer.OSM('OSM', null, { projection: 'EPSG:3857' });
     this.map.addLayers([
     	osmLayer,
+		new OpenLayers.Layer.OSM("OpenCycleMap",
+		  ["http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+		   "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+		   "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"]),
     	new OpenLayers.Layer.TMS('White', 'img/tile-256-white.png',
 	        { 
 	            getURL: function() { return this.url; }

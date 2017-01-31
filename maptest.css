@@ -270,6 +270,9 @@ body {
 .layer-div:hover {
 	background-color: #f0f3ff;
 }
+.layer-title {
+	word-break: break-all;
+}
 .layer-tools {
 	display: none;
 	position: absolute;

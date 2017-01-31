@@ -231,7 +231,7 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 			$nxt.after($div);
 			$tools.hide();
 		});
-	$('<input type="checkbox" class="cb-layer-vis"/>')
+	var $chk = $('<input type="checkbox" class="cb-layer-vis"/>')
             	.attr('title', 'Change layer visibility')
             	.prop('checked', lyr.visibility)
             	.click(function () { 
@@ -239,10 +239,12 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 	            	lyr.visibility = isVisible;
 	            	self.updateMapLayer(lyr);
 	            	self.clearTime();
-            	} )
-            	.appendTo($div);
-	var $name = $('<span/>').text( layerSpec(lyr) )
-		.addClass('gsa-maplayer-title') //.addClass('gsa-link')
+            	} );
+            	//.appendTo($div);
+	var $name = $('<label/>')
+		.append($chk)
+		.append( layerSpec(lyr) )
+		.addClass('layer-title') //.addClass('gsa-link')
 		.click(function() {
 			$('#maplayers').find('.title-selected').removeClass('title-selected'); 
 			$(this).toggleClass('title-selected'); })

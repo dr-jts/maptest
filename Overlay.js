@@ -243,7 +243,8 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 	var $name = $('<label/>')
 		.append($chk)
 		.append( layerSpec(lyr) )
-		.addClass('layer-title') 
+		.addClass('layer-title')
+		.attr('title', layerTitle(lyr))
 		/*
 		.click(function() {
 			$('#maplayers').find('.title-selected').removeClass('title-selected'); 
@@ -420,7 +421,10 @@ function layerSpec(lyr, showVis) {
 	}
 	return spec;
 }
-
+function layerTitle(lyr) {
+	return "Name: " + lyr.name 
+		+ "\nStyle: " + (lyr.style.length > 0 ? lyr.style : '<default>');
+}
 
 Overlay.prototype.isLoading = function() {
 	var overlay = this.findOverlay();

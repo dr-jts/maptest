@@ -240,15 +240,16 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 	            	self.updateMapLayer(lyr);
 	            	self.clearTime();
             	} );
-            	//.appendTo($div);
 	var $name = $('<label/>')
 		.append($chk)
 		.append( layerSpec(lyr) )
-		.addClass('layer-title') //.addClass('gsa-link')
+		.addClass('layer-title') 
+		/*
 		.click(function() {
 			$('#maplayers').find('.title-selected').removeClass('title-selected'); 
 			$(this).toggleClass('title-selected'); })
 		//.dblclick(function() { self.loadLayer(lyr.name); })
+		*/
 		.appendTo($div);
 		
 	var urlLegend = this.url + "?SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer=" + lyr.name;

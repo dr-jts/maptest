@@ -171,6 +171,7 @@ Enable logging to log all map requests.
 				<div>
 					<input type='button' value='Current' id='btn-config-show'/>
 					<input type='button' value='Current Visible' id='btn-config-show-visible'/>
+					<input type='button' value='WMS GetCaps' id='btn-config-wms-load'/>
 				</div>
 				<textarea id='config-text' placeholder='Enter configuration text'></textarea>
 				<div>
@@ -238,6 +239,7 @@ function initUI(showConfig)
 	
 	$('#btn-configure').click(function() { MapTest.show('.config-panel');	});
 	$('#btn-zoom').click(function() { maptest.zoom( $('#map-extent').val() );	});
+
 	$('#btn-config-close').click( MapTest.closeAll );
 	$('#btn-config-add').click(function() { 
 		maptest.loadConfig($('#config-text').val());
@@ -245,7 +247,16 @@ function initUI(showConfig)
 		$('#config-text').val('');
 		$('.config-panel').hide();	
 	});
-	$('#btn-config-show').click(function() { $('#config-text').val(maptest.configuration(false));	});
+	$('#btn-config-wms-load').click(function() { 
+		 $('#config-text').addClass('config-wait');
+		var url = $('#config-text').val();
+		var prom = maptest.wmsConfig( url )
+		prom.done(function( config ) {
+			$('#config-text').removeClass('config-wait');
+			$('#config-text').val( config );
+		} );
+		
+	});
 	$('#btn-config-show-visible').click(function() { $('#config-text').val(maptest.configuration(true));	});
 	$('#btn-overlay-clear').click(function() { maptest.clear();	});
 			

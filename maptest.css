@@ -168,7 +168,13 @@ body {
 	width: 100%;
 	height: 80%;
 }
-
+.config-wait {
+	color: #bbbbbb;
+	background-color: #eeeeee;
+	background-image: url('img/spinner-30.gif');
+	background-position: center center;
+	background-repeat: no-repeat;
+}
 .btn-redraw {
 	width: 26px;
 	height: 26px;

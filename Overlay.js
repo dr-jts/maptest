@@ -114,6 +114,10 @@ Overlay.prototype.createOverlayUI = function() {
 			self.clearTime();
 			self.reload();
 		} );
+	$('<button class="">').appendTo($ctl)
+		.text('+')
+		.attr('title','Add layers from WMS')
+       	.click(function () { self.showWMSLayers();	} );
 	$('<button class="btn-query">').appendTo($ctl)
 		.text('?')
 		.attr('title','Query Overlay status')
@@ -526,6 +530,40 @@ function options(overlay) {
 	};
 }
 
+Overlay.prototype.formatWMSLayers = function( layers, $lyrs ) {
+	var self = this;
+	for (var i = 0; i < layers.length; i++) {
+		$('<div>').addClass('wms-layer')
+			.text(layers[i])
+			.appendTo( $lyrs )
+			.click( function( lyr) {
+				//$(this).toggleClass('wms-layer-selected')
+				self.addLayers( [ $(this).text() ] );
+			})
+	}
+}
+MapTest.currentOverlay = null;
 
+Overlay.prototype.showWMSLayers = function(  ) {
+	var self = this;
+	MapTest.show('.wms-panel');
+
+	$('.wms-layers').empty().addClass('config-wait').show();
+
+	var prom = maptest.wmsLayers( this.url )
+	prom.done(function( layers ) {
+		$('.wms-layers').removeClass('config-wait');
+		self.formatWMSLayers( layers, $('.wms-layers') );
+	});
+}
+Overlay.prototype.wmsLayersAdd = function () {
+	var lyrsConfig = wmsLayersConfigForSelected();
+	wmsLayersUnselect();
+	var conf = $('#config-text').val();
+	conf += '\n';
+	conf += lyrsConfig;
+	$('#config-text').val(conf);
+
+}
 
 })();

@@ -179,12 +179,16 @@ Enable logging to log all map requests.
 				<textarea id='config-text' placeholder='Enter configuration text'></textarea>
 				<div class='config-wms-layers'></div>
 				<div>
-					<input type='button' value='Show WMS Layers' id='btn-config-wms-load'/>
-					<input type='button' value='Select All' id='btn-config-wms-layer-select'/>
-					<input type='button' value='Unselect All' id='btn-config-wms-layer-unselect'/>
-					<input type='button' value='Copy Layers' id='btn-config-wms-layer-add'/>
 					<input type='button' value='Clear Layer List' id='btn-overlay-clear' style='color:red;right:40px;position:absolute;'/>
 				</div>
+			</div>
+			<!-- WMS panel -->	
+			<div class='wms-panel' style='display:none;'>
+				<div class='btn-close' id='btn-wms-close'>x</div>
+				<div>
+					<input type='button' value='Add All' id='btn-wms-layer-select'/>
+				</div>
+				<div class='wms-layers'></div>
 			</div>
 		</div>
 	
@@ -237,36 +241,18 @@ function initUI(showConfig)
 	if (showConfig) {
 		MapTest.show('.config-panel');
 	}
-	$('#btn-status-close').click( MapTest.closeAll );
+	$('.btn-close').click( MapTest.closeAll );
 	$('#btn-log').click(function() { MapTest.show('.map-log-panel'); });
-	$('#btn-log-close').click( MapTest.closeAll );
-	$('#btn-data-close').click( MapTest.closeAll );
 	$('#btn-help').click(function() { MapTest.show('.help-panel'); });
-	$('#btn-help-close').click( MapTest.closeAll );
 	
 	$('#btn-configure').click(function() { MapTest.show('.config-panel');	});
 	$('#btn-zoom').click(function() { maptest.zoom( $('#map-extent').val() );	});
 
-	$('#btn-config-close').click( MapTest.closeAll );
 	$('#btn-config-add').click(function() { 
 		maptest.loadConfig($('#config-text').val());
 		//$('#map-link').attr('href', maptest.urlParam());
 		$('#config-text').val('');
 		$('.config-panel').hide();	
-	});
-	$('#btn-config-wms-layer-add').click( wmsLayersAdd );
-	$('#btn-config-wms-layer-select').click( wmsLayersSelectAll );
-	$('#btn-config-wms-layer-unselect').click( wmsLayersUnselect );
-	$('#btn-config-wms-load').click(function() { 
-		$('#config-text').css('height', '45%');
-		$('.config-wms-layers').empty().addClass('config-wait').show();
-
-		var url = $('#config-text').val();
-		var prom = maptest.wmsConfig( url )
-		prom.done(function( layers ) {
-			$('.config-wms-layers').removeClass('config-wait');
-			formatWMSLayers( layers, $('.config-wms-layers') );
-		});
 	});
 	$('#btn-config-show').click(function() { $('#config-text').val(maptest.configuration());	});
 	$('#btn-config-show-visible').click(function() { $('#config-text').val(maptest.configuration(true));	});
@@ -278,46 +264,14 @@ function initUI(showConfig)
 		maptest.autoRedraw(doAuto);	
 	})
 }
-function wmsLayersAdd() {
-	var lyrsConfig = wmsLayersConfigForSelected();
-	wmsLayersUnselect();
-	var conf = $('#config-text').val();
-	conf += '\n';
-	conf += lyrsConfig;
-	$('#config-text').val(conf);
 
-}
-function wmsLayersUnselect() {
-	$('.config-wms-layers').find('.config-wms-layer-selected').removeClass('config-wms-layer-selected');
-}
-function wmsLayersSelectAll() {
-	$('.config-wms-layers').find('.config-wms-layer').addClass('config-wms-layer-selected');
-}
-function wmsLayersConfigForSelected() {
-	var lyrs = [];
-	$('.config-wms-layers').find('.config-wms-layer-selected').each(function(i, obj) {
-		lyrs.push( $(obj).text() );
-		//$(obj).removeClass('config-wms-layer-selected');
-	});
-	var config = lyrs.join('\n');
-	return config;
-}
-function formatWMSLayers( layers, $lyrs ) {
-	for (var i = 0; i < layers.length; i++) {
-		$('<div>').addClass('config-wms-layer')
-			.text(layers[i])
-			.appendTo( $lyrs )
-			.click( function( lyr) {
-				$(this).toggleClass('config-wms-layer-selected')
-			})
-	}
-}
 MapTest.log = function(msg) {
 	if (! $('#log-enabled').is(':checked')) return;
 	$('.log-text').append('<br>' + msg);
 }
 
 MapTest.closeAll = function() {
+	$('.wms-panel').hide();
 	$('.config-panel').hide();
 	$('.map-log-panel').hide();
 	$('.map-data-panel').hide();
@@ -328,7 +282,6 @@ MapTest.show = function(selector) {
 	MapTest.closeAll();
 	$(selector).show();
 }
-
 function TESTING()
 {
 

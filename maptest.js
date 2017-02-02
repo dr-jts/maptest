@@ -190,7 +190,7 @@ MapTest.prototype.loadConfig = function(configStr) {
 				url: line,
 				metadataURL: ''
 			};
-			ov = null;
+			ov = this.addOverlay(ovParam);
 			continue;
 		}
 		if (Lexer.isTag(MapTest.constants.META_URL, line)) {
@@ -206,10 +206,6 @@ MapTest.prototype.loadConfig = function(configStr) {
 		}
 		if (line.length < 1) continue;
 		if (Lexer.isComment(line)) continue;
-		if (ov == null) {
-			ov = this.addOverlay(ovParam);
-		}
-		
 		loadLayers(ov, line);
 	}
 	this.showLink();
@@ -432,10 +428,10 @@ MapTest.prototype.configuration = function (isVisibleOnly)
 
 //=======================================================
 
-MapTest.prototype.wmsConfig = function (wmsHost)
+MapTest.prototype.wmsLayers = function (wmsHost)
 {
 	var url = wmsHost + "?service=wms&version=1.1.1&request=GetCapabilities";
-	var configLines = [ ];
+	var layers = [ ];
 	var prom = $.get(url, null);
 	var p2 = prom.then(function(data) {
 		var parser = new OpenLayers.Format.WMSCapabilities();
@@ -443,14 +439,24 @@ MapTest.prototype.wmsConfig = function (wmsHost)
 		if (! caps.capability) return configLines;
 		var lyrs = caps.capability.layers;
 		for (var ilyr = 0; ilyr < lyrs.length; ilyr++) {
-			configLines.push(lyrs[ilyr].name);
+			var lyr = lyrs[ilyr];
+			var name = stripPrefix(lyr.name);
+			layers.push( name );
+
+			for (var i = 1; i < lyr.styles.length; i++) {
+				layers.push( name + "*" + lyr.styles[i].name );
+			}
 		}
-		//var config = configLines.join('\n');
-		return configLines;
+		return layers;
 	});
 	return p2;
 }
-
+function stripPrefix(name) {
+	var full = name;
+	var colonLoc = full.indexOf(':');
+	var noPref = colonLoc > 0 ? full.substring(colonLoc + 1) : full;
+	return noPref;
+}
 
 
 

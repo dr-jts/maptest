@@ -435,17 +435,18 @@ MapTest.prototype.configuration = function (isVisibleOnly)
 MapTest.prototype.wmsConfig = function (wmsHost)
 {
 	var url = wmsHost + "?service=wms&version=1.1.1&request=GetCapabilities";
-	var configLines = [ wmsHost ];
+	var configLines = [ ];
 	var prom = $.get(url, null);
 	var p2 = prom.then(function(data) {
 		var parser = new OpenLayers.Format.WMSCapabilities();
 		var caps = parser.read(data);
+		if (! caps.capability) return configLines;
 		var lyrs = caps.capability.layers;
 		for (var ilyr = 0; ilyr < lyrs.length; ilyr++) {
 			configLines.push(lyrs[ilyr].name);
 		}
-		var config = configLines.join('\n');
-		return config;
+		//var config = configLines.join('\n');
+		return configLines;
 	});
 	return p2;
 }

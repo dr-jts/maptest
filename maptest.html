@@ -174,12 +174,16 @@ Enable logging to log all map requests.
 				<div>
 					<input type='button' value='Current' id='btn-config-show'/>
 					<input type='button' value='Current Visible' id='btn-config-show-visible'/>
-					<input type='button' value='From WMS Service' id='btn-config-wms-load'/>
+					<input type='button' value='Add to Layer List' id='btn-config-add' style='margin-left: 20px;'/>
 				</div>
 				<textarea id='config-text' placeholder='Enter configuration text'></textarea>
+				<div class='config-wms-layers'></div>
 				<div>
-					<input type='button' value='Add Map Services' id='btn-config-add'/>
-					<input type='button' value='Clear All' id='btn-overlay-clear' style='color:red;right:40px;position:absolute;'/>
+					<input type='button' value='Show WMS Layers' id='btn-config-wms-load'/>
+					<input type='button' value='Select All' id='btn-config-wms-layer-select'/>
+					<input type='button' value='Unselect All' id='btn-config-wms-layer-unselect'/>
+					<input type='button' value='Copy Layers' id='btn-config-wms-layer-add'/>
+					<input type='button' value='Clear Layer List' id='btn-overlay-clear' style='color:red;right:40px;position:absolute;'/>
 				</div>
 			</div>
 		</div>
@@ -250,16 +254,21 @@ function initUI(showConfig)
 		$('#config-text').val('');
 		$('.config-panel').hide();	
 	});
+	$('#btn-config-wms-layer-add').click( wmsLayersAdd );
+	$('#btn-config-wms-layer-select').click( wmsLayersSelectAll );
+	$('#btn-config-wms-layer-unselect').click( wmsLayersUnselect );
 	$('#btn-config-wms-load').click(function() { 
-		 $('#config-text').addClass('config-wait');
+		$('#config-text').css('height', '45%');
+		$('.config-wms-layers').empty().addClass('config-wait').show();
+
 		var url = $('#config-text').val();
 		var prom = maptest.wmsConfig( url )
-		prom.done(function( config ) {
-			$('#config-text').removeClass('config-wait');
-			$('#config-text').val( config );
-		} );
-		
+		prom.done(function( layers ) {
+			$('.config-wms-layers').removeClass('config-wait');
+			formatWMSLayers( layers, $('.config-wms-layers') );
+		});
 	});
+	$('#btn-config-show').click(function() { $('#config-text').val(maptest.configuration());	});
 	$('#btn-config-show-visible').click(function() { $('#config-text').val(maptest.configuration(true));	});
 	$('#btn-overlay-clear').click(function() { maptest.clear();	});
 			
@@ -268,6 +277,40 @@ function initUI(showConfig)
     	var doAuto = $(this).is(':checked');
 		maptest.autoRedraw(doAuto);	
 	})
+}
+function wmsLayersAdd() {
+	var lyrsConfig = wmsLayersConfigForSelected();
+	wmsLayersUnselect();
+	var conf = $('#config-text').val();
+	conf += '\n';
+	conf += lyrsConfig;
+	$('#config-text').val(conf);
+
+}
+function wmsLayersUnselect() {
+	$('.config-wms-layers').find('.config-wms-layer-selected').removeClass('config-wms-layer-selected');
+}
+function wmsLayersSelectAll() {
+	$('.config-wms-layers').find('.config-wms-layer').addClass('config-wms-layer-selected');
+}
+function wmsLayersConfigForSelected() {
+	var lyrs = [];
+	$('.config-wms-layers').find('.config-wms-layer-selected').each(function(i, obj) {
+		lyrs.push( $(obj).text() );
+		//$(obj).removeClass('config-wms-layer-selected');
+	});
+	var config = lyrs.join('\n');
+	return config;
+}
+function formatWMSLayers( layers, $lyrs ) {
+	for (var i = 0; i < layers.length; i++) {
+		$('<div>').addClass('config-wms-layer')
+			.text(layers[i])
+			.appendTo( $lyrs )
+			.click( function( lyr) {
+				$(this).toggleClass('config-wms-layer-selected')
+			})
+	}
 }
 MapTest.log = function(msg) {
 	if (! $('#log-enabled').is(':checked')) return;

@@ -182,10 +182,12 @@ Enable logging to log all map requests.
 					<input type='button' value='Clear Layer List' id='btn-overlay-clear' style='color:red;right:40px;position:absolute;'/>
 				</div>
 			</div>
+
 			<!-- WMS panel -->	
 			<div class='wms-panel' style='display:none;'>
 				<div class='btn-close' id='btn-wms-close'>x</div>
 				<div>
+					<label>Filter</label> <input type='text' id='wms-layer-filter'/>
 					<input type='button' value='Add All' id='btn-wms-layer-select'/>
 				</div>
 				<div class='wms-layers'></div>
@@ -263,8 +265,22 @@ function initUI(showConfig)
     	var doAuto = $(this).is(':checked');
 		maptest.autoRedraw(doAuto);	
 	})
+	$('#wms-layer-filter').keyup( wmsLayerFilter );
 }
 
+function wmsLayerFilter () {
+	var filterText = $('#wms-layer-filter').val().toUpperCase();
+	var isEmpty = (filterText.length == 0);
+	$('.wms-layers').find('.wms-layer').each(function(i, obj) {
+		var spec = $(obj).text().toUpperCase();
+		var vis = true;
+		if (! isEmpty && spec.indexOf( filterText ) < 0) {
+			vis = false;
+		}
+		 $(obj).toggle(vis);
+	});
+
+}
 MapTest.log = function(msg) {
 	if (! $('#log-enabled').is(':checked')) return;
 	$('.log-text').append('<br>' + msg);

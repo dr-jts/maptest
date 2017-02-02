@@ -197,10 +197,11 @@ body {
 }
 .wms-layer {
 	padding: 2px;
+	cursor: pointer;
 }
 .wms-layer:hover {
-	font-weight: bold;
-	background-color: #dddddd;
+    color: blue;
+    background-color: white;
 }
 .btn-redraw {
 	width: 26px;

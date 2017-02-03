@@ -547,7 +547,8 @@ Overlay.prototype.showWMSLayers = function(  ) {
 	var self = this;
 	MapTest.show('.wms-panel');
 	$('.wms-layers').removeClass('config-wait');
-
+	$('#wms-layer-filter').val('');
+	
 	$('#wms-host-url').text(this.url);
 
 	if (! this.hostLayers) {

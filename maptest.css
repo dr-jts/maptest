@@ -194,6 +194,11 @@ body {
 	background-color: #eeeeee;
 	overflow: scroll;
     padding: 5px;
+	margin-top: 5px;
+}
+.wms-info {
+	font-weight: bold;
+	margin-bottom: 8px;
 }
 .wms-layer {
 	padding: 2px;

@@ -548,18 +548,18 @@ Overlay.prototype.showWMSLayers = function(  ) {
 	MapTest.show('.wms-panel');
 	$('.wms-layers').removeClass('config-wait');
 	$('#wms-layer-filter').val('');
-	
+
 	$('#wms-host-url').text(this.url);
 
 	if (! this.hostLayers) {
-		this.updateHostLayers();
+		this.updateWMSLayers();
 	}
 	else {
 		this.formatWMSLayers( this.hostLayers, $('.wms-layers') );	
 	}
 
 }
-Overlay.prototype.updateHostLayers = function() {
+Overlay.prototype.updateWMSLayers = function() {
 	var self = this;
 	$('.wms-layers').empty().addClass('config-wait').show();
 	var prom = maptest.wmsLayers( this.url )

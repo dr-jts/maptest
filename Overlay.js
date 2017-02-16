@@ -548,6 +548,9 @@ Overlay.prototype.showWMSLayers = function(  ) {
 	MapTest.show('.wms-panel');
 	$('.wms-layers').removeClass('config-wait');
 	$('#wms-layer-filter').val('');
+	$('#btn-wms-layer-reload').click( function() {
+		self.updateWMSLayers();
+	});
 
 	$('#wms-host-url').text(this.url);
 
@@ -560,6 +563,7 @@ Overlay.prototype.showWMSLayers = function(  ) {
 
 }
 Overlay.prototype.updateWMSLayers = function() {
+	this.hostLayers = null;
 	var self = this;
 	$('.wms-layers').empty().addClass('config-wait').show();
 	var prom = maptest.wmsLayers( this.url )

@@ -550,21 +550,19 @@ Overlay.prototype.showWMSLayers = function(  ) {
 	$('#wms-layer-filter').val('');
 	$('#btn-wms-layer-reload').off('click');
 	$('#btn-wms-layer-reload').click( function() {
-		self.updateWMSLayers();
+		self.loadWMSLayers(true);
 	});
 
 	$('#wms-host-url').text(this.url);
 
-	if (! this.hostLayers) {
-		this.updateWMSLayers();
-	}
-	else {
-		this.formatWMSLayers( this.hostLayers, $('.wms-layers') );	
-	}
-
+	this.loadWMSLayers();
 }
-Overlay.prototype.updateWMSLayers = function() {
-	this.hostLayers = null;
+Overlay.prototype.loadWMSLayers = function(isReload) {
+	if (isReload) 
+		this.hostLayers = null;
+
+	if (this.hostLayers) return;
+
 	var self = this;
 	$('.wms-layers').empty().addClass('config-wait').show();
 	var prom = maptest.wmsLayers( this.url )
@@ -574,15 +572,5 @@ Overlay.prototype.updateWMSLayers = function() {
 		self.formatWMSLayers( self.hostLayers, $('.wms-layers') );
 	});
 }
-/*
-Overlay.prototype.wmsLayersAdd = function () {
-	var lyrsConfig = wmsLayersConfigForSelected();
-	wmsLayersUnselect();
-	var conf = $('#config-text').val();
-	conf += '\n';
-	conf += lyrsConfig;
-	$('#config-text').val(conf);
 
-}
-*/
 })();

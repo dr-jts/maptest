@@ -208,6 +208,11 @@ body {
     color: blue;
     background-color: white;
 }
+.wms-layer-in-map {
+	font-style: italic;
+	font-weight: bold;
+	color: green;
+}
 .btn-redraw {
 	width: 26px;
 	height: 26px;

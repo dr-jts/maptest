@@ -322,6 +322,15 @@ Overlay.prototype.remove = function() {
 	var overlay = this.findOverlay();
 	if (overlay) this.map.removeLayer(overlay);
 }
+Overlay.prototype.hasLayer = function (lyrName)
+{		
+	for (var i = 0; i < this.mapLayers.length; i++) {
+		if (this.mapLayers[i].name == lyrName) {
+			return true;
+		}
+	}
+	return false;
+}
 Overlay.prototype.removeLayer = function (lyr)
 {		
 	for (var i = 0; i < this.mapLayers.length; i++) {
@@ -529,20 +538,6 @@ function options(overlay) {
 		visibleInLayerSwitcher: false
 	};
 }
-
-Overlay.prototype.formatWMSLayers = function( layers, $lyrs ) {
-	var self = this;
-	for (var i = 0; i < layers.length; i++) {
-		$('<div>').addClass('wms-layer')
-			.text(layers[i])
-			.appendTo( $lyrs )
-			.click( function( lyr) {
-				//$(this).toggleClass('wms-layer-selected')
-				self.addLayers( [ $(this).text() ] );
-			})
-	}
-}
-
 Overlay.prototype.showWMSLayers = function(  ) {
 	var self = this;
 	MapTest.show('.wms-panel');
@@ -558,10 +553,14 @@ Overlay.prototype.showWMSLayers = function(  ) {
 	this.loadWMSLayers();
 }
 Overlay.prototype.loadWMSLayers = function(isReload) {
+	// force reload
 	if (isReload) 
 		this.hostLayers = null;
-
-	if (this.hostLayers) return;
+	// don't reload unless needed
+	if (this.hostLayers) {
+		this.formatWMSLayers();
+		return;
+	}
 
 	var self = this;
 	$('.wms-layers').empty().addClass('config-wait').show();
@@ -571,6 +570,26 @@ Overlay.prototype.loadWMSLayers = function(isReload) {
 		$('.wms-layers').removeClass('config-wait');
 		self.formatWMSLayers( self.hostLayers, $('.wms-layers') );
 	});
+}
+Overlay.prototype.formatWMSLayers = function( layers, $lyrs ) {
+	var self = this;
+	var layers = self.hostLayers;
+	var $lyrs =  $('.wms-layers');
+	$lyrs.empty();
+	for (var i = 0; i < layers.length; i++) {
+		if (layers[i])
+		var $lyr = $('<div>').addClass('wms-layer')
+			.text(layers[i])
+			.appendTo( $lyrs )
+			.click( function( lyr) {
+				//$(this).toggleClass('wms-layer-selected')
+				self.addLayers( [ $(this).text() ] );
+				$(this).addClass('wms-layer-in-map');
+			})
+		if (self.hasLayer(layers[i])) {
+			$lyr.addClass('wms-layer-in-map');
+		}
+	}
 }
 
 })();

@@ -75,10 +75,6 @@ Overlay.prototype.createOverlayUI = function() {
 	
 	//----  overlay name
 	var $title = $('<div class="overlay-name">').appendTo(this.$root);
-	$('<div class="btn-overlay-controls-toggle">').appendTo($title)
-            	.click(function () { 
-	            	$overlayBlock.find('.overlay-controls-ex').toggle();
-            	} );
 	$('<input type="checkbox" >')
             	.prop('checked', true )
             	.click(function () { 
@@ -94,6 +90,10 @@ Overlay.prototype.createOverlayUI = function() {
 
 //----- overlay controls 
 	var $ctl = $('<div class="overlay-controls">').appendTo(this.$root);
+	$('<div class="btn-overlay-controls-toggle">').appendTo($ctl)
+		.click(function () { 
+			$overlayBlock.find('.overlay-controls-ex').toggle();
+		} );
 	$('<button class="btn-redraw">').appendTo($ctl)
 		.click(function() { self.reload(); });
    	$('<label class="overlay-tiled-title">').text(' Tiled ').appendTo($ctl);
@@ -124,7 +124,7 @@ Overlay.prototype.createOverlayUI = function() {
 		.text('Request Parameter');
    	this.$extraParam = $('<input type="text" size=35>')
    		.attr('id', 'overlay-param')
-   		.attr('title', 'Enter additional request parameters')
+   		.attr('title', 'Enter request parameter: name=value')
    		.appendTo($divparam);
 
 	//------ overlay stats

@@ -246,6 +246,17 @@ body {
 	xfont-weight: bold;
 	font-size: 12pt;
 }
+.btn-overlay-controls-toggle {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	background-position: center center;
+    background-image: url(img/arrowhead-down.png);
+	cursor: pointer;
+}
+.overlay-controls-ex {
+	display: none;
+}
 .overlay-controls {
 	margin: 5px 0px 5px 10px;
 	text-align: left;

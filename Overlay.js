@@ -73,7 +73,12 @@ Overlay.prototype.createOverlayUI = function() {
 	var $overlayBlock = $('<div>').appendTo($('#overlays'));
 	this.$root = $('<div class="overlay">').appendTo($overlayBlock);
 	
+	//----  overlay name
 	var $title = $('<div class="overlay-name">').appendTo(this.$root);
+	$('<div class="btn-overlay-controls-toggle">').appendTo($title)
+            	.click(function () { 
+	            	$overlayBlock.find('.overlay-controls-ex').toggle();
+            	} );
 	$('<input type="checkbox" >')
             	.prop('checked', true )
             	.click(function () { 
@@ -87,21 +92,7 @@ Overlay.prototype.createOverlayUI = function() {
 		.attr('target', '_blank')
 		.appendTo($title);
 
-   	var $add = $('<div class="layer-controls">').appendTo($overlayBlock); 
-   	var $name = $('<input type="text" size=25>')
-   		.attr('id', 'text_layer_name')
-   		.attr('title', 'Enter layer names, comma-separated')
-   		.appendTo($add);
-   	$('<button>').addClass('btn-layer-add').appendTo($add)
-   		.text('+')
-    	.attr('title', 'Add layer')
-  		.click(function() {
-   			var txt = $name.val();
-   			var lyrs = txt.split(',');
-   			self.addLayers( lyrs );
-   			$name.val('');
-   		});
-   		
+//----- overlay controls 
 	var $ctl = $('<div class="overlay-controls">').appendTo(this.$root);
 	$('<button class="btn-redraw">').appendTo($ctl)
 		.click(function() { self.reload(); });
@@ -127,6 +118,16 @@ Overlay.prototype.createOverlayUI = function() {
 		.attr('title','Create Proof Sheet page')
        	.click(function () { self.createProof(); } );
 
+	//---- overlay params
+	var $divparam = $('<div class="overlay-controls-ex">').appendTo(this.$root);
+	$('<div>').appendTo($divparam)
+		.text('Request Parameter');
+   	this.$extraParam = $('<input type="text" size=35>')
+   		.attr('id', 'overlay-param')
+   		.attr('title', 'Enter additional request parameters')
+   		.appendTo($divparam);
+
+	//------ overlay stats
 	var $stat = $('<div class="overlay-stats">').appendTo(this.$root);
 	var $date = $('<div>').appendTo($stat);
 	$('<div class="overlay-time">').appendTo($date)
@@ -153,6 +154,23 @@ Overlay.prototype.createOverlayUI = function() {
 	$('<div class="overlay-time overlay-count">')
    		.attr('id', 'overlay-time-count')
 		.text('0').appendTo($time);
+
+	//------ layer add control
+   	var $add = $('<div class="layer-controls">').appendTo($overlayBlock); 
+   	var $name = $('<input type="text" size=25>')
+   		.attr('id', 'text_layer_name')
+   		.attr('title', 'Enter layer names, comma-separated')
+   		.appendTo($add);
+   	$('<button>').addClass('btn-layer-add').appendTo($add)
+   		.text('+')
+    	.attr('title', 'Add layer')
+  		.click(function() {
+   			var txt = $name.val();
+   			var lyrs = txt.split(',');
+   			self.addLayers( lyrs );
+   			$name.val('');
+   		});
+ 
 		
 	var $lyrctl = $('<div class="layer-controls">').appendTo(this.$root);
 	$('<button>').text('All').appendTo($lyrctl)
@@ -370,6 +388,20 @@ Overlay.prototype.layersParam = function()
 		layers = 'show:' + layers;
 	return layers;
 }
+Overlay.prototype.extraParam = function()
+{
+	var paramStr = this.$extraParam.val();
+	return parseParam( paramStr );
+}
+function parseParam(paramStr) {
+	var param = {};
+	if (paramStr) {
+		var nv = paramStr.split('=');
+		if (nv.length < 2) { nv.push(''); }
+		param[ nv[0] ] = nv[1];
+	}
+	return param;
+}
 Overlay.prototype.updateMap = function (map)
 {
 	var overlay = this.findOverlay();
@@ -381,6 +413,7 @@ Overlay.prototype.updateMap = function (map)
 			layers: this.layersParam(),
 			styles: this.visibleStyles(this.mapLayers)
 			 });
+		overlay.mergeNewParams( this.extraParam() );
 		overlay.setVisibility(true);
 		overlay.redraw({ force:true });
 	}

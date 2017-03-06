@@ -31,10 +31,12 @@ img {
 </head>
 <body onLoad='initPage()'>
 <h1> MapTest Proof Sheet</h1>
+<div>
+	<button onclick="this.style.display='none'; javascript:document.location='data:text/html,'+document.all[0].innerHTML;">Convert to Savable Page</button>
+</div>
 <h3>Map Service: <span id='service-name'>{{SERVICE}}</span></h3>
-<div><a target='_blank' href='{{MAPTEST_PERMALINK}}'>MapTest View</a>
-|
-<button onclick="javascript:document.location='data:text/html,'+document.all[0].innerHTML;">Convert to Savable Page</button>
+<div>
+	<a target='_blank' href='{{MAPTEST_PERMALINK}}'>MapTest View</a>
 </div>
 <div class='toc'>
 {{TOC}}

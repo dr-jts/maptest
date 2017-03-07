@@ -91,10 +91,12 @@ Overlay.prototype.createOverlayUI = function() {
 //----- overlay controls 
 	var $ctl = $('<div class="overlay-controls">').appendTo(this.$root);
 	$('<div class="btn-overlay-controls-toggle">').appendTo($ctl)
+		.attr('title','Additional overlay parameters')
 		.click(function () { 
 			$overlayBlock.find('.overlay-controls-ex').toggle();
 		} );
 	$('<button class="btn-redraw">').appendTo($ctl)
+		.attr('title','Reload overlay')
 		.click(function() { self.reload(); });
    	$('<label class="overlay-tiled-title">').text(' Tiled ').appendTo($ctl);
 	$('<input type="checkbox" class="checkbox-single"/>').appendTo($ctl)

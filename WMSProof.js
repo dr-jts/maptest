@@ -77,11 +77,10 @@ WMSProof.prototype.createLayer = function( index, lyr, mapParam ) {
 	,'  <a id="layer-{{INDEX}}">'
 	,'  <h2 class="layer-heading">{{LYR}}</h2>'
 	,'  </a>'
-	,'  <div>Center: {{CENTER_X}}, {{CENTER_Y}}</div>'
-	,'  <div>Scale: {{SCALE}}</div>'
 	,'  <a target="_blank" href="{{MAPURL}}"><img class="map" src="{{MAPURL}}"'
 	,'    onerror=" document.getElementById(\'toc-layer-{{INDEX}}\').style.color=\'red\' "></a>'
 	,'  <img class="legend" src="{{LEGENDURL}}">'
+	,'  <div style="font-size: 12px;"><b>Scale</b> 1: {{SCALE}}  -  <b>Center</b> {{CENTER_X}}, {{CENTER_Y}} </div>'
 	,'</div>'
 	]);
 	text = text.replace(/{{INDEX}}/g, index );

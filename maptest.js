@@ -34,6 +34,7 @@ MapTest.prototype.initMap = function(mapDiv) {
     this.map = new OpenLayers.Map(mapDiv, {        
             theme: null,   // disable OL auto-loading of CSS
     		div: mapDiv, 
+			numZoomLevels: 24,
     		projection: 'EPSG:3857',
     		displayProjection: 'EPSG:3857'
     		//controls: []

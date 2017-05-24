@@ -14,7 +14,7 @@
 <body>
 <h1>Map Tester</h1>
 
-Supports displaying WMS and ArcGIS REST map services as map overlays.
+Displays WMS and ArcGIS REST map services as map overlays.
 
 <h2>Map Service Configuration</h2>
 
@@ -71,10 +71,11 @@ LAYER4*STYLE
 
 The layers can be configured from the capabilities of a WMS service.
 <ul>
-	<li>Configure the host by entering the host URL in the configuration panel
-and clicking <button>Add to Layer List</button></li>
-	<li>To add layers open the WMS Layers panel by clicking <button class='btn-wms-layer-add'>+</button> </li>
-	<li>Click a layer to add it to the layer list.  Ctl-click to add the layer and make it visible/li>
+	<li><b>Configure the host</b> - Enter the host URL in the configuration panel
+and click <button>Add to Layer List</button></li>
+    <li>An Overlay for the host is added to the Layer List</li>
+	<li><b>Add WMS layers</b> - Open the WMS Layers panel by clicking <button class='btn-wms-layer-add'>+</button> </li>
+	<li><b>Add a layer</b> - Click layer name to add it to the layer list.  Ctl-click to add it as visible</li>
 </ul>
 
 <h2>User Interface</h2> 
@@ -82,16 +83,16 @@ and clicking <button>Add to Layer List</button></li>
 
 <h4>Add Layers from WMS Capabilities</h4>
 
-Click <button class='btn-wms-layer-add'>+</button> to open <b>WMS Layers</b> panel.
+<button class='btn-wms-layer-add'>+</button> Click to open <b>WMS Layers</b> panel.
 
 <h4>Map Request Status</h4>
 
-Click <button class='btn-query'>?</button> to display a map request and the response to it.
+<button class='btn-query'>?</button> Click to display a map request and the response to it.
 Some kinds of errors can be displayed.
 
 <h4>WMS Proof Sheet</h4>
 
-Click <button>Proof</button> to display a WMS Proof Sheet in a new window.
+<button>Proof</button> Click to display a WMS Proof Sheet in a new window.
 The Proof sheet shows images and legends of visible layers.
 The Proof sheet can be converted to a savable HTML file.
 
@@ -101,7 +102,7 @@ Add layers to an overlay by entering one or more layer names (comma-separated)
 and clicking <button class='btn-layer-add'>?</button>.
 
 <h3>Extent</h3>
-Enter an extent in the zoom box and click <b>Zoom</b>.
+Enter an extent in the zoom box and click <span class="btn-zoom">Zoom</span>.
 
 <h3>Auto-Reload</h3>
 Check <b>Auto</b> to auto-reload visible overlays with a set frequency.
@@ -110,7 +111,7 @@ This collects load time statistics and allows assessing performance under load.
 <h3>Logging</h3>
 Enable logging to log all map requests.
 <ul>
-    <li>Open the logging screen by clicking <button>Log</button></li>
+    <li><button>Log</button> Click to open the logging screen </li>
     <li>Check <b>Enable</b> to enable/disable logging
 </ul>
 				</div>

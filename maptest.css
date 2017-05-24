@@ -121,7 +121,7 @@ body {
 	top: 10px; left: 40px;
 	z-index: 1004;
 }
-#btn-zoom {
+.btn-zoom {
 	background-color: #809EC4;
 	color: white;
 	border: 2px solid #809EC4;
@@ -255,6 +255,11 @@ body {
     background-image: url(img/arrowhead-down.png);
 	cursor: pointer;
 }
+.btn-layer-add {
+	font-size: 16px !important;
+	font-weight: bold;
+	color: #60bb60;
+}
 .overlay-controls-ex {
 	display: none;
 }
@@ -313,11 +318,6 @@ body {
 	background-color: #dddddd;
     padding: 3px;
     border-radius: 3px;
-}
-.btn-layer-add {
-	font-size: 16px !important;
-	font-weight: bold;
-	color: #60bb60;
 }
 .layer-div {
 	position: relative;

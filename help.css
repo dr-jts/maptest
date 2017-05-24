@@ -4,4 +4,8 @@ body {
 	background:#E0ECFA;
 	font-family:Tahoma, "Lucida Sans Unicode", "Lucida Grande", Verdana, sans-serif;
 	margin: 10px;
-	}
+}
+
+.help-code {
+    background-color: #eeeeee
+}

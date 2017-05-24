@@ -107,7 +107,7 @@ Overlay.prototype.createOverlayUI = function() {
 			self.clearTime();
 			self.reload();
 		} );
-	$('<button class="">').appendTo($ctl)
+	$('<button class="btn-wms-layer-add">').appendTo($ctl)
 		.text('+')
 		.attr('title','Add layers from WMS')
        	.click(function () { self.showWMSLayers();	} );

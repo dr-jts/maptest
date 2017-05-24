@@ -615,10 +615,15 @@ Overlay.prototype.formatWMSLayers = function( layers, $lyrs ) {
 		if (layers[i])
 		var $lyr = $('<div>').addClass('wms-layer')
 			.text(layers[i])
+			.attr('title', 'Click to add layer to layer list.  Ctl-click to add and make visible.')
 			.appendTo( $lyrs )
-			.click( function( lyr) {
+			.click( function( e ) {
 				//$(this).toggleClass('wms-layer-selected')
-				self.addLayers( [ $(this).text() ] );
+				var lyrName = $(this).text();
+				if (e.ctrlKey) {
+					lyrName += '+';
+				}
+				self.addLayers( [ lyrName ] );
 				$(this).addClass('wms-layer-in-map');
 			})
 		if (self.hasLayer(layers[i])) {

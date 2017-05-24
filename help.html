@@ -1,0 +1,113 @@
+<html>
+     <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>MapTest</title>
+    
+<link rel="stylesheet" href="lib/theme/default/style.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="help.css">
+
+</head>
+<body>
+<h1>Map Tester</h1>
+
+Supports displaying WMS and ArcGIS REST map services as map overlays.
+
+<h2>Map Service Configuration</h2>
+
+<h3>Via URL</h3>
+
+Basic configuration can be loaded via URL parameters.  
+
+<pre>
+http://apphost/maptest.html 
+         [ ?host=http://some.host/mapservice ] 
+         [ &amp;lyr=LYRA,LYRB,LYRC ] 
+         [ &amp;extent=MIN_LON,MIN_LAT,MAX_LON,MAX_LAT ]
+</pre>
+
+<p>
+The <b>Permalink</b> opens a new page with the top map overlay as parameters.
+
+<ul>
+	<li><code>host</code>, <code>lyr</code>, <code>extent</code> parameters are optional</li>
+</ul>
+
+<h3>Via Text</h3>
+
+Map services are configured by a simple text configuration format.
+The configuration schema contains the following:
+<ul>
+	<li><b>URL</b> for the map service host</li>
+	<li>(Optional) <b>Metadata link</b> specified as <code>meta-url: link</code> </li>
+	<li>(Optional, multiple) <b>URL parameter</b> specified as <code>param: name=value</code> </li>
+	<li>A list of one or more map service <b>layers</b>
+		<ul>
+			<li>Layer names can be comma-separated or on separate lines</li>
+			<li>A layer can be specified as visible by appending <code>+</code> </li>
+			<li>A layer style can be specified by appending <code>*style</code> </li>
+		</ul>
+		</li>
+</ul>
+
+Multiple services can be configured, separated by a blank line.
+
+<p>
+<h4>Example configuration for a single map service</h4>
+<pre>
+http://some.host/mapservice
+meta-url: http://some.host/mapservice/meta
+param: name=value
+param: name2=value2
+LAYER1,LAYER2
+LAYER3+
+LAYER4*STYLE
+</pre>
+
+<h3>Via WMS Capabilities</h3>
+
+The layers can be configured from the capabilities of a WMS service.
+<ul>
+	<li>Configure the host by entering the host URL in the configuration panel
+and clicking <b>[Add to Layer List]</b></li>
+	<li>To add layers open the WMS Layers panel by clicking <b>[+]</b></li>
+	<li>Click a layer to add it to the layer list.  Ctl-click to add the layer and make it visible/li>
+</ul>
+
+<h2>User Interface</h2> 
+<h3>Overlays & Layers</h3>
+
+<h4>Add Layers from WMS Capabilities</h4>
+
+Click <b>[+]</b> to open WMS Layers panel.
+
+<h4>Map Request Status</h4>
+
+Click <b>[?]</b> to display a map request and the response to it.
+Some kinds of errors can be displayed.
+
+<h4>WMS Proof Sheet</h4>
+
+Click <b>[Proof]</b> to display a WMS Proof Sheet in a new window.
+The Proof sheet shows images and legends of visible layers.
+The Proof sheet can be converted to a savable HTML file.
+
+<h4>Add Layers from text entry</h4>
+
+Add layers to an overlay by entering one or more layer names (comma-separated) and clicking <b>[+]</b>.
+
+<h3>Extent</h3>
+Enter an extent in the zoom box and click <b>Zoom</b>.
+
+<h3>Auto-Reload</h3>
+Check <b>Auto</b> to auto-reload visible overlays with a set frequency.
+This allows gathering load time statistics and assessing performance under load.
+
+<h3>Logging</h3>
+Enable logging to log all map requests.
+				</div>
+			</div>
+</body>
+</html>

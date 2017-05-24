@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <title>MapTest</title>
+    <title>MapTest Help</title>
     
 <link rel="stylesheet" href="lib/theme/default/style.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="openlayers.css">
@@ -22,96 +22,12 @@
 					<button id='btn-configure' title='Configuration create/edit'>Configure</button>
 					<button id='btn-log' class='btn-log' title='Show log'>Log</button>
 				</td>
-				<td align='right'><a id='map-link' target='_blank' href=''>Permalink</a> <button id='btn-help' class='btn-help' title='Show Help'>?</button></td>
+				<td align='right'><a id='map-link' target='_blank' href=''>Permalink</a> <a href='help.html' target='help'><button class='btn-help' title='Show Help'>?</button></a></td>
 			</tr>
 		</table>
 
 
 </div>
-			<!-- Help panel -->	
-			<div class='help-panel' style='display: none;'>
-				<div class='btn-close' id='btn-help-close'>x</div>
-				<div class='help-content' style='margin-left:0px;margin-top:10px;'>
-<h1>Map Tester</h1>
-
-Supports displaying WMS and ArcGIS REST map services as map overlays.
-
-<h2>Map Service Configuration</h2>
-
-<h3>URL</h3>
-
-Basic configuration can be loaded via URL parameters.  
-
-<pre>
-http://apphost/maptest.html 
-         [ ?host=http://some.host/mapservice ] 
-         [ &amp;lyr=LYRA,LYRB,LYRC ] 
-         [ &amp;extent=MIN_LON,MIN_LAT,MAX_LON,MAX_LAT ]
-</pre>
-
-<p>
-The <b>Permalink</b> opens a new page with the top map overlay as parameters.
-
-<ul>
-	<li><code>host</code>, <code>lyr</code>, <code>extent</code> parameters are optional</li>
-</ul>
-
-<h3>Text</h3>
-
-Map services are configured by a simple text configuration format.
-The configuration schema contains the following:
-<ul>
-	<li><b>URL</b> for the map service host</li>
-	<li>(Optional) <b>Metadata link</b> specified as <code>meta-url: link</code> </li>
-	<li>(Optional, multiple) <b>URL parameter</b> specified as <code>param: name=value</code> </li>
-	<li>A list of one or more map service <b>layers</b>
-		<ul>
-			<li>Layer names can be comma-separated or on separate lines</li>
-			<li>A layer can be specified as visible by appending <code>+</code> </li>
-			<li>A layer style can be specified by appending <code>*style</code> </li>
-		</ul>
-		</li>
-</ul>
-
-Multiple services can be configured, separated by a blank line.
-<p>
-The configuration can be created from the capabilities of a WMS service.
-Enter the host URL in the configuration panel, and click <b>[From WMS Service]</b>
-
-<p>
-<h4>Example configuration for a single map service</h4>
-<pre>
-http://some.host/mapservice
-meta-url: http://some.host/mapservice/meta
-param: name=value
-param: name2=value2
-LAYER1,LAYER2
-LAYER3+
-LAYER4*STYLE
-</pre>
-
-<h2>User Interface</h2> 
-<h3>Overlays & Layers</h3>
-
-Add layers to an overlay by entering one or more layer names (comma-separated).
-
-<h4>Map Request Status</h4>
-
-Click <b>?</b> to display a map request and the response to it.
-Some kinds of errors can be displayed.
-
-<h3>Extent</h3>
-Enter an extent in the zoom box and click <b>Zoom</b>.
-
-<h3>Auto-Reload</h3>
-Check <b>Auto</b> to auto-reload visible overlays with a set frequency.
-This allows gathering load time statistics and assessing performance under load.
-
-<h3>Logging</h3>
-Enable logging to log all map requests.
-				</div>
-			</div>
-
 
 <div class='menu-container'>	
 <div  > 
@@ -248,7 +164,6 @@ function initUI(showConfig)
 	}
 	$('.btn-close').click( MapTest.closeAll );
 	$('#btn-log').click(function() { MapTest.show('.map-log-panel'); });
-	$('#btn-help').click(function() { MapTest.show('.help-panel'); });
 	
 	$('#btn-configure').click(function() { MapTest.show('.config-panel');	});
 	$('#btn-zoom').click(function() { maptest.zoom( $('#map-extent').val() );	});

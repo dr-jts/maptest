@@ -578,6 +578,11 @@ Overlay.prototype.showWMSLayers = function(  ) {
 	MapTest.show('.wms-panel');
 	$('.wms-layers').removeClass('config-wait');
 	$('#wms-layer-filter').val('');
+	$('#btn-wms-layer-addall').off('click');
+	$('#btn-wms-layer-addall').click( function() {
+		self.addLayers( self.hostLayers );
+		$(".wms-layer").addClass('wms-layer-in-map');
+	});
 	$('#btn-wms-layer-reload').off('click');
 	$('#btn-wms-layer-reload').click( function() {
 		self.loadWMSLayers(true);

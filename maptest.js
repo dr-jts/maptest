@@ -158,6 +158,9 @@ MapTest.prototype.initInfoCtl = function(ov) {
 				},
 				eventListeners: {
 					getfeatureinfo: function(event) {
+						var txt = event.text;
+						// abort if no data returned
+						if (! txt.includes("<table")) return;
 						var pop = new OpenLayers.Popup.FramedCloud(
 							"identify", 
 							this.map.getLonLatFromPixel(event.xy),

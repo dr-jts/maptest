@@ -277,7 +277,8 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 		*/
 		.appendTo($div);
 		
-	var urlLegend = this.url + "?SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer=" + lyr.name;
+	var urlLegend = UrlParams.addParams(this.url, 
+		"SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer=" + lyr.name);
 	if (lyr.style) urlLegend += "&STYLE=" + lyr.style;
 	
 	$divLegend = $('<div>').addClass('layer-legend').appendTo( $div );

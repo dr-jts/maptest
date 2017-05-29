@@ -434,7 +434,7 @@ MapTest.prototype.configuration = function (isVisibleOnly)
 
 MapTest.prototype.wmsLayers = function (wmsHost)
 {
-	var url = wmsHost + "?service=wms&version=1.1.1&request=GetCapabilities";
+	var url = UrlParams.addParams(wmsHost, "service=wms&version=1.1.1&request=GetCapabilities");
 	var layers = [ ];
 	var prom = $.get(url, null);
 	var p2 = prom.then(function(data) {
@@ -454,6 +454,12 @@ MapTest.prototype.wmsLayers = function (wmsHost)
 		return layers;
 	});
 	return p2;
+}
+function addURLParams(url, params) {
+	if (url.includes('?')) {
+		return url + "&" + params;
+	}
+	return url + "?" + params;
 }
 function stripPrefix(name) {
 	var full = name;

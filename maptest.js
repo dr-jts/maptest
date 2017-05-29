@@ -455,12 +455,6 @@ MapTest.prototype.wmsLayers = function (wmsHost)
 	});
 	return p2;
 }
-function addURLParams(url, params) {
-	if (url.includes('?')) {
-		return url + "&" + params;
-	}
-	return url + "?" + params;
-}
 function stripPrefix(name) {
 	var full = name;
 	var colonLoc = full.indexOf(':');

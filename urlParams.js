@@ -29,7 +29,7 @@ UrlParams.asArray = function(str)
 	return str.split(',');
 }
 UrlParams.addParams = function (url, params) {
-	if (url.includes('?')) {
+	if (url.indexOf('?') >= 0) {
 		return url + "&" + params;
 	}
 	return url + "?" + params;

@@ -123,8 +123,9 @@ Overlay.prototype.createOverlayUI = function() {
 	//---- overlay params
 	var $divparam = $('<div class="overlay-controls-ex">').appendTo(this.$root);
 	$('<div>').appendTo($divparam)
+		.addClass('label')
 		.text('Request Parameter');
-   	this.$extraParam = $('<input type="text" size=35>')
+   	this.$extraParam = $('<textarea type="text" size=35>')
    		.attr('id', 'overlay-param')
    		.attr('title', 'Enter request parameter: name=value')
    		.appendTo($divparam);
@@ -399,9 +400,10 @@ Overlay.prototype.extraParam = function()
 function parseParam(paramStr) {
 	var param = {};
 	if (paramStr) {
-		var nv = paramStr.split('=');
-		if (nv.length < 2) { nv.push(''); }
-		param[ nv[0] ] = nv[1];
+		var eqIndex = paramStr.indexOf('=');
+		var name = paramStr.substr(0, eqIndex);
+		var val = paramStr.substr(eqIndex+1);
+		param[ name ] = val;
 	}
 	return param;
 }

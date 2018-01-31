@@ -332,16 +332,15 @@ body {
 }
 .layer-title {
 	word-break: break-all;
+	cursor: pointer;
 }
 .layer-tools {
 	display: none;
-	position: absolute;
 	background-color: #CBDCF5;
 	padding: 2px;
-	top: 0px;
-	right: 0px;
-	border: 4px solid #E0ECFA;
-    border-radius: 3px;
+	margin: 4px 20px 4px 20px;
+	border-radius: 3px;
+
 }
 .layer-tool {
 	padding-left: 2px;

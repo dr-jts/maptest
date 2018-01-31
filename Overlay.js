@@ -223,9 +223,27 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 	var self = this;
 	var $div = $('<div>').addClass('layer-div').appendTo(this.$layers);
 	
-	$div.on('mouseenter', function() {	$tools.show();	});
-	$div.on('mouseleave', function() {	$tools.hide();	});
+	//$div.on('mouseenter', function() {	$tools.show();	});
+	//$div.on('mouseleave', function() {	$tools.hide();	});
 	
+	var $chk = $('<input type="checkbox" class="cb-layer-vis"/>')
+				.appendTo($div)
+            	.attr('title', 'Change layer visibility')
+            	.prop('checked', lyr.visibility)
+            	.click(function () { 
+	            	var isVisible = $(this).is(':checked');
+	            	lyr.visibility = isVisible;
+	            	self.updateMapLayer(lyr);
+	            	self.clearTime();
+            	} );
+	var $name = $('<label/>').appendTo($div)
+		.addClass('layer-title')
+		.attr('title', layerTitle(lyr))
+		.append( layerSpec(lyr) )
+		.click( function() {
+			$tools.toggle();
+		});
+
 	var $tools = $('<div class="layer-tools">').appendTo($div);
 	$('<span>').addClass('layer-remove layer-tool').appendTo($tools)
 		.text('x')
@@ -256,27 +274,6 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 			$nxt.after($div);
 			$tools.hide();
 		});
-	var $chk = $('<input type="checkbox" class="cb-layer-vis"/>')
-            	.attr('title', 'Change layer visibility')
-            	.prop('checked', lyr.visibility)
-            	.click(function () { 
-	            	var isVisible = $(this).is(':checked');
-	            	lyr.visibility = isVisible;
-	            	self.updateMapLayer(lyr);
-	            	self.clearTime();
-            	} );
-	var $name = $('<label/>')
-		.append($chk)
-		.append( layerSpec(lyr) )
-		.addClass('layer-title')
-		.attr('title', layerTitle(lyr))
-		/*
-		.click(function() {
-			$('#maplayers').find('.title-selected').removeClass('title-selected'); 
-			$(this).toggleClass('title-selected'); })
-		//.dblclick(function() { self.loadLayer(lyr.name); })
-		*/
-		.appendTo($div);
 		
 	var urlLegend = UrlParams.addParams(this.url, 
 		"SERVICE=WMS&VERSION=1.1.1&REQUEST=getlegendgraphic&FORMAT=image/png&layer=" + lyr.name);

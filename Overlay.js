@@ -261,7 +261,7 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 			if (! $prev.length) return;
 			$div.detach();
 			$prev.before($div);
-			$tools.hide();
+			//$tools.hide();
 		});
 	$('<span>').addClass('layer-down layer-tool').appendTo( $tools )
 		.text('V')
@@ -272,7 +272,7 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 			if (! $nxt.length) return;
 			$div.detach();
 			$nxt.after($div);
-			$tools.hide();
+			//$tools.hide();
 		});
 		
 	var urlLegend = UrlParams.addParams(this.url, 

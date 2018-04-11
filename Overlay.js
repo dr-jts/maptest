@@ -314,12 +314,12 @@ function showStatus(msg) {
 function showURL(url) {
 		showStatus('Requesting...');
 		$('#map-status-url-href').attr('href', url);
-		$('#map-status-url').html(formatUrl(url));
+		$('#map-status-url').val(formatUrl(url));
 }
 function formatUrl(url) {
 	var url2 = url
-				.replace(/&/g, '<br>&')
-				.replace(/\?/g, '<br>?');
+				.replace(/&/g, '\n&')
+				.replace(/\?/g, '\n?');
 	return url2;
 }
 Overlay.prototype.reload = function ()
@@ -334,8 +334,6 @@ Overlay.prototype.getMapURL = function () {
 
 Overlay.prototype.findOverlay = function() {
 	return this.mapOverlay;
-	//return this.map.getLayer(this.url);
-	//return this.map.getLayersByName(this.name)[0];
 }
 Overlay.prototype.remove = function() {
 	var overlay = this.findOverlay();

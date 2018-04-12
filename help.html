@@ -25,6 +25,7 @@ Basic configuration can be loaded via URL parameters.
 <pre class='help-code'>
 http://apphost/maptest.html 
          [ ?host=http://some.host/mapservice ] 
+         [ &amp;tile=t ] 
          [ &amp;lyr=LYRA,LYRB,LYRC ] 
          [ &amp;extent=MIN_LON,MIN_LAT,MAX_LON,MAX_LAT ]
 </pre>
@@ -43,6 +44,7 @@ The configuration schema contains the following:
 <ul>
 	<li><b>URL</b> for the map service host</li>
 	<li>(Optional) <b>Metadata link</b> specified as <code>meta-url: link</code> </li>
+	<li>(Optional) <b>Tiling</b> specified as <code>tile: t</code> </li>
 	<li>(Optional, multiple) <b>URL parameter</b> specified as <code>param: name=value</code> </li>
 	<li>A list of one or more map service <b>layers</b>
 		<ul>
@@ -60,6 +62,7 @@ Multiple services can be configured, separated by a blank line.
 <pre class='help-code'>
 http://some.host/mapservice
 meta-url: http://some.host/mapservice/meta
+tile: t
 param: name=value
 param: name2=value2
 LAYER1,LAYER2

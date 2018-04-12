@@ -128,16 +128,17 @@
 function initPage() {
 	
 	maptest = new MapTest('map_div');
-	var configUrl = loadUrlConfig();
+	var configUrl = loadConfigFromURL( window.location.search );
 	var showConfigPanel = ! configUrl;
 	initUI(showConfigPanel);
 	//TESTING();
 }
 
-function loadUrlConfig() {
-	var config = UrlParams.extract(window.location.search);
+function loadConfigFromURL(url) {
+	var config = UrlParams.extract( url );
 	if (! config.host) return null;
 	var configTxt = config.host + '\n';
+	if (config.tile) configTxt += 'tile: ' + config.tile + '\n';
 	var lyrs = UrlParams.asArray(config.lyr);
 	configTxt += lyrs.join('\n');
 	

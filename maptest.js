@@ -24,9 +24,13 @@ MapTest.getLog = function(sep) {
 	return log.join(sep + '\n');
 }
 
-MapTest.constants = {};
-MapTest.constants.META_URL = 'meta-url';
-MapTest.constants.PARAM = 'param';
+MapTest.constants = {
+	META_URL: 'meta-url',
+	TILE: 'tile',
+	PARAM: 'param'
+};
+//MapTest.constants.META_URL = 'meta-url';
+//MapTest.constants.PARAM = 'param';
 
 MapTest.prototype.initMap = function(mapDiv) {
 	var self = this;
@@ -87,7 +91,7 @@ MapTest.prototype.initMap = function(mapDiv) {
  	    ]);
 	this.map.addControl(new OpenLayers.Control.LayerSwitcher());
 	this.map.addControl(new OpenLayers.Control.ScaleEx(null, { geodesic: true, 
-			template: " Zoom: ${zoom} -- Scale Nom: ${scaleDenomPreciseNom} -- Geo: ${scaleDenomPreciseGeo} " } ));
+			template: " Level: ${zoom} -- Scale Nom: ${scaleDenomPreciseNom} -- Geo: ${scaleDenomPreciseGeo} " } ));
 	this.map.addControl(new OpenLayers.Control.MousePosition({ displayProjection: 'EPSG:4326' })); 	    
 /*
     var road = new OpenLayers.Layer.Bing({
@@ -185,7 +189,6 @@ MapTest.prototype.showInfo = function(evt) {
 }
 MapTest.prototype.loadConfig = function(configStr) {
 	var lines = configStr.split(/[\n]/);
-	var ov;
 	var ovParam = {};
 	for (var i = 0; i < lines.length; i++) {
 		var line = shimTrim(lines[i]);
@@ -194,7 +197,6 @@ MapTest.prototype.loadConfig = function(configStr) {
 				url: line,
 				metadataURL: ''
 			};
-			ov = this.addOverlay(ovParam);
 			continue;
 		}
 		if (Lexer.isTag(MapTest.constants.META_URL, line)) {
@@ -202,14 +204,22 @@ MapTest.prototype.loadConfig = function(configStr) {
 			continue;
 		}
 		if (Lexer.isTag(MapTest.constants.PARAM, line)) {
-			 var nv = Lexer.taggedParam(line);
-			 //if (! ovParam.param) ovParam.param = {};
-			 //ovParam.param[nv.name] = nv.value;
-			 ovParam.param = $.extend({}, ovParam.param, nv);
+			var nv = Lexer.taggedParam(line);
+			//if (! ovParam.param) ovParam.param = {};
+			//ovParam.param[nv.name] = nv.value;
+			ovParam.param = $.extend({}, ovParam.param, nv);
+			continue;
+		}
+		if (Lexer.isTag(MapTest.constants.TILE, line)) {
+			var nv = Lexer.taggedValue(line);
+			ovParam.tile = nv.tile ? true : false;
 			continue;
 		}
 		if (line.length < 1) continue;
 		if (Lexer.isComment(line)) continue;
+		if (! ov) {
+			var ov = this.addOverlay(ovParam);
+		}
 		loadLayers(ov, line);
 	}
 	this.showLink();
@@ -259,6 +269,11 @@ ConfigParser.prototype.parseOverlayParams = function( lines, ov ) {
 		}
 		if (Lexer.isTag(MapTest.constants.PARAM, line)) {
 			var nv = Lexer.taggedParam(line);
+			ov.param = $.extend({}, ov.param, nv);
+			isParam = true;
+		}
+		if (Lexer.isTag(MapTest.constants.TILE, line)) {
+			var nv = Lexer.taggedValue(line);
 			ov.param = $.extend({}, ov.param, nv);
 			isParam = true;
 		}
@@ -313,7 +328,10 @@ var Lexer = {
 	},
 	taggedValue: function (s) {
 		var value = s.slice( s.indexOf(':')+1);
-		return shimTrim( value );
+		var name = s.slice( 0, s.indexOf(':') );
+		var nv = {};
+		nv[name] = shimTrim( value );
+		return nv;
 	},
 	taggedParam: function (s) {
 		var value = s.slice( s.indexOf(':')+1);

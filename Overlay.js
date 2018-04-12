@@ -7,7 +7,7 @@ Overlay = function(map, name, param) {
 	this.metadataURL = param.metadataURL;
 	this.param = param.param;
 	this.mapLayers = [];
-	this.isTiled = false;
+	this.isTiled = param.tile ? true : false;
 	this.type = 'wms';
 	if (isArcGIS(this.url))
 		this.type = 'arcgis';
@@ -33,7 +33,7 @@ Overlay.prototype.onChange = function( fOnChange ) {
 Overlay.prototype.changed = function( ) {
 	this.onChange(this);
 }
-
+// Create Overlay Permalink params
 Overlay.prototype.urlParam = function()
 {
 	var param = '?host=' + this.url;
@@ -45,6 +45,9 @@ Overlay.prototype.urlParam = function()
 		return name;
 		*/
 	});
+	if (this.isTiled) {
+		param += '&tile=t';
+	}
 	param += '&lyr=' + lyrName.join(",");
 	return param;
 }
@@ -98,7 +101,7 @@ Overlay.prototype.createOverlayUI = function() {
 	$('<button class="btn-redraw">').appendTo($ctl)
 		.attr('title','Reload overlay')
 		.click(function() { self.reload(); });
-   	$('<label class="overlay-tiled-title">').text(' Tiled ').appendTo($ctl);
+   	$('<label class="overlay-tiled-title">').text(' Tile ').appendTo($ctl);
 	$('<input type="checkbox" class="checkbox-single"/>').appendTo($ctl)
 		.attr('name','foo')
 		.prop('checked', self.isTiled)

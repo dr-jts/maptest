@@ -244,7 +244,9 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 		.attr('title', layerTitle(lyr))
 		.append( layerSpec(lyr) )
 		.click( function() {
-			$tools.toggle();
+			var show = ! $tools.is(':visible');
+			$('.layer-tools').hide();
+			if (show) $tools.toggle();
 		});
 
 	var $tools = $('<div class="layer-tools">').appendTo($div);
@@ -540,6 +542,9 @@ Overlay.prototype.visibleStyles = function(mapLyrs)
 }
 Overlay.prototype.configuration = function(isVisibleOnly) {
 	config = this.url + '\n';
+	if (this.isTiled) {
+		config += 'tiled: true\n';
+	}
 	$(this.mapLayers).each(function(i, lyr) {
 		if (isVisibleOnly && ! lyr.visibility)
 			return;

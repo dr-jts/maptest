@@ -188,8 +188,10 @@ MapTest.prototype.showInfo = function(evt) {
 	$('.data-text').html(evt.text);
 }
 MapTest.prototype.loadConfig = function(configStr) {
+	var self = this;
 	var lines = configStr.split(/[\n]/);
-	var ovParam = {};
+	var ov = null;
+	var ovParam = null;
 	for (var i = 0; i < lines.length; i++) {
 		var line = shimTrim(lines[i]);
 		if (Lexer.isURL(line)) {
@@ -217,13 +219,19 @@ MapTest.prototype.loadConfig = function(configStr) {
 		}
 		if (line.length < 1) continue;
 		if (Lexer.isComment(line)) continue;
-		if (! ov) {
-			var ov = this.addOverlay(ovParam);
-		}
+		loadOV();
 		loadLayers(ov, line);
 	}
+	// handles case of single URL line
+	loadOV();
 	this.showLink();
 
+	function loadOV() {
+		if (ovParam) {
+			ov = self.addOverlay(ovParam);
+		}
+		ovParam = null;
+	}
 	function loadLayers(ov, line) {
 		var layers = line.split(',');
 		ov.addLayers(layers);

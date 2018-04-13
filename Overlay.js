@@ -543,7 +543,7 @@ Overlay.prototype.visibleStyles = function(mapLyrs)
 Overlay.prototype.configuration = function(isVisibleOnly) {
 	config = this.url + '\n';
 	if (this.isTiled) {
-		config += 'tiled: true\n';
+		config += 'tile: true\n';
 	}
 	$(this.mapLayers).each(function(i, lyr) {
 		if (isVisibleOnly && ! lyr.visibility)

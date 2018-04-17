@@ -19,6 +19,24 @@ body {
     -o-transition: opacity 0.1s linear;
     transition: opacity 0.1s linear;
 }
+div.olControlMousePosition {
+    bottom: 0px;
+    left: 10px;
+	width: 130px;
+	height: 10px;
+	padding: 4px;
+	text-align: right;
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: smaller;
+}
+.olControlScaleEx {
+	left: 170px;
+	width: 300px;
+	height: 10px;
+	padding: 4px;
+}
 /*------------------------------------*/
 .page-header {
 	position: absolute;

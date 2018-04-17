@@ -160,17 +160,16 @@ body {
 	position: absolute;
 	left: 0px;
 	top: 40px;
-	bottom: 10px;
+	bottom: 40px;
 	width: 60%;
 	padding: 25px;
 	background-color: #A9C1E5;
-	xdisplay: none;	
+	xdisplay: none;
 	z-index: 3000;
 }
-
 #config-text {
 	width: 100%;
-	height: 90%;
+	height: 95%;
 }
 .config-wait {
 	color: #bbbbbb;

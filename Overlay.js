@@ -295,7 +295,10 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 }
 
 Overlay.prototype.showGetMapResponse = function() {
-	showURL(this.getMapURL());
+	MapTest.show('.map-status-panel');
+	MapTest.state.currOverlay = this;
+	showURL( this.getMapURL() );
+	showStatus('Requesting...');
 	$.ajax(this.getMapURL(),
 		{ 	type: 'GET',
     		dataType: 'text',
@@ -313,19 +316,20 @@ Overlay.prototype.showGetMapResponse = function() {
 	}
 }	
 function showStatus(msg) {
-		MapTest.show('.map-status-panel');
-		$('#map-status').text(msg);
+	$('#map-status').text(msg);
 }
 function showURL(url) {
-		showStatus('Requesting...');
-		$('#map-status-url-href').attr('href', url);
-		$('#map-status-url').val(formatUrl(url));
+	$('#map-status-url-href').attr('href', url);
+	$('#map-status-url').val( formatUrl(url) );
 }
 function formatUrl(url) {
 	var url2 = url
 				.replace(/&/g, '\n&')
 				.replace(/\?/g, '\n?');
 	return url2;
+}
+Overlay.prototype.showGetFeatureURL = function() {
+	showURL( this.getFeatureURL() );
 }
 Overlay.prototype.reload = function ()
 {
@@ -336,7 +340,11 @@ Overlay.prototype.getMapURL = function () {
 	var overlay = this.findOverlay();
 	return overlay.getURL(overlay.getTileBounds(new OpenLayers.Pixel(0,0)));
 }
-
+Overlay.prototype.getFeatureURL = function () {
+	var overlay = this.findOverlay();
+	var lyr = overlay.params.LAYERS;
+	return overlay.url + '?service=wfs&version=2.0.0&request=GetFeature&typeNames='+lyr+'&count=10&srsName=EPSG:4326';
+}
 Overlay.prototype.findOverlay = function() {
 	return this.mapOverlay;
 }

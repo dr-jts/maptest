@@ -58,8 +58,10 @@
 		<!-- Map Status panel -->	
 			<div class='map-status-panel'  style='display:none;'>
 				<div class='btn-close' id='btn-status-close'>x</div>
-				<div style='margin-bottom: 10px;'>Map Request Status</div>	
-				<div class='map-url'> Request URL: <a target='_blank' id='map-status-url-href' href=''>WMS GetMap</a> </div> 
+				<div style='margin-bottom: 10px;'>Request:
+					<span>WMS</span> <span id='btn-wfs-url'>WFS</span>
+				</div>	
+				<div class='map-url'> Link: <a target='_blank' id='map-status-url-href' href=''>URL</a> </div> 
 				<div style='margin-bottom:10px;'>
 					<textarea rows=15 cols=100 id='map-status-url'></textarea>
 				</div>
@@ -181,6 +183,13 @@ function initUI(showConfig)
 		maptest.autoRedraw(doAuto);	
 	})
 	$('#wms-layer-filter').keyup( wmsLayerFilter );
+
+	$('#btn-wfs-url').click( function() {
+		var ov = MapTest.state.currOverlay;
+		if (ov) {
+			ov.showGetFeatureURL();
+		}
+	} );
 }
 
 function wmsLayerFilter () {
@@ -213,6 +222,9 @@ MapTest.show = function(selector) {
 	MapTest.closeAll();
 	$(selector).show();
 }
+MapTest.state = {
+	currOverlay: null
+};
 function TESTING()
 {
 

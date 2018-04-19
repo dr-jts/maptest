@@ -117,7 +117,7 @@ Overlay.prototype.createOverlayUI = function() {
 	$('<button class="btn-query">').appendTo($ctl)
 		.text('?')
 		.attr('title','Query Overlay status')
-       	.click(function () { self.showGetMapResponse();	} );
+       	.click(function () { self.showMapStatus();	} );
 	$('<button class="">').appendTo($ctl)
 		.text('Proof')
 		.attr('title','Create Proof Sheet page')
@@ -294,11 +294,11 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 		);
 }
 
-Overlay.prototype.showGetMapResponse = function() {
+Overlay.prototype.showMapStatus = function() {
 	var wmsURL = this.getMapURL();
 	var wfsURL = this.getFeatureURL();
 	MapTest.showMapStatus(wmsURL, wfsURL);
-	MapTest.state.currOverlay = this;
+	//MapTest.state.currOverlay = this;
 
 	MapTest.showStatus('Requesting...');
 	$.ajax(this.getMapURL(),
@@ -306,9 +306,9 @@ Overlay.prototype.showGetMapResponse = function() {
     		dataType: 'text',
     		error: ajaxError
 			 }
-	).done(callbackGetMapResponse);			
+	).done(callbackGetMap);			
 	
-	function callbackGetMapResponse(data, textStatus, jqXHR) {
+	function callbackGetMap(data, textStatus, jqXHR) {
 		var isImage = jqXHR.getResponseHeader('Content-Type').substr(0, 5) == 'image';
 		var dispStr = isImage ? jqXHR.getResponseHeader('Content-Type') : data;
 		MapTest.showStatus(dispStr);
@@ -318,22 +318,6 @@ Overlay.prototype.showGetMapResponse = function() {
 	}
 }	
 
-/*
-function showURL(url) {
-	$('#map-status-url-href').attr('href', url);
-	$('#map-status-url').val( formatUrl(url) );
-}
-function formatUrl(url) {
-	var url2 = url
-				.replace(/&/g, '\n&')
-				.replace(/\?/g, '\n?');
-	return url2;
-}
-Overlay.prototype.showGetFeatureURL = function() {
-	$('#map-status-wfs-url-href').attr('href', url);
-	$('#map-status-wfs-url').val( formatUrl(url) );
-}
-*/
 Overlay.prototype.reload = function ()
 {
 	this.create();
@@ -345,7 +329,8 @@ Overlay.prototype.getMapURL = function () {
 }
 Overlay.prototype.getFeatureURL = function () {
 	var overlay = this.findOverlay();
-	var lyr = overlay.params.LAYERS;
+	//var lyr = overlay.params.LAYERS;
+	var lyr = this.visibleMapLayer();
 	return overlay.url + '?service=wfs&version=2.0.0&request=GetFeature&typeNames='+lyr+'&count=10&srsName=EPSG:4326';
 }
 Overlay.prototype.findOverlay = function() {
@@ -525,6 +510,16 @@ Overlay.prototype.setAllMapLayerVisibility = function(isVisible)
 	this.updateMap();
 }
 //----------------------------------------
+Overlay.prototype.visibleMapLayer = function()
+{
+	for (var i = 0; i < this.mapLayers.length; i++) {
+		var lyr = this.mapLayers[i]
+		if (lyr.visibility) {
+			return lyr.name;
+		}
+	}
+	return null;
+}
 Overlay.prototype.visibleMapLayers = function(mapLyrs)
 {
 	var names = [];

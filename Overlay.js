@@ -295,10 +295,12 @@ Overlay.prototype.addMapLayerUI = function (lyr)
 }
 
 Overlay.prototype.showGetMapResponse = function() {
-	MapTest.show('.map-status-panel');
+	var wmsURL = this.getMapURL();
+	var wfsURL = this.getFeatureURL();
+	MapTest.showMapStatus(wmsURL, wfsURL);
 	MapTest.state.currOverlay = this;
-	showURL( this.getMapURL() );
-	showStatus('Requesting...');
+
+	MapTest.showStatus('Requesting...');
 	$.ajax(this.getMapURL(),
 		{ 	type: 'GET',
     		dataType: 'text',
@@ -309,15 +311,14 @@ Overlay.prototype.showGetMapResponse = function() {
 	function callbackGetMapResponse(data, textStatus, jqXHR) {
 		var isImage = jqXHR.getResponseHeader('Content-Type').substr(0, 5) == 'image';
 		var dispStr = isImage ? jqXHR.getResponseHeader('Content-Type') : data;
-		showStatus(dispStr);
+		MapTest.showStatus(dispStr);
 	}
 	function ajaxError(jqXHR, textStatus) {
-		showStatus(textStatus +": " + jqXHR.status);
+		MapTest.showStatus(textStatus +": " + jqXHR.status);
 	}
 }	
-function showStatus(msg) {
-	$('#map-status').text(msg);
-}
+
+/*
 function showURL(url) {
 	$('#map-status-url-href').attr('href', url);
 	$('#map-status-url').val( formatUrl(url) );
@@ -329,8 +330,10 @@ function formatUrl(url) {
 	return url2;
 }
 Overlay.prototype.showGetFeatureURL = function() {
-	showURL( this.getFeatureURL() );
+	$('#map-status-wfs-url-href').attr('href', url);
+	$('#map-status-wfs-url').val( formatUrl(url) );
 }
+*/
 Overlay.prototype.reload = function ()
 {
 	this.create();

@@ -59,14 +59,23 @@
 			<div class='map-status-panel'  style='display:none;'>
 				<div class='btn-close' id='btn-status-close'>x</div>
 				<div style='margin-bottom: 10px;'>Request:
-					<span>WMS</span> <span id='btn-wfs-url'>WFS</span>
-				</div>	
-				<div class='map-url'> Link: <a target='_blank' id='map-status-url-href' href=''>URL</a> </div> 
-				<div style='margin-bottom:10px;'>
-					<textarea rows=15 cols=100 id='map-status-url'></textarea>
+					<span class='map-status-btn' id='btn-wms-request'>WMS</span> 
+					<span class='map-status-btn' id='btn-wfs-request'>WFS</span>
 				</div>
-				<div> Response: </div>
-				<div id='map-status' class='http-response'></div>
+				<div id='map-status-wms-panel'>
+					<div class='map-url'> WMS Link: <a target='_blank' id='map-status-wms-url-href' href=''>URL</a> </div> 
+					<div style='margin-bottom:10px;'>
+						<textarea rows=15 cols=100 id='map-status-wms-url-edit'></textarea>
+					</div>
+					<div> Response: </div>
+					<div id='map-status' class='http-response'></div>	
+				</div>	
+				<div id='map-status-wfs-panel' style='display:none'>
+					<div class='map-url'> WFS Link: <a target='_blank' id='map-status-wfs-url-href' href=''>URL</a> </div> 
+					<div style='margin-bottom:10px;'>
+						<textarea rows=15 cols=100 id='map-status-wfs-url-edit'></textarea>
+					</div>
+				</div>	
 			</div>
 			
 		<!-- Log panel -->	
@@ -184,11 +193,13 @@ function initUI(showConfig)
 	})
 	$('#wms-layer-filter').keyup( wmsLayerFilter );
 
-	$('#btn-wfs-url').click( function() {
-		var ov = MapTest.state.currOverlay;
-		if (ov) {
-			ov.showGetFeatureURL();
-		}
+	$('#btn-wfs-request').click( function() {
+		$('#map-status-wms-panel').hide();
+		$('#map-status-wfs-panel').show();
+	} );
+	$('#btn-wms-request').click( function() {
+		$('#map-status-wfs-panel').hide();
+		$('#map-status-wms-panel').show();
 	} );
 }
 
@@ -221,6 +232,26 @@ MapTest.closeAll = function() {
 MapTest.show = function(selector) {
 	MapTest.closeAll();
 	$(selector).show();
+}
+MapTest.showMapStatus = function(wmsURL, wfsURL) {
+	MapTest.show('.map-status-panel');
+	$('#map-status-wms-panel').show();
+	$('#map-status-wfs-panel').hide();
+	showURL('#map-status-wms', wmsURL);
+	showURL('#map-status-wfs', wfsURL);
+}
+MapTest.showStatus = function(msg) {
+	$('#map-status').text(msg);
+}
+function showURL(select, url) {
+	$(select + '-url-href').attr('href', url);
+	$(select + '-url-edit').val( formatUrl(url) );
+}
+function formatUrl(url) {
+	var url2 = url
+				.replace(/&/g, '\n&')
+				.replace(/\?/g, '\n?');
+	return url2;
 }
 MapTest.state = {
 	currOverlay: null

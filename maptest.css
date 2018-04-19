@@ -131,6 +131,12 @@ div.olControlMousePosition {
 	font-weight: bold;
 	overflow: auto;
 }
+.map-status-btn {
+	border: 1px solid black;
+	padding: 3px;
+	background-color: #dddddd;
+	cursor: pointer;
+}
 .map-status-controls {
 	width: 100%;
 	text-align: right;

@@ -32,10 +32,14 @@ div.olControlMousePosition {
     font-size: smaller;
 }
 .olControlScaleEx {
-	left: 170px;
-	width: 300px;
+	left: 40px;
+	top: 35px;
+	width: 180px;
 	height: 10px;
 	padding: 4px;
+	border: 1px solid #809EC4;
+	border-radius: 3px;
+	text-align: center;
 }
 /*------------------------------------*/
 .page-header {

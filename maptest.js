@@ -91,7 +91,7 @@ MapTest.prototype.initMap = function(mapDiv) {
  	    ]);
 	this.map.addControl(new OpenLayers.Control.LayerSwitcher());
 	this.map.addControl(new OpenLayers.Control.ScaleEx(null, { geodesic: true, 
-			template: " Level: ${zoom} -- Scale Nom: ${scaleDenomPreciseNom} -- Geo: ${scaleDenomPreciseGeo} " } ));
+			template: " Level ${zoom} --- Scale  1: ${scaleDenomPreciseNom} " } ));
 	this.map.addControl(new OpenLayers.Control.MousePosition({ displayProjection: 'EPSG:4326' })); 	    
 /*
     var road = new OpenLayers.Layer.Bing({

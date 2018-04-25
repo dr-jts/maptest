@@ -141,6 +141,9 @@ div.olControlMousePosition {
 	background-color: #dddddd;
 	cursor: pointer;
 }
+.map-url {
+	margin-bottom: 10px;
+}
 .map-status-controls {
 	width: 100%;
 	text-align: right;

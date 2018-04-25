@@ -75,6 +75,7 @@
 					<div style='margin-bottom:10px;'>
 						<textarea rows=15 cols=100 id='map-status-wfs-url-edit'></textarea>
 					</div>
+					<div><button id='btn-wfs-query' click='MapTest.wfsQuery();'>Query</button></div>
 				</div>	
 			</div>
 			
@@ -201,6 +202,17 @@ function initUI(showConfig)
 		$('#map-status-wfs-panel').hide();
 		$('#map-status-wms-panel').show();
 	} );
+	$('#btn-wfs-query').click( MapTest.wfsQuery );
+	onURLEdit("#map-status-wms");
+	onURLEdit("#map-status-wfs");
+
+}
+function onURLEdit( select ) {
+	$(select + '-url-edit').on('input selectionchange propertychange', function() {
+		var txt = $(this).val();
+		//console.log(txt);
+		updateURL(select, txt)
+	});
 }
 
 function wmsLayerFilter () {
@@ -247,12 +259,38 @@ function showURL(select, url) {
 	$(select + '-url-href').attr('href', url);
 	$(select + '-url-edit').val( formatUrl(url) );
 }
+function updateURL(select, txt) {
+	var url = txt.replaceAll('\n', '');
+	var $a = $(select + '-url-href');
+	$(select + '-url-href').attr('href', url);
+}
 function formatUrl(url) {
 	var url2 = url
 				.replace(/&/g, '\n&')
 				.replace(/\?/g, '\n?');
 	return url2;
 }
+
+MapTest.wfsQuery = function() {
+	var url = $('#map-status-wfs-url-edit').val();
+	$.ajax(url,
+		{ 	type: 'GET',
+    		dataType: 'text',
+    		error: ajaxError
+			 }
+	).done(callbackGetMap);			
+	
+	function callbackGetMap(data, textStatus, jqXHR) {
+		MapTest.showStatus('foo');
+		var parser = new OpenLayers.Format.GML.v2();
+		var features = parser.read(data);
+	}
+	function ajaxError(jqXHR, textStatus) {
+		MapTest.showStatus(textStatus +": " + jqXHR.status);
+	}
+
+}
+
 MapTest.state = {
 	currOverlay: null
 };
@@ -260,6 +298,17 @@ function TESTING()
 {
 
 }
+
+String.prototype.replaceAll = function(search, replace)
+{
+    //if replace is not sent, return original string otherwise it will
+    //replace search string with 'undefined'.
+    if (replace === undefined) {
+        return this.toString();
+    }
+
+    return this.replace(new RegExp('[' + search + ']', 'g'), replace);
+};
 
 </script>
 	</body>

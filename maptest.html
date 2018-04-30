@@ -104,6 +104,11 @@
 					<input type='button' value='Clear Layer List' id='btn-overlay-clear' style='color:red;right:40px;position:absolute;'/>
 				</div>
 				<textarea id='config-text' placeholder='Enter configuration text'></textarea>
+				<div>
+					<select class='config-service' id='config-service'></select>
+					<button id='config-service-use'>Use</button>
+					<button id='config-service-remove'>Remove</button>
+				</div>
 			</div>
 
 			<!-- WMS panel -->	
@@ -169,12 +174,16 @@ function initUI(showConfig)
 	}
 	MapTest.closeAll();
 	if (showConfig) {
+		MapTest.UI.showServiceList();
 		MapTest.show('.config-panel');
 	}
 	$('.btn-close').click( MapTest.closeAll );
 	$('#btn-log').click(function() { MapTest.show('.map-log-panel'); });
 	
-	$('#btn-configure').click(function() { MapTest.show('.config-panel');	});
+	$('#btn-configure').click(function() { 
+		MapTest.show('.config-panel');	
+		MapTest.UI.showServiceList();
+	});
 	$('#btn-zoom').click(function() { maptest.zoom( $('#map-extent').val() );	});
 
 	$('#btn-config-add').click(function() { 
@@ -186,6 +195,15 @@ function initUI(showConfig)
 	$('#btn-config-show').click(function() { $('#config-text').val(maptest.configuration());	});
 	$('#btn-config-show-visible').click(function() { $('#config-text').val(maptest.configuration(true));	});
 	$('#btn-overlay-clear').click(function() { maptest.clear();	});
+	$('#config-service-use').click( function() {
+		var url = $('#config-service').val();
+		$('#config-text').val( url );
+	});
+	$('#config-service-remove').click( function() {
+		var url = $('#config-service').val();
+		MapTest.Config.serviceRemove(url);
+		MapTest.UI.showServiceList();
+	});
 			
 	$('#btn-redraw-all').click(function() { maptest.redrawMap();	})
 	$('#auto-redraw').click(function() { 
@@ -228,6 +246,8 @@ function wmsLayerFilter () {
 	});
 
 }
+MapTest.UI = {};
+
 MapTest.log = function(msg) {
 	if (! $('#log-enabled').is(':checked')) return;
 	$('.log-text').append('<br>' + msg);
@@ -270,6 +290,15 @@ function formatUrl(url) {
 				.replace(/\?/g, '\n?');
 	return url2;
 }
+MapTest.UI.showServiceList = function() {
+	var $sel = $('#config-service').empty();
+	var services = MapTest.Config.services();
+	for (var i = 0; i < services.length; i++) {
+		var url = services[i].url;
+		$sel.append( $('<option>', { value: url, text: url } ));
+	}
+}
+
 
 MapTest.wfsQuery = function() {
 	var url = $('#map-status-wfs-url-edit').val();
@@ -299,8 +328,7 @@ function TESTING()
 
 }
 
-String.prototype.replaceAll = function(search, replace)
-{
+String.prototype.replaceAll = function(search, replace) {
     //if replace is not sent, return original string otherwise it will
     //replace search string with 'undefined'.
     if (replace === undefined) {

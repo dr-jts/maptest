@@ -1,9 +1,8 @@
+(function() {
+
 CRS = {};
 CRS.PROJ_GEO = new OpenLayers.Projection( "EPSG:4326" );
 CRS.PROJ_WEBMERC = new OpenLayers.Projection( "EPSG:3857" );
-	
-(function() {
-	
 	// Web Mercator
 Proj4js.defs["EPSG:3857"] = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
 
@@ -417,6 +416,7 @@ MapTest.prototype.autoRedraw = function(doAuto) {
 
 MapTest.prototype.addOverlay = function(param) { 
 	var self = this;
+	MapTest.Config.serviceSave( param.url );
 	var name = extractHost(param.url);
 	if (! name) name = "UNKNOWN HOST";
 	
@@ -436,6 +436,53 @@ function extractHost(url) {
 	if (! arr) return null;
 	return arr[1]; 	
 }
+var STORAGE_KEY = "MapTest.config";
+
+MapTest.Config = {};
+MapTest.Config.serviceSave = function (url) {
+	var config = JSON.parse( localStorage.getItem(STORAGE_KEY) );
+	if (! config) config = {
+		services: []
+	}
+	var services = config.services;
+	if (! services) services = [];
+	var serviceEntry = {
+		url: url
+	};
+	// TODO: only add if not present
+	if (! findService(services, url)) {
+		services.push(serviceEntry);
+	}
+
+	config.services = services;
+	localStorage.setItem(STORAGE_KEY, JSON.stringify( config ));
+}
+MapTest.Config.serviceRemove = function( url) {
+	var services = MapTest.Config.services();
+	var svcUpdate = [];
+	for (var i = 0; i < services.length; i++) {
+		if (services[i].url != url) svcUpdate.push( services[i] );
+	}
+	config = {};
+	config.services = svcUpdate;
+	localStorage.setItem(STORAGE_KEY, JSON.stringify( config ));
+}
+function findService(services, url) {
+	for (var i = 0; i < services.length; i++) {
+		if (services[i].url == url) return services[i];
+	}
+	return null;
+}
+MapTest.Config.services = function () {
+	var config = JSON.parse( localStorage.getItem(STORAGE_KEY) );
+	if (! config) config = {
+		services: []
+	}
+	var services = config.services;
+	if (! services) services = [];
+	return services;
+}
+
 MapTest.prototype.redrawMap = function (onlyIfReady)
 {
 	for (var i = 0; i < this.overlays.length; i++) {

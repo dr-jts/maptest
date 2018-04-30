@@ -202,6 +202,9 @@ div.olControlMousePosition {
 	width: 100%;
 	height: 95%;
 }
+.config-service {
+	width: 80%;
+}
 .config-wait {
 	color: #bbbbbb;
 	background-color: #eeeeee;

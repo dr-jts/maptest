@@ -107,7 +107,7 @@
 				<div>
 					<select class='config-service' id='config-service'></select>
 					<button id='config-service-use'>Use</button>
-					<button id='config-service-remove'>Remove</button>
+					<button id='config-service-delete'>Delete</button>
 				</div>
 			</div>
 
@@ -199,7 +199,7 @@ function initUI(showConfig)
 		var url = $('#config-service').val();
 		$('#config-text').val( url );
 	});
-	$('#config-service-remove').click( function() {
+	$('#config-service-delete').click( function() {
 		var url = $('#config-service').val();
 		MapTest.Config.serviceRemove(url);
 		MapTest.UI.showServiceList();
@@ -293,12 +293,31 @@ function formatUrl(url) {
 MapTest.UI.showServiceList = function() {
 	var $sel = $('#config-service').empty();
 	var services = MapTest.Config.services();
+	var options = [];
 	for (var i = 0; i < services.length; i++) {
 		var url = services[i].url;
+		options.push({
+			key: ipNameReverse(url),
+			url: url
+		});
+	}
+	options.sort(function(a,b) {
+		if (a.key < b.key) return -1;
+		if (a.key > b.key) return 1;
+		return 0;
+	});
+	for (var i = 0; i < options.length; i++) {
+		var url = options[i].url;
 		$sel.append( $('<option>', { value: url, text: url } ));
 	}
 }
-
+function ipNameReverse( url ) {
+	var name = MapTest.Util.extractHost(url);
+	var comp = name.split('.');
+	comp.reverse();
+	var nameRev = comp.join('.');
+	return nameRev;
+}
 
 MapTest.wfsQuery = function() {
 	var url = $('#map-status-wfs-url-edit').val();

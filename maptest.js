@@ -417,7 +417,7 @@ MapTest.prototype.autoRedraw = function(doAuto) {
 MapTest.prototype.addOverlay = function(param) { 
 	var self = this;
 	MapTest.Config.serviceSave( param.url );
-	var name = extractHost(param.url);
+	var name = MapTest.Util.extractHost(param.url);
 	if (! name) name = "UNKNOWN HOST";
 	
 	var ov = new Overlay(this.map, name, param);
@@ -430,12 +430,16 @@ MapTest.prototype.addOverlay = function(param) {
 	}
 	return ov;
 }
-function extractHost(url) {
-	var rx = /\/\/(.+?)\//;
+
+MapTest.Util = {};
+
+MapTest.Util.extractHost = function(url) {
+	var rx = /\/\/(.+?)\/?/;
 	var arr = rx.exec(url);
 	if (! arr) return null;
 	return arr[1]; 	
 }
+
 var STORAGE_KEY = "MapTest.config";
 
 MapTest.Config = {};

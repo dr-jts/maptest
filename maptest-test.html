@@ -3,8 +3,10 @@
 <head></head>
 <body onload="initPage()">
 
+<h1>MapTest Unit Tests</h1>
+
 <div id='log-div'>
- <table id='log'>
+ <table id='log' border='1'>
 
  </table>
 </div>
@@ -21,6 +23,8 @@
 
 function initPage() {
 	
+    test(MapTest.Util.extractHost, "a.b.c/foo/foo", "a.b.c");
+    test(MapTest.Util.extractHost, "foo", "foo");
     test(MapTest.Util.extractHost, "https://foo", "foo");
     test(MapTest.Util.extractHost, "https://wf1geot.nrs.gov.bc.ca", "wf1geot.nrs.gov.bc.ca");
     test(MapTest.Util.extractHost, "https://wf1geot.nrs.gov.bc.ca/geoserver/wms", "wf1geot.nrs.gov.bc.ca");
@@ -28,17 +32,26 @@ function initPage() {
 
 function test(fn, input, expected) {
     var result = fn(input);
-    if (result != expected) {
-        logFail(input, expected, result);
-    }
+    var status = (result == expected);
+    logTest(fn, status, input, expected, result);
 }
 
-function logFail(input, expected, result) {
-    var $status = $("<td>").text("FAIL");
+function logTest(fn, status, input, expected, result) {
+    var $name = $("<td>").text( fn.name );
+
+    var stat = status ? "PASS" : "FAIL"
+    var $status = $("<td>").text( stat );
+
+
     var $msg = $("<td>")
-        .append( $('<div>').text(expected) )
+        .append( $('<div>').text(input) )
         .append( $('<div>').text(result) );
+    if (! status ) {
+        $status.css('background-color', '#ffdddd');
+        $msg.append( $('<div>').text('Expected: ' + expected) );
+    }
     var $line = $('<tr>')
+        .append($name)
         .append($status)
         .append($msg);
     $('#log').append($line);

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body onload="initPage()">
+
+<div id='log-div'>
+ <table id='log'>
+
+ </table>
+</div>
+
+<script type="text/javascript" src="lib/proj4js-compressed.js"></script>
+<script type="text/javascript" src="lib/OpenLayers.js"></script>
+<script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="ol/ScaleEx.js"></script>
+<script type="text/javascript" src="urlParams.js"></script>
+<script type="text/javascript" src="maptest.js"></script>
+<script type="text/javascript" src="Overlay.js"></script>
+<script type="text/javascript" src="WMSProof.js"></script>
+<script type="text/javascript">
+
+function initPage() {
+	
+    test(MapTest.Util.extractHost, "https://foo", "foo");
+    test(MapTest.Util.extractHost, "https://wf1geot.nrs.gov.bc.ca", "wf1geot.nrs.gov.bc.ca");
+    test(MapTest.Util.extractHost, "https://wf1geot.nrs.gov.bc.ca/geoserver/wms", "wf1geot.nrs.gov.bc.ca");
+}
+
+function test(fn, input, expected) {
+    var result = fn(input);
+    if (result != expected) {
+        logFail(input, expected, result);
+    }
+}
+
+function logFail(input, expected, result) {
+    var $status = $("<td>").text("FAIL");
+    var $msg = $("<td>")
+        .append( $('<div>').text(expected) )
+        .append( $('<div>').text(result) );
+    var $line = $('<tr>')
+        .append($status)
+        .append($msg);
+    $('#log').append($line);
+}
+
+</script>
+</body>
+</html>

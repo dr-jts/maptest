@@ -434,10 +434,16 @@ MapTest.prototype.addOverlay = function(param) {
 MapTest.Util = {};
 
 MapTest.Util.extractHost = function(url) {
-	var rx = /\/\/(.+?)\/?/;
-	var arr = rx.exec(url);
-	if (! arr) return null;
-	return arr[1]; 	
+	var ssPos = url.indexOf("//");
+	var host = url;
+	if (ssPos >= 0) {
+		host = url.substring(ssPos+2);
+	}
+	var pathPos = host.indexOf("/");
+	if (pathPos > 0) {
+		host = host.substring(0, pathPos);
+	}
+	return host;
 }
 
 var STORAGE_KEY = "MapTest.config";

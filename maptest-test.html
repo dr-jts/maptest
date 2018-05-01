@@ -23,25 +23,24 @@
 
 function initPage() {
 	
-    test(MapTest.Util.extractHost, "a.b.c/foo/foo", "a.b.c");
-    test(MapTest.Util.extractHost, "foo", "foo");
-    test(MapTest.Util.extractHost, "https://foo", "foo");
-    test(MapTest.Util.extractHost, "https://wf1geot.nrs.gov.bc.ca", "wf1geot.nrs.gov.bc.ca");
-    test(MapTest.Util.extractHost, "https://wf1geot.nrs.gov.bc.ca/geoserver/wms", "wf1geot.nrs.gov.bc.ca");
+    test("extractHost", MapTest.Util.extractHost, "a.b.c/foo/foo", "a.b.c");
+    test("extractHost", MapTest.Util.extractHost, "foo", "foo");
+    test("extractHost", MapTest.Util.extractHost, "https://foo", "foo");
+    test("extractHost", MapTest.Util.extractHost, "https://wf1geot.nrs.gov.bc.ca", "wf1geot.nrs.gov.bc.ca");
+    test("extractHost", MapTest.Util.extractHost, "https://wf1geot.nrs.gov.bc.ca/geoserver/wms", "wf1geot.nrs.gov.bc.ca");
 }
 
-function test(fn, input, expected) {
+function test(name, fn, input, expected) {
     var result = fn(input);
     var status = (result == expected);
-    logTest(fn, status, input, expected, result);
+    logTest(name, fn, status, input, expected, result);
 }
 
-function logTest(fn, status, input, expected, result) {
-    var $name = $("<td>").text( fn.name );
+function logTest(name, fn, status, input, expected, result) {
+    var $name = $("<td>").text( name );
 
     var stat = status ? "PASS" : "FAIL"
     var $status = $("<td>").text( stat );
-
 
     var $msg = $("<td>")
         .append( $('<div>').text(input) )

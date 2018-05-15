@@ -84,11 +84,22 @@ and click <button>Add to Layer List</button></li>
 <h2>User Interface</h2> 
 <h3>Overlays & Layers</h3>
 
+<h4>Add Request Parameters</h4>
+
+<div class="btn-overlay-controls-toggle"></div> 
+Click to display a text input for specifying additional request parameters.
+Reload map to apply the parameters.
+
+<p>Examples:</p>
+<ul>
+	<li><code>cql_filter=ROAD_NAME LIKE 'F%'</code></li>
+</ul>
+
 <h4>Add Layers from WMS Capabilities</h4>
 
 <button class='btn-wms-layer-add'>+</button> Click to open <b>WMS Layers</b> panel.
 
-<h4>Map Request Status</h4>
+<h4>Request Status</h4>
 
 <button class='btn-query'>?</button> Click to display the <b>Request</b> panel.
 
@@ -122,11 +133,15 @@ Enable logging to log all map requests.
 <h4><span class='map-status-btn'>WMS</span> tab</h4>
 
 Displays a WMS request URL based on the current map view.
+<p>
 Issues the request and displays information about the response.
 <code>image/png</code> indicates a successful reponse.
 Some kinds of response errors can be displayed.
+</p>
+<p>
 The URL can be edited.
-A link is provided to allow invoking and copying the edited URL.
+A link is provided to allow invoking the URL in a new browser window, or for copying the edited URL.
+</p>
 
 <h4><span class='map-status-btn'>WFS</span> tab</h4>
 

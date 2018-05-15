@@ -34,7 +34,7 @@ http://apphost/maptest.html
 The <a href=''><b>Permalink</b></a> link opens a new page with the top map overlay as parameters.
 
 <ul>
-	<li><code>host</code>, <code>lyr</code>, <code>extent</code> parameters are optional</li>
+	<li><code>host</code>, <code>tile</code>, <code>lyr</code>, <code>extent</code> parameters are optional</li>
 </ul>
 
 <h3>Configure via Text</h3>
@@ -90,8 +90,7 @@ and click <button>Add to Layer List</button></li>
 
 <h4>Map Request Status</h4>
 
-<button class='btn-query'>?</button> Click to display a map request and the response to it.
-Some kinds of errors can be displayed.
+<button class='btn-query'>?</button> Click to display the <b>Request</b> panel.
 
 <h4>WMS Proof Sheet</h4>
 
@@ -101,8 +100,8 @@ The Proof sheet can be converted to a savable HTML file.
 
 <h4>Add Layers via text entry</h4>
 
-Add layers to an overlay by entering one or more layer names (comma-separated) 
-and clicking <button class='btn-layer-add'>?</button>.
+<button class='btn-layer-add'>+</button> Add layers to an overlay by entering one or more layer names (comma-separated) 
+and clicking button.
 
 <h3>Extent</h3>
 Enter an extent in the zoom box and click <span class="btn-zoom">Zoom</span>.
@@ -117,7 +116,23 @@ Enable logging to log all map requests.
     <li><button>Log</button> Click to open the logging screen </li>
     <li>Check <b>Enable</b> to enable/disable logging
 </ul>
-				</div>
-			</div>
+
+<h3>Request Panel</h3>
+
+<h4><span class='map-status-btn'>WMS</span> tab</h4>
+
+Displays a WMS request URL based on the current map view.
+Issues the request and displays information about the response.
+<code>image/png</code> indicates a successful reponse.
+Some kinds of response errors can be displayed.
+The URL can be edited.
+A link is provided to allow invoking and copying the edited URL.
+
+<h4><span class='map-status-btn'>WFS</span> tab</h4>
+
+Displays a WFS request URL based on the current map view.
+
+
+
 </body>
 </html>

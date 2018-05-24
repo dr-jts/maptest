@@ -301,7 +301,7 @@ Overlay.prototype.showMapStatus = function() {
 	//MapTest.state.currOverlay = this;
 
 	MapTest.showStatus('Requesting...');
-	$.ajax(this.getMapURL(),
+	$.ajax(wmsURL,
 		{ 	type: 'GET',
     		dataType: 'text',
     		error: ajaxError

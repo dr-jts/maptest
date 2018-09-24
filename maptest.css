@@ -299,6 +299,7 @@ div.olControlMousePosition {
 }
 .overlay-controls-ex {
 	display: none;
+	margin-left: 10px;
 }
 .overlay-controls {
 	margin: 5px 0px 5px 10px;

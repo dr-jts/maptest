@@ -12,9 +12,10 @@
 
 </head>
 <body>
-<h1>Map Tester</h1>
+<h1>MapTest</h1>
 
 Displays WMS and ArcGIS REST map services as map overlays.
+Supports debugging errors and testing map request performance.
 
 <h2>Map Service Configuration</h2>
 
@@ -39,22 +40,22 @@ The <a href=''><b>Permalink</b></a> link opens a new page with the top map overl
 
 <h3>Configure via Text</h3>
 
-Map services are configured by a simple text configuration format.
-The configuration schema contains the following:
+Map services are configured by a simple line-oriented text configuration format.
+The configuration schema supports the following:
 <ul>
-	<li><b>URL</b> for the map service host</li>
-	<li>(Optional) <b>Display Name</b> specified as <code>name: name text</code> </li>
-	<li>(Optional) <b>Metadata link</b> specified as <code>meta-url: link</code> </li>
-	<li>(Optional) <b>Tiling</b> specified as <code>tile: t</code> </li>
-	<li>(Optional, multiple) <b>URL parameter</b> specified as <code>param: name=value</code> </li>
-	<li>A list of one or more map service <b>layers</b>
+	<li><b>URL</b> for the map service host, prefixed with <code>http:</code> or <code>https:</code></li>
+	<li><b>Display Name</b> - <i>(Optional)</i> specified as: <code>name: name text</code> </li>
+	<li><b>Metadata link</b> - <i>(Optional)</i> specified as: <code>meta-url: link</code> </li>
+	<li><b>Tiling</b> - <i>(Optional)</i> specified as: <code>tile: t</code> </li>
+	<li><b>URL parameter</b> - <i>(Optional, Multiple)</i> specified as: <code>param: name=value</code> </li>
+	<li>List of one or more map service <b>layers</b>
 		<ul>
 			<li>Layer names can be comma-separated or on separate lines</li>
 			<li>A layer can be specified as visible by appending <code>+</code> </li>
 			<li>A layer style can be specified by appending <code>*style</code> </li>
 		</ul>
 		</li>
-	<li>Comment lines are indicated by '#' or '//'</li>
+	<li>Comment lines start with '#' or '//'</li>
 </ul>
 
 Multiple services can be configured, separated by a blank line.
@@ -75,9 +76,9 @@ LAYER3+
 LAYER4*STYLE
 </pre>
 
-<h3>Configure Layers via WMS Capabilities</h3>
+<h3>Configure Layers via WMS Capabilities UI</h3>
 
-The layers can be configured from the capabilities of a WMS service.
+The layers can be configured by a UI dialog driven from the WMS capabilities requested from a service.
 <ul>
 	<li><b>Configure the host</b> - Enter the host URL in the configuration panel
 and click <button>Add to Layer List</button></li>

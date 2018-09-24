@@ -283,6 +283,15 @@ div.olControlMousePosition {
 	xfont-weight: bold;
 	font-size: 12pt;
 }
+.btn-overlay-layerlist-toggle {
+	display: inline-block;
+	width:  20px;
+	height: 20px;
+	background-position: center center;
+	background-repeat: no-repeat;
+    background-image: url(img/arrowhead-down.png);
+	cursor: pointer;	
+}
 .btn-overlay-controls-toggle {
 	display: inline-block;
 	width:  20px;

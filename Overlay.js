@@ -16,7 +16,11 @@ Overlay = function(map, name, param) {
 function isArcGIS(url) {
 	return url.indexOf('MapServer/export') > 0
 } 
-	
+
+Overlay.TOOLTIP = {
+	toggleLayerList: 'Hide/Show layer list',
+	toggleParams: 'Additional overlay parameters'
+}
 Overlay.prototype.create = function() { 
 	this.remove();
 	this.mapOverlay = OVERLAY_CREATOR[this.type](this);
@@ -78,6 +82,11 @@ Overlay.prototype.createOverlayUI = function() {
 	
 	//----  overlay name
 	var $title = $('<div class="overlay-name">').appendTo(this.$root);
+	var $layerListToggle = $('<div class="btn-overlay-layerlist-toggle">').appendTo($title)
+		.attr('title', Overlay.TOOLTIP.toggleLayerList)
+		.click(function () { 
+			self.$layerList.toggle();
+		} );
 	$('<input type="checkbox" >')
             	.prop('checked', true )
             	.click(function () { 
@@ -94,7 +103,7 @@ Overlay.prototype.createOverlayUI = function() {
 //----- overlay controls 
 	var $ctl = $('<div class="overlay-controls">').appendTo(this.$root);
 	$('<div class="btn-overlay-controls-toggle">').appendTo($ctl)
-		.attr('title','Additional overlay parameters')
+		.attr('title',Overlay.TOOLTIP.toggleParams)
 		.click(function () { 
 			$overlayBlock.find('.overlay-controls-ex').toggle();
 		} );
@@ -161,24 +170,10 @@ Overlay.prototype.createOverlayUI = function() {
    		.attr('id', 'overlay-time-count')
 		.text('0').appendTo($time);
 
-	//------ layer add control
-   	var $add = $('<div class="layer-controls">').appendTo($overlayBlock); 
-   	var $name = $('<input type="text" size=25>')
-   		.attr('id', 'text_layer_name')
-   		.attr('title', 'Enter layer names, comma-separated')
-   		.appendTo($add);
-   	$('<button>').addClass('btn-layer-add').appendTo($add)
-   		.text('+')
-    	.attr('title', 'Add layer')
-  		.click(function() {
-   			var txt = $name.val();
-   			var lyrs = txt.split(',');
-   			self.addLayers( lyrs );
-   			$name.val('');
-   		});
  
-		
-	var $lyrctl = $('<div class="layer-controls">').appendTo(this.$root);
+	this.$layerList = $('<div>').appendTo(this.$root);
+
+	var $lyrctl = $('<div class="layer-controls">').appendTo( this.$layerList );
 	$('<button>').text('All').appendTo($lyrctl)
 		.attr('title', 'Make all layers visible')
 		.click(function ( event ) { 
@@ -201,7 +196,23 @@ Overlay.prototype.createOverlayUI = function() {
 				var showState = ! $legendDivs.first().is(':visible');
 				$legendDivs.toggle(showState);
 		} );
-	this.$layers = $('<div>').appendTo(this.$root);
+	this.$layers = $('<div>').appendTo( this.$layerList );
+
+		//------ layer add control
+   	var $add = $('<div class="layer-controls">').appendTo( this.$layerList ); 
+   	var $name = $('<input type="text" size=25>')
+   		.attr('id', 'text_layer_name')
+   		.attr('title', 'Enter layer names, comma-separated')
+   		.appendTo($add);
+   	$('<button>').addClass('btn-layer-add').appendTo($add)
+   		.text('+')
+    	.attr('title', 'Add layer')
+  		.click(function() {
+   			var txt = $name.val();
+   			var lyrs = txt.split(',');
+   			self.addLayers( lyrs );
+   			$name.val('');
+   		});
 }
 Overlay.prototype.createProof = function() {
 	new WMSProof( this );

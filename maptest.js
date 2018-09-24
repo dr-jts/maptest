@@ -350,6 +350,7 @@ var Lexer = {
 	},
 	isComment: function (s) {
 		if (s.indexOf('//') == 0) return true;
+		if (s.indexOf('#') == 0) return true;
 		return false;
 	}
 }

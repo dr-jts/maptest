@@ -53,6 +53,7 @@ The configuration schema contains the following:
 			<li>A layer style can be specified by appending <code>*style</code> </li>
 		</ul>
 		</li>
+	<li>Comment lines are indicated by '#' or '//'</li>
 </ul>
 
 Multiple services can be configured, separated by a blank line.
@@ -60,6 +61,8 @@ Multiple services can be configured, separated by a blank line.
 <p>
 <h4>Example: Text Configuration for a single map service</h4>
 <pre class='help-code'>
+# This is a comment
+// This is another comment
 http://some.host/mapservice
 meta-url: http://some.host/mapservice/meta
 tile: t

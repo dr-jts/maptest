@@ -325,6 +325,9 @@ MapTest.Util.extractHost = function(url) {
 	}
 	return host;
 }
+MapTest.Util.shimTrim = function (x) {
+    return x.replace(/^\s+|\s+$/gm,'');
+}
 
 var STORAGE_KEY = "MapTest.config";
 
@@ -425,9 +428,7 @@ function stripPrefix(name) {
 	return noPref;
 }
 
-MapTest.Util.shimTrim = function (x) {
-    return x.replace(/^\s+|\s+$/gm,'');
-}
+
 
 
 })();

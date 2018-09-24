@@ -43,6 +43,7 @@ Map services are configured by a simple text configuration format.
 The configuration schema contains the following:
 <ul>
 	<li><b>URL</b> for the map service host</li>
+	<li>(Optional) <b>Display Name</b> specified as <code>name: name text</code> </li>
 	<li>(Optional) <b>Metadata link</b> specified as <code>meta-url: link</code> </li>
 	<li>(Optional) <b>Tiling</b> specified as <code>tile: t</code> </li>
 	<li>(Optional, multiple) <b>URL parameter</b> specified as <code>param: name=value</code> </li>
@@ -64,6 +65,7 @@ Multiple services can be configured, separated by a blank line.
 # This is a comment
 // This is another comment
 http://some.host/mapservice
+name: Some Mapservice
 meta-url: http://some.host/mapservice/meta
 tile: t
 param: name=value

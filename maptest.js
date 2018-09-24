@@ -201,6 +201,10 @@ MapTest.prototype.loadConfig = function(configStr) {
 			};
 			continue;
 		}
+		if (Lexer.isTag(MapTest.constants.NAME, line)) {
+			ovParam.name = Lexer.taggedValue(line).name;
+			continue;
+		}
 		if (Lexer.isTag(MapTest.constants.META_URL, line)) {
 			ovParam.metadataURL = Lexer.taggedValue(line);
 			continue;
@@ -297,9 +301,14 @@ MapTest.prototype.autoRedraw = function(doAuto) {
 MapTest.prototype.addOverlay = function(param) { 
 	var self = this;
 	MapTest.Config.serviceSave( param.url );
-	var name = MapTest.Util.extractHost(param.url);
+
+	// set name from config, or URL
+	var name = param.name;
+	if (! name) {
+		name = MapTest.Util.extractHost(param.url);
 	if (! name) name = "UNKNOWN HOST";
-	
+	}
+
 	var ov = new Overlay(this.map, name, param);
 	ov.createOverlayUI();
 	ov.onChange( function() { self.showLink(); } );

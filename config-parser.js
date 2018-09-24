@@ -34,6 +34,10 @@ ConfigParser.prototype.parseOverlayParams = function( lines, ov ) {
 		var line = scanLine(lines);
 		if (line == null) return;
 		var isParam = false;
+		if (Lexer.isTag(MapTest.constants.NAME, line)) {
+			ov.name = Lexer.taggedValue(line);
+			isParam = true;
+		}
 		if (Lexer.isTag(MapTest.constants.META_URL, line)) {
 			ov.metadataURL = Lexer.taggedValue(line);
 			isParam = true;
